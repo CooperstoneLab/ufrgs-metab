@@ -1,0 +1,275 @@
+[
+  {
+    "objectID": "lectures/02_design-collection.html#the-idea-behind-design-and-sampling",
+    "href": "lectures/02_design-collection.html#the-idea-behind-design-and-sampling",
+    "title": "Study design and sample collection",
+    "section": "The idea behind design and sampling",
+    "text": "The idea behind design and sampling\n\n\nThe samples you choose should be representative of the broader population you wish to study\nThe variability between your groups should be due to your research question (and not some other thing)"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#types-of-replicates",
+    "href": "lectures/02_design-collection.html#types-of-replicates",
+    "title": "Study design and sample collection",
+    "section": "Types of replicates",
+    "text": "Types of replicates"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#sources-of-variation-in-samples",
+    "href": "lectures/02_design-collection.html#sources-of-variation-in-samples",
+    "title": "Study design and sample collection",
+    "section": "Sources of variation in samples",
+    "text": "Sources of variation in samples\n\n\nExperimental (due to our question):\n\nNon-experimental (due to things other than our question)\n\nPersonnel\nCollection materials\nStorage (e.g., freeze-thaw, age)\nInstrument issues\nRun order effects\n\n\n\n\nIdeally, measurement variability &lt;&lt;&lt; sample variability"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#what-can-we-do-to-minimize-non-experimental-variation",
+    "href": "lectures/02_design-collection.html#what-can-we-do-to-minimize-non-experimental-variation",
+    "title": "Study design and sample collection",
+    "section": "What can we do to minimize non-experimental variation?",
+    "text": "What can we do to minimize non-experimental variation?\n\n\nConsistency!\nChoose appropriate controls\nEnsure sample groups are handled in the same way\nRandomize extraction order\nRandomize run order\nRun in one batch"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#quality-control-qc-samples",
+    "href": "lectures/02_design-collection.html#quality-control-qc-samples",
+    "title": "Study design and sample collection",
+    "section": "Quality control (QC) samples",
+    "text": "Quality control (QC) samples\n\n\nHow do we know if our data looks ‘okay’ if we don’t know what it’s supposed to look like?\nPooled QCs, commercial QCs, synthetic QCs\n\n\n\n\n\n\n\n\nFig. adapted from Broadhurst et al., Metabolomics 2018"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#processextraction-blanks",
+    "href": "lectures/02_design-collection.html#processextraction-blanks",
+    "title": "Study design and sample collection",
+    "section": "Process/extraction blanks",
+    "text": "Process/extraction blanks\n\n\nTo remove signal that comes from the non-sample parts of your extract, we run process blanks\nThese consist of all components of your extraction minus the sample\n\nIf you are extracting tomato juice with methanol, you would instead take an equal volume of water and “extract” using the identical process\n\nThis allows the removal of signal coming from: tips, vials, extraction aids, solvents, tubing, your dirty MS source etc"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#run-order",
+    "href": "lectures/02_design-collection.html#run-order",
+    "title": "Study design and sample collection",
+    "section": "Run order",
+    "text": "Run order\n\nFig. from John-Williams et al., Sci Data 2017"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#qc-samples-should-cluster-together",
+    "href": "lectures/02_design-collection.html#qc-samples-should-cluster-together",
+    "title": "Study design and sample collection",
+    "section": "QC samples should cluster together",
+    "text": "QC samples should cluster together\n\nFig. adapted from Broadhurst et al., Metabolomics 2018"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#qc-adjustment",
+    "href": "lectures/02_design-collection.html#qc-adjustment",
+    "title": "Study design and sample collection",
+    "section": "QC adjustment",
+    "text": "QC adjustment\n\nFig. from Dunn et al., Nature Protocols 2011"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#sample-age",
+    "href": "lectures/02_design-collection.html#sample-age",
+    "title": "Study design and sample collection",
+    "section": "Sample age",
+    "text": "Sample age\n\nFig. from Kjeldahl and Bro, J Chemometrics 2010"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#timing-of-collection",
+    "href": "lectures/02_design-collection.html#timing-of-collection",
+    "title": "Study design and sample collection",
+    "section": "Timing of collection",
+    "text": "Timing of collection\n\nFig. from Sato et al., Molecular Metabolism 2018"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#collection-tube-impact",
+    "href": "lectures/02_design-collection.html#collection-tube-impact",
+    "title": "Study design and sample collection",
+    "section": "Collection tube impact",
+    "text": "Collection tube impact\n\nFig. from Cruickshank-Quinn et al., Metabolites 2018"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#collection-variables-to-consider",
+    "href": "lectures/02_design-collection.html#collection-variables-to-consider",
+    "title": "Study design and sample collection",
+    "section": "Collection variables to consider",
+    "text": "Collection variables to consider\n\n\nTubes\nStorage\nFreeze-thaw\nQuenching"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#standarizing-extraction-amoung",
+    "href": "lectures/02_design-collection.html#standarizing-extraction-amoung",
+    "title": "Study design and sample collection",
+    "section": "Standarizing extraction amoung",
+    "text": "Standarizing extraction amoung\nCompare samples by:\n\n\nMass\nVolume\nNumber of cells\nNormalized to protein\nSome other thing?"
+  },
+  {
+    "objectID": "lectures/02_design-collection.html#when-starting-a-metabolomics-study",
+    "href": "lectures/02_design-collection.html#when-starting-a-metabolomics-study",
+    "title": "Study design and sample collection",
+    "section": "When starting a metabolomics study…",
+    "text": "When starting a metabolomics study…\n\n\nPurchase one lot of materials (solvents, reagents, vials etc.)\nStore many, small volume aliquots to avoid freeze-thaw\nDecide what your QCs will be and act accordingly\nBe consistent – generate a plan!\nBe especially careful when conducting a secondary analysis of already collected data\n\n\n\n\n\n© Jessica Cooperstone, 2024"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html",
+    "href": "lectures/05_compound-id.html",
+    "title": "Compound identification",
+    "section": "",
+    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html",
+    "href": "lectures/04_data-analysis.html",
+    "title": "Data analysis",
+    "section": "",
+    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "section": "",
+    "text": "Instructor: Jessica Cooperstone, Ph.D. Associate Professor, Horticulture and Crop Science, Food Science and Technology The Ohio State University\nThe purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.\nBelow is an overview of the material to be covered in this workshop.\n\n\n\nTopic\nContent\n\n\n\nIntroduction to metabolomics\nLecture\n\n\n\nStudy design and sample collection\nLecture\n\n\n\nLC-MS data acquisition and pre-processing:\n\nBasics of LC and MS\nSample preparation\nData collection\nRaw data processing to create a feature table using MZmine\n\nLecture\nActivity\n\n\n\nData analysis:\n\nUsing MetaboAnalyst\nCreating principal components analysis (PCA) plots\nUnivariate group difference testing\nMultivariate analysis\n\nLecture\nActivity\n\n\n\nCompound ID:\n\nUsing MS1 and MS2 databases\nInterpreting MS/MS spectra\nConfirmation with authentic standards\n\nLecture\n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html",
+    "href": "lectures/03_lc-ms.html",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "",
+    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "lectures/01_intro.html#introductions",
+    "href": "lectures/01_intro.html#introductions",
+    "title": "Introduction to metabolomics",
+    "section": "Introductions 👋",
+    "text": "Introductions 👋\n\n\nName\nResearch focus area\nHow you see yourself using metabolomics\nWhat you hope to learn"
+  },
+  {
+    "objectID": "lectures/01_intro.html#what-is-metabolomics",
+    "href": "lectures/01_intro.html#what-is-metabolomics",
+    "title": "Introduction to metabolomics",
+    "section": "What is metabolomics?",
+    "text": "What is metabolomics?\n\n\nThe study of the totality of small molecules (&lt; 1500 Da) within a given system\nMetabolomics is a tool that allows us to study global metabolism"
+  },
+  {
+    "objectID": "lectures/01_intro.html#metabolites-are-the-downstream-products-of-the-system-biology-cascade",
+    "href": "lectures/01_intro.html#metabolites-are-the-downstream-products-of-the-system-biology-cascade",
+    "title": "Introduction to metabolomics",
+    "section": "Metabolites are the downstream products of the system biology cascade",
+    "text": "Metabolites are the downstream products of the system biology cascade"
+  },
+  {
+    "objectID": "lectures/01_intro.html#the-food-metabolome-can-be-influenced-by",
+    "href": "lectures/01_intro.html#the-food-metabolome-can-be-influenced-by",
+    "title": "Introduction to metabolomics",
+    "section": "The food metabolome can be influenced by:",
+    "text": "The food metabolome can be influenced by:\n\n\nVariety/genetics\nEnvironment\nPost-harvest/processing\nStorage"
+  },
+  {
+    "objectID": "lectures/01_intro.html#the-metabolome-is-really-big",
+    "href": "lectures/01_intro.html#the-metabolome-is-really-big",
+    "title": "Introduction to metabolomics",
+    "section": "The metabolome is really BIG!",
+    "text": "The metabolome is really BIG!\n\n\n\nAdapted from David Wishart’s Canadian Bioinformatics Workshop"
+  },
+  {
+    "objectID": "lectures/01_intro.html#the-metabolome-is-very-chemically-diverse",
+    "href": "lectures/01_intro.html#the-metabolome-is-very-chemically-diverse",
+    "title": "Introduction to metabolomics",
+    "section": "The metabolome is very chemically diverse",
+    "text": "The metabolome is very chemically diverse\n\n\nFrom Roche, Biochemical Pathways"
+  },
+  {
+    "objectID": "lectures/01_intro.html#the-metabolome-is-constantly-changing",
+    "href": "lectures/01_intro.html#the-metabolome-is-constantly-changing",
+    "title": "Introduction to metabolomics",
+    "section": "The metabolome is constantly changing",
+    "text": "The metabolome is constantly changing"
+  },
+  {
+    "objectID": "lectures/01_intro.html#how-is-metabolomics-different-from-targeted-analyses",
+    "href": "lectures/01_intro.html#how-is-metabolomics-different-from-targeted-analyses",
+    "title": "Introduction to metabolomics",
+    "section": "How is metabolomics different from targeted analyses?",
+    "text": "How is metabolomics different from targeted analyses?\n\n\nMetabolomics:\n\n100s-1,000s of analytes\nWork on the back end\nComparative (i.e. relative concentration)\n\n\nTargeted analyses:\n\n1-20 analytes\nWork on the front end\nQuantitative (i.e. absolute concentration)"
+  },
+  {
+    "objectID": "lectures/01_intro.html#metabolomics-workflow",
+    "href": "lectures/01_intro.html#metabolomics-workflow",
+    "title": "Introduction to metabolomics",
+    "section": "Metabolomics workflow",
+    "text": "Metabolomics workflow"
+  },
+  {
+    "objectID": "lectures/01_intro.html#metabolomics-is-a-comparative-analysis",
+    "href": "lectures/01_intro.html#metabolomics-is-a-comparative-analysis",
+    "title": "Introduction to metabolomics",
+    "section": "Metabolomics is a comparative analysis",
+    "text": "Metabolomics is a comparative analysis\n\n\nWhat can food scientists use metabolomics for?\nIf you have specific compounds of interest, develop a targeted method!"
+  },
+  {
+    "objectID": "lectures/01_intro.html#what-do-we-want-to-compare",
+    "href": "lectures/01_intro.html#what-do-we-want-to-compare",
+    "title": "Introduction to metabolomics",
+    "section": "What do we want to compare?",
+    "text": "What do we want to compare?\n\n\nIt’s critical to select comparable samples as our approach is comparative.\nFoods: plants, animal products, raw ingredients, finished product\nBiological sample: plasma, urine, tissue, other fluids, cells"
+  },
+  {
+    "objectID": "lectures/01_intro.html#preparation-dictates-compounds-detected",
+    "href": "lectures/01_intro.html#preparation-dictates-compounds-detected",
+    "title": "Introduction to metabolomics",
+    "section": "Preparation dictates compounds detected",
+    "text": "Preparation dictates compounds detected\n\n\n\nYou can only detect what you present to an instrument for analysis\nSample prep depends on intended method of analysis (e.g., water extraction, polar compounds; non-polar extraction, non-polar compounds)\nDilute, centrifuge/filter, inject (e.g. urine, juice, olive oil)"
+  },
+  {
+    "objectID": "lectures/01_intro.html#collect-comprehensive-metabolite-data",
+    "href": "lectures/01_intro.html#collect-comprehensive-metabolite-data",
+    "title": "Introduction to metabolomics",
+    "section": "Collect comprehensive metabolite data",
+    "text": "Collect comprehensive metabolite data\n\n3 most popular methods for analysis:\n\nLiquid-chromatography, mass spectrometry (LC-MS)\nGas chromatpgrahy, MS (GC-MS)\nNuclear magnetic resonance spectroscopy (NMR)\n\n\nAll methods have benefits and drawbacks"
+  },
+  {
+    "objectID": "lectures/01_intro.html#convert-spectral-data-into-feature-table",
+    "href": "lectures/01_intro.html#convert-spectral-data-into-feature-table",
+    "title": "Introduction to metabolomics",
+    "section": "Convert spectral data into feature table",
+    "text": "Convert spectral data into feature table\n\n\n\nFrom raw spectra, ions are selected, chromatograms drawn, peaks detected, masses and retention times aligned, features dereplicated\nResult is a data file that includes m/z, retention time, compound identifier (usually mz_rt), and relative abundance of each feature in each sample\nWith MZmine, samples are columns, features are rows"
+  },
+  {
+    "objectID": "lectures/01_intro.html#use-statistics-and-chemometrics-to-understand-group-differences",
+    "href": "lectures/01_intro.html#use-statistics-and-chemometrics-to-understand-group-differences",
+    "title": "Introduction to metabolomics",
+    "section": "Use statistics and chemometrics to understand group differences",
+    "text": "Use statistics and chemometrics to understand group differences\n\n\n\nSignificance testing (e.g., t-test, Wilcoxon rank sum test, ANOVA)\nUnsupervised analyses (e.g., PCA, hierarchical clustering)\nSupervised analyses (e.g., PLS-DA or PLS-R, random forest)"
+  },
+  {
+    "objectID": "lectures/01_intro.html#what-metabolites-do-we-have",
+    "href": "lectures/01_intro.html#what-metabolites-do-we-have",
+    "title": "Introduction to metabolomics",
+    "section": "What metabolites do we have?",
+    "text": "What metabolites do we have?\n\n\n\nSearching publicly available databases (e.g., HMDB, METLIN, GNPS) at the MS1 and MS2 level\nConduct MS/MS experiments\nComparison with authentic standards"
+  },
+  {
+    "objectID": "lectures/01_intro.html#putting-findings-into-a-broader-context",
+    "href": "lectures/01_intro.html#putting-findings-into-a-broader-context",
+    "title": "Introduction to metabolomics",
+    "section": "Putting findings into a broader context",
+    "text": "Putting findings into a broader context\n\n\n\nUnderstanding which metabolic pathways are most deregulated\nTypically for enzymatic pathways\nRequires compound IDs (a big limitation)"
+  },
+  {
+    "objectID": "lectures/01_intro.html#ensure-findings-are-real-and-reproducible",
+    "href": "lectures/01_intro.html#ensure-findings-are-real-and-reproducible",
+    "title": "Introduction to metabolomics",
+    "section": "Ensure findings are real and reproducible",
+    "text": "Ensure findings are real and reproducible\n\n\n\nMass spectrometry is not inherently quantitative (i.e., if the intensity of analyte A is higher than analyte B, it doesn’t necessarily mean there is more of A than B)\nKnowing the absolute concentration allows comparison with literature/other data\nValidation in a separate sample set ensures robustness"
+  },
+  {
+    "objectID": "lectures/01_intro.html#metabolomics-workflow-1",
+    "href": "lectures/01_intro.html#metabolomics-workflow-1",
+    "title": "Introduction to metabolomics",
+    "section": "Metabolomics workflow",
+    "text": "Metabolomics workflow\n\n\n\n\n© Jessica Cooperstone, 2024"
+  },
+  {
+    "objectID": "lectures/03_lc-ms-Jessica’s MacBook Air (6).html",
+    "href": "lectures/03_lc-ms-Jessica’s MacBook Air (6).html",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "",
+    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
+  }
+]

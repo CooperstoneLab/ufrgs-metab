@@ -1,0 +1,45 @@
+---
+title: "Metabolomics short course, UFRGS 🇧🇷 May 2024"
+---
+
+**Instructor**: [Jessica Cooperstone, Ph.D.](https://www.cooperstonelab.com/)<br> Associate Professor, Horticulture and Crop Science, Food Science and Technology<br> The Ohio State University
+
+The purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.
+
+Below is an overview of the material to be covered in this workshop.
+
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+
+| # Topic                                                                                                        | # Content                                    |           |
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+
+| Introduction to metabolomics                                                                                   | [Lecture](lectures/01_intro.qmd)             |           |
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+
+| Study design and sample collection                                                                             | [Lecture](lectures/02_design-collection.qmd) |           |
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+
+| LC-MS data acquisition and pre-processing:                                                                     | Lecture                                      |           |
+|                                                                                                                |                                              |           |
+| -   Basics of LC and MS                                                                                        | Activity                                     |           |
+|                                                                                                                |                                              |           |
+| -   Sample preparation                                                                                         |                                              |           |
+|                                                                                                                |                                              |           |
+| -   Data collection                                                                                            |                                              |           |
+|                                                                                                                |                                              |           |
+| -   Raw data processing to create a feature table using [MZmine](https://mzmine.github.io/)                    |                                              |           |
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+
+| Data analysis:                                                                                                 | Lecture                                      |           |
+|                                                                                                                |                                              |           |
+| -   Using [MetaboAnalyst](https://www.metaboanalyst.ca/)                                                       | Activity                                     |           |
+|                                                                                                                |                                              |           |
+| -   Creating principal components analysis (PCA) plots                                                         |                                              |           |
+|                                                                                                                |                                              |           |
+| -   Univariate group difference testing                                                                        |                                              |           |
+|                                                                                                                |                                              |           |
+| -   Multivariate analysis                                                                                      |                                              |           |
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+
+| Compound ID:                                                                                                   | Lecture                                      |           |
+|                                                                                                                |                                              |           |
+| -   Using [MS1](https://hmdb.ca/) and [MS2](https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp) databases |                                              |           |
+|                                                                                                                |                                              |           |
+| -   Interpreting MS/MS spectra                                                                                 |                                              |           |
+|                                                                                                                |                                              |           |
+| -   Confirmation with authentic standards                                                                      |                                              |           |
++----------------------------------------------------------------------------------------------------------------+----------------------------------------------+-----------+

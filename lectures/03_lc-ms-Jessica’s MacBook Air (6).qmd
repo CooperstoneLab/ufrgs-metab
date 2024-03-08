@@ -1,0 +1,7 @@
+---
+title: "LC-MS data acquisition and pre-processing"
+author: "Jessica Cooperstone"
+---
+
+Lecture slides can be found [here](https://buckeyemailosu-my.sharepoint.com/:p:/g/personal/cooperstone_1_osu_edu/EQrRy2v6HLFOjBvgtb-nF_0B7rToI42pyRHEV9BAVfkbSQ?e=1HShgT).
+

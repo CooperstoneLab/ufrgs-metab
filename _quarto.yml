@@ -1,0 +1,71 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: ""
+  description: "UFRGS Metabolomics Workshop, May 2024"
+  site-url: https://cooperstonelab.github.io/ufrgs-metabolomics
+  repo-url: https://github.com/CooperstoneLab/ufrgs-metabolomics
+  favicon: img/favicon.png
+  page-navigation: true
+  back-to-top-navigation: true
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Lectures
+        menu:
+        - text: Introduction to metabolomics
+          href: lectures/01_intro.qmd
+        - text: Study design and sample collection
+          href: lectures/02_design-collection.qmd
+        - text: LC-MS data acquisition and pre-processing
+          href: lectures/03_lc-ms.qmd
+        - text: Data analysis
+          href: lectures/04_data-analysis.qmd          
+        - text: Compound ID
+          href: lectures/05_compound-id.qmd
+      - text: Activities
+        menu: 
+          - text: Design your own experiment
+            href: activities/02_design-experiment.qmd
+          - text: LC-MS pre-processing with MZmine
+            href: activities/03_mzmine.qmd
+          - text: Data analysis with MetaboAnalyst
+            href: activities/04_metaboanalyst.qmd
+      - text: Resources
+        menu: 
+          - text: MZmine 3
+            href: https://mzmine.github.io/
+          - text: MetaboAnalyst
+            href: https://www.metaboanalyst.ca/
+          - text: HMDB
+            href: https://hmdb.ca/
+
+    tools:
+      - icon: cloud-arrow-down
+        href: https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=FtyZ4Z
+      - icon: github
+        href: https://github.com/CooperstoneLab/ufrgs-metabolomics
+
+# footer
+  page-footer:
+    border: true
+    left: "Created with RStudio and [Quarto](https://quarto.org/) <br> © Jessica Cooperstone, 2024, License: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) <br> [Want to make a website like this one?](https://osu-codeclub.github.io/#category=website)"
+
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    
+editor: source     
+
+
+
