@@ -105,34 +105,6 @@
     "text": "When starting a metabolomics study…\n\n\nPurchase one lot of materials (solvents, reagents, vials etc.)\nStore many, small volume aliquots to avoid freeze-thaw\nDecide what your QCs will be and act accordingly\nBe consistent – generate a plan!\nBe especially careful when conducting a secondary analysis of already collected data\n\n\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
-    "objectID": "lectures/05_compound-id.html",
-    "href": "lectures/05_compound-id.html",
-    "title": "Compound identification",
-    "section": "",
-    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "lectures/04_data-analysis.html",
-    "href": "lectures/04_data-analysis.html",
-    "title": "Data analysis",
-    "section": "",
-    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
-    "section": "",
-    "text": "Instructor: Jessica Cooperstone, Ph.D. Associate Professor, Horticulture and Crop Science, Food Science and Technology The Ohio State University\nThe purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.\nBelow is an overview of the material to be covered in this workshop.\n\n\n\nTopic\nContent\n\n\n\nIntroduction to metabolomics\nLecture\n\n\n\nStudy design and sample collection\nLecture\n\n\n\nLC-MS data acquisition and pre-processing:\n\nBasics of LC and MS\nSample preparation\nData collection\nRaw data processing to create a feature table using MZmine\n\nLecture\nActivity\n\n\n\nData analysis:\n\nUsing MetaboAnalyst\nCreating principal components analysis (PCA) plots\nUnivariate group difference testing\nMultivariate analysis\n\nLecture\nActivity\n\n\n\nCompound ID:\n\nUsing MS1 and MS2 databases\nInterpreting MS/MS spectra\nConfirmation with authentic standards\n\nLecture\n\n\n\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "lectures/03_lc-ms.html",
-    "href": "lectures/03_lc-ms.html",
-    "title": "LC-MS data acquisition and pre-processing",
-    "section": "",
-    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
-  },
-  {
     "objectID": "lectures/01_intro.html#introductions",
     "href": "lectures/01_intro.html#introductions",
     "title": "Introduction to metabolomics",
@@ -266,9 +238,128 @@
     "text": "Metabolomics workflow\n\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
-    "objectID": "lectures/03_lc-ms-Jessica’s MacBook Air (6).html",
-    "href": "lectures/03_lc-ms-Jessica’s MacBook Air (6).html",
+    "objectID": "lectures/03_lc-ms.html#chromatography",
+    "href": "lectures/03_lc-ms.html#chromatography",
     "title": "LC-MS data acquisition and pre-processing",
+    "section": "Chromatography",
+    "text": "Chromatography\n\n\nThe process of separating components of a mixture\nBased on an analytes’ difference in partitioning between a stationary and mobile phases\n\n\n\nhttps://en.wikipedia.org/wiki/Chromatography"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#types-of-liquid-chromatography",
+    "href": "lectures/03_lc-ms.html#types-of-liquid-chromatography",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Types of liquid chromatography",
+    "text": "Types of liquid chromatography\n\n\n\n\nReversed phase\nNormal phase\nHILIC (hydrophilic interaction liquid chromatography)"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#mass-spectrometry",
+    "href": "lectures/03_lc-ms.html#mass-spectrometry",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Mass spectrometry",
+    "text": "Mass spectrometry"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#specifics-about-ms",
+    "href": "lectures/03_lc-ms.html#specifics-about-ms",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Specifics about MS",
+    "text": "Specifics about MS\n\n\nRequires gas phase ionization (no charge, no signal!)\nDifferent ionization methods (e.g., ESI vs. APCI)\nInherently non-quantitative\n\nA higher signal for compound A than B doesn’t necessarily mean compound A is present in higher concentration\n\nIon suppression in complex mixtures"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#mass-analyzer-time-of-flight-tof-or-qtof",
+    "href": "lectures/03_lc-ms.html#mass-analyzer-time-of-flight-tof-or-qtof",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Mass analyzer: time of flight (TOF or QTOF)",
+    "text": "Mass analyzer: time of flight (TOF or QTOF)\n Allen and McWhinney, Clin Biochem Red 2019"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#mass-analyzer-orbitrap",
+    "href": "lectures/03_lc-ms.html#mass-analyzer-orbitrap",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Mass analyzer: Orbitrap",
+    "text": "Mass analyzer: Orbitrap\n\nhttps://www.youtube.com/watch?v=j2_FVJr9xNk"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#ms-output",
+    "href": "lectures/03_lc-ms.html#ms-output",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "MS output",
+    "text": "MS output"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#ms-data-is-really-3d",
+    "href": "lectures/03_lc-ms.html#ms-data-is-really-3d",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "MS data is really 3D",
+    "text": "MS data is really 3D"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#different-ways-to-express-a-mass",
+    "href": "lectures/03_lc-ms.html#different-ways-to-express-a-mass",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Different ways to express a mass",
+    "text": "Different ways to express a mass\n\n\nNominal mass: sum of the integer masses of the constituent elements of a molecule (C=12, H=1)\nMonoisotopic mass: mass of a molecular given empirical formulate calculated using the exact mass of the most abundance isotope of each element (C=12.0000, H=1.0078)\nAverage mass: mass of a molecule given empirical formulate calculated using the weighted average mass for each element by isotopic abundance (C=12.0112, H=1.00797)\nC20H42\n\nNominal mass: (20 × 12) + (42 × 1) = 282\nMonoisotopic mass: (20 × 12.0000) + (42 × 1.0078) = 282.3276\nAverage mass: (20 × 12.0112) + (42 × 1.00797) = 282.5587"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#try-calculating-the-monoisotopic-mass",
+    "href": "lectures/03_lc-ms.html#try-calculating-the-monoisotopic-mass",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Try calculating the monoisotopic mass",
+    "text": "Try calculating the monoisotopic mass\n\n\nTomatidine C27H45NO2"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#example-rutin",
+    "href": "lectures/03_lc-ms.html#example-rutin",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Example: Rutin",
+    "text": "Example: Rutin"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#compare-accurate-mass-to-exact-mass-towards-compound-id",
+    "href": "lectures/03_lc-ms.html#compare-accurate-mass-to-exact-mass-towards-compound-id",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Compare accurate mass to exact mass towards compound ID",
+    "text": "Compare accurate mass to exact mass towards compound ID\n\n\n\n\n\nExact mass is calculated (theoretical)\nTheoretical mass is experimental determined (observed)\n\n\n\n\n\n\n\n\n\n\n\nExample:\n\nrutin observed (positive mode): 611.1613 m/z\nrutin theoretical: 610.1534"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#why-you-need-high-mass-accuracy-for-metabolomics",
+    "href": "lectures/03_lc-ms.html#why-you-need-high-mass-accuracy-for-metabolomics",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Why you need high mass accuracy for metabolomics",
+    "text": "Why you need high mass accuracy for metabolomics"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#standards-for-identity-reporting",
+    "href": "lectures/03_lc-ms.html#standards-for-identity-reporting",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Standards for identity reporting",
+    "text": "Standards for identity reporting\n\nFig. adapted from Sumner et al., Metabolomics 2007"
+  },
+  {
+    "objectID": "lectures/03_lc-ms.html#converting-raw-spectra-into-a-feature-table-i.e.-pre-processing",
+    "href": "lectures/03_lc-ms.html#converting-raw-spectra-into-a-feature-table-i.e.-pre-processing",
+    "title": "LC-MS data acquisition and pre-processing",
+    "section": "Converting raw spectra into a feature table (i.e., pre-processing)",
+    "text": "Converting raw spectra into a feature table (i.e., pre-processing)\n\n\n\n\nVendor software:\n\nAgilent: Profinder\nWaters: Progenesis\nThermo: Compound Discoverer\nBruker: MetaboScape\nShimadzu: LabSolutions\n\nOpen source software:\n\nMZmine\nMSDial\nXCMS\nMetaboAnalyst\n\n\n\n\n\n\n\nCastillo et al., Chemometrics Intelligent Lab Systems 2011\n\n\n\n© Jessica Cooperstone, 2024"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "section": "",
+    "text": "Instructor: Jessica Cooperstone, Ph.D. Associate Professor, Horticulture and Crop Science, Food Science and Technology The Ohio State University\nThe purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.\nBelow is an overview of the material to be covered in this workshop.\n\n\n\nTopic\n\n\nIntroduction to metabolomics\n\n\nStudy design and sample collection\n\n\nLC-MS data acquisition and pre-processing:\n\nBasics of LC and MS\nSample preparation\nData collection\nRaw data processing to create a feature table using MZmine\n\n\n\nData analysis using MetaboAnalyst:\n\nLook at your data and assess quality\nCreating principal components analysis (PCA) plots\nUnivariate group difference testing\nMultivariate analysis\n\n\n\nCompound ID:\n\nUsing MS1 and MS2 databases\nInterpreting MS/MS spectra\nConfirmation with authentic standards\n\n\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html",
+    "href": "lectures/04_data-analysis.html",
+    "title": "Data analysis",
+    "section": "",
+    "text": "Lecture slides can be found here.\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html",
+    "href": "lectures/05_compound-id.html",
+    "title": "Compound identification",
     "section": "",
     "text": "Lecture slides can be found here.\n\n\n\n Back to top"
   }

@@ -1,7 +1,173 @@
 ---
 title: "LC-MS data acquisition and pre-processing"
 author: "Jessica Cooperstone"
+format: 
+  revealjs:
+    slide-number: true
+    logo: "img/noun-metabolomics.png"
+    footer: "© Jessica Cooperstone, 2024"
+    theme: simple
+    echo: true
 ---
 
-Lecture slides can be found [here](https://buckeyemailosu-my.sharepoint.com/:p:/g/personal/cooperstone_1_osu_edu/ERmPjxv4sDNAoAKcAo6bWMQBS0vSYb5EkSc_q0XaBBMnGA?e=SfSVVo).
+## Chromatography
 
+::: incremental
+-   The process of separating components of a <br>mixture
+-   Based on an analytes' difference in <br>partitioning between a stationary <br>and mobile phases
+:::
+
+![](img/03/chromatography.png){.absolute bottom="20" right="50"}
+
+[https://en.wikipedia.org/wiki/Chromatography]{.aside style="font-size:0.5em;"}
+
+## Types of liquid chromatography
+
+::: columns
+::: {.column width="35%"}
+::: incremental
+-   Reversed phase
+-   Normal phase
+-   HILIC (hydrophilic interaction liquid chromatography)
+:::
+:::
+
+::: {.column width="65%"}
+![](img/03/hplc.png)
+:::
+:::
+
+## Mass spectrometry
+
+![](img/03/ms.png)
+
+## Specifics about MS
+
+::: incremental
+-   Requires gas phase ionization (no charge, no signal!)
+
+-   Different ionization methods (e.g., ESI vs. APCI)
+
+-   Inherently non-quantitative
+
+    -   A higher signal for compound A than B doesn’t necessarily mean compound A is present in higher concentration
+
+-   Ion suppression in complex mixtures
+:::
+
+## Mass analyzer: time of flight (TOF or QTOF)
+
+![](img/03/tof.png) [[Allen and McWhinney](https://pubmed.ncbi.nlm.nih.gov/31530964/), Clin Biochem Red 2019]{.aside style="font-size:0.5em;"}
+
+## Mass analyzer: Orbitrap
+
+![](img/03/orbi.png)
+
+<https://www.youtube.com/watch?v=j2_FVJr9xNk>
+
+## MS output
+
+![](img/03/ms-output.png)
+
+## MS data is really 3D
+
+![](img/03/ms-3d.png)
+
+## Different ways to express a mass {.smaller}
+
+::: incremental
+-   **Nominal mass**: sum of the integer masses of the constituent elements of a molecule (C=12, H=1)
+
+-   **Monoisotopic mass**: mass of a molecular given empirical formulate calculated using the exact mass of the most abundance isotope of each element (C=12.0000, H=1.0078)
+
+-   **Average mass**: mass of a molecule given empirical formulate calculated using the weighted average mass for each element by isotopic abundance (C=12.0112, H=1.00797)
+
+-   C~20~H~42~
+
+    -   **Nominal mass**: (20 × 12) + (42 × 1) = 282
+
+    -   **Monoisotopic mass**: (20 × 12.0000) + (42 × 1.0078) = 282.3276
+
+    -   **Average mass**: (20 × 12.0112) + (42 × 1.00797) = 282.5587
+:::
+
+## Try calculating the monoisotopic mass
+
+::: columns
+::: {.column width="35%"}
+[Tomatidine](https://pubchem.ncbi.nlm.nih.gov/compound/Tomatidine) C~27~H~45~NO~2~
+:::
+
+::: {.column width="65%"}
+![](img/03/tomatidine.png)
+:::
+:::
+
+## Example: [Rutin](https://hmdb.ca/metabolites/HMDB0003249)
+
+![](img/03/rutin.png)
+
+## Compare accurate mass to exact mass towards compound ID
+
+::: columns
+::: {.column width="40%"}
+![](img/03/exact-mass.png)
+:::
+
+::: {.column width="60%" style="font-size: 23px"}
+-   Exact mass is calculated (theoretical)
+-   Theoretical mass is experimental determined (observed)
+
+![](images/clipboard-3249365801.png){fig-align="center" width="354"}
+
+![](images/clipboard-3469937520.png){fig-align="center" width="368"}
+
+Example:
+
+-   rutin observed (positive mode): 611.1613 *m*/*z*
+-   rutin theoretical: 610.1534
+:::
+:::
+
+## Why you need high mass accuracy for metabolomics
+
+![](img/03/mass-accuracy.png)
+
+## Standards for identity reporting
+
+![](img/03/reporting-levels.png)
+
+[Fig. adapted from [Sumner et al.](10.1007/s11306-007-0082-2), Metabolomics 2007]{.aside style="font-size:0.5em;"}
+
+## Converting raw spectra into a feature table (i.e., pre-processing)
+
+::: columns
+::: {.column width="50%"}
+::: {.incremental style="font-size: 30px"}
+-   Vendor software:
+    -   Agilent: Profinder
+
+    -   Waters: Progenesis
+
+    -   Thermo: Compound Discoverer
+
+    -   Bruker: MetaboScape
+
+    -   Shimadzu: LabSolutions
+-   Open source software:
+    -   [MZmine](https://mzmine.github.io/)
+
+    -   [MSDial](http://prime.psc.riken.jp/compms/msdial/main.html)
+
+    -   [XCMS](https://xcmsonline.scripps.edu/landing_page.php?pgcontent=mainPage)
+
+    -   [MetaboAnalyst](https://www.metaboanalyst.ca/)
+:::
+:::
+
+::: {.column width="50%"}
+![](img/03/pre-processing.png)
+:::
+:::
+
+[[Castillo et al.](https://doi.org/10.1016/j.chemolab.2011.03.010), Chemometrics Intelligent Lab Systems 2011]{.aside style="font-size:0.5em;"}

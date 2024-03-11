@@ -5,8 +5,8 @@ project:
 website:
   title: ""
   description: "UFRGS Metabolomics Workshop, May 2024"
-  site-url: https://cooperstonelab.github.io/ufrgs-metabolomics
-  repo-url: https://github.com/CooperstoneLab/ufrgs-metabolomics
+  site-url: https://cooperstonelab.github.io/ufrgs-metab/
+  repo-url: https://github.com/CooperstoneLab/ufrgs-metab
   favicon: img/favicon.png
   page-navigation: true
   back-to-top-navigation: true
