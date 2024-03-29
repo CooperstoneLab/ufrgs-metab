@@ -1,0 +1,48 @@
+---
+title: "Data analysis with MetaboAnalyst"
+author: "Jessica Cooperstone"
+title-block-banner: false
+number-depth: 4
+number-sections: true
+editor_options:
+  chunk_output_type: console
+knitr:
+  opts_chunk:
+    out.width: "85%"
+    class-output: styled-output
+bibliography: references.bib
+---
+
+# Introduction
+
+Now that we have a filtered, final feature table, we can get started on our data analysis, including understanding if our data is of good quality before we begin to make biological interpretations as to what our results mean. We are going to conduct this analysis using [MetaboAnalyst](https://www.metaboanalyst.ca/) which is at version 6.0 when I put together this tutorial. You can read more about MetaboAnalyist on their website or in their publications [@ewald2024].
+
+## Data formatting
+
+Before we upload our data, let's make sure its in a suitable format. If we go to the [Data Formats link](https://www.metaboanalyst.ca/docs/Format.xhtml) on the left side of the website, we can see example data sets which will help us format our data. Our data looks like this right out of MZmine:
+
+![Our data, straight from MZmine](img/04/raw.png)
+
+> Our data contains samples in rows, and features in columns.
+
+We will start with doing statistics (one factor) and we have a peak intensity table, so the file called [`lcms_table.csv`](https://www.xialab.ca/api/download/metaboanalyst/lcms_table.csv) is a good one for us to look at.
+
+![LCMS sample data](img/04/raw.png)
+
+In this data, we have features in rows and samples in columns. There is also a header row which contains the unique sample names, and a second row called Label which contains the groups. We will need to adjust our data to look like this. This includes
+
+-   Adding a row called Label which contains the sample groups (here, QC, HATS, LA2213, or OH8243).
+
+![Add a row which contains Label and the tomato identities](img/04/add-label.png)
+
+-   Creating a single column with the mz_rt as a unique identifier. We can do this with the function `=CONCATENATE()` in Excel. Then we can fill down the row. Then be sure to copy this column and `Paste` > `Paste special` > `Values` since when we later remove some of the other columns that are inputs to this one, the formulas will break.
+
+![How to combine the row m/z and row retention time columns to be one unique mz_rt](img/04/add-mz_rt.png)
+
+-   Now we can remove row ID, row m/z and row retention time. 
+
+Our data should now look like this:
+
+![Our data ready to import into MetaboAnalyst](img/04/data-for-metaboanalyst.png)
+
+

@@ -2,26 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://cooperstonelab.github.io/ufrgs-metab/lectures/02_design-collection.html</loc>
-    <lastmod>2024-03-11T21:36:10.637Z</lastmod>
+    <lastmod>2024-03-29T15:10:03.055Z</lastmod>
   </url>
   <url>
     <loc>https://cooperstonelab.github.io/ufrgs-metab/lectures/01_intro.html</loc>
-    <lastmod>2024-03-11T21:36:09.940Z</lastmod>
+    <lastmod>2024-03-29T15:10:02.384Z</lastmod>
   </url>
   <url>
     <loc>https://cooperstonelab.github.io/ufrgs-metab/lectures/03_lc-ms.html</loc>
-    <lastmod>2024-03-11T21:36:09.218Z</lastmod>
+    <lastmod>2024-03-29T15:10:01.709Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cooperstonelab.github.io/ufrgs-metab/activities/05_R.html</loc>
+    <lastmod>2024-03-29T15:10:00.938Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cooperstonelab.github.io/ufrgs-metab/activities/03_mzmine.html</loc>
+    <lastmod>2024-03-29T15:07:49.612Z</lastmod>
   </url>
   <url>
     <loc>https://cooperstonelab.github.io/ufrgs-metab/index.html</loc>
-    <lastmod>2024-03-11T21:36:08.800Z</lastmod>
+    <lastmod>2024-03-29T15:07:45.671Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cooperstonelab.github.io/ufrgs-metab/activities/04_metaboanalyst.html</loc>
+    <lastmod>2024-03-29T15:07:50.665Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cooperstonelab.github.io/ufrgs-metab/activities/02_design-experiment.html</loc>
+    <lastmod>2024-03-29T15:10:01.289Z</lastmod>
   </url>
   <url>
     <loc>https://cooperstonelab.github.io/ufrgs-metab/lectures/04_data-analysis.html</loc>
-    <lastmod>2024-03-11T21:36:09.517Z</lastmod>
+    <lastmod>2024-03-29T15:10:01.974Z</lastmod>
   </url>
   <url>
     <loc>https://cooperstonelab.github.io/ufrgs-metab/lectures/05_compound-id.html</loc>
-    <lastmod>2024-03-11T21:36:10.256Z</lastmod>
+    <lastmod>2024-03-29T15:10:02.654Z</lastmod>
   </url>
 </urlset>

@@ -37,6 +37,9 @@ website:
             href: activities/03_mzmine.qmd
           - text: Data analysis with MetaboAnalyst
             href: activities/04_metaboanalyst.qmd
+          - text: Data analysis with R
+            href: activities/05_R.qmd
+            
       - text: Resources
         menu: 
           - text: MZmine 3
@@ -48,7 +51,7 @@ website:
 
     tools:
       - icon: cloud-arrow-down
-        href: https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=FtyZ4Z
+        href: https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4
       - icon: github
         href: https://github.com/CooperstoneLab/ufrgs-metabolomics
 

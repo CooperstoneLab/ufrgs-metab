@@ -1,0 +1,197 @@
+mzML file import via MSDK
+File names:	[/fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_401_022.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_402_041.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_403_037.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_404_040.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_405_025.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_406_055.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_407_059.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_408_043.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_409_056.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_410_018.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_411_044.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/HATS_412_019.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_601_051.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_602_035.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_603_045.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_604_016.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_605_017.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_606_033.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_607_032.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_608_024.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_609_058.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_610_050.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_611_061.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/LA2213_612_046.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_801_036.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_802_026.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_803_030.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_804_029.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_805_057.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_806_027.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_807_053.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_808_038.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_809_063.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_810_049.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_811_028.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/OH8243_812_060.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/PB_01_005.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/PB_02_006.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/PB_03_007.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/QC_01_023.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/QC_02_031.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/QC_03_039.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/QC_04_047.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/QC_05_054.mzML, /fs/ess/PAS1640/jess/ufrgs/mzML-centroid/QC_06_062.mzML]
+
+Mass detection
+Raw data files:	Evaluation not executed.
+Scan filters:	MS1, level = 1, RT range (0.500 - 7.500), Polarity (+), Spectrum type (ANY), Scan definition () 
+	Scan number:	<not set>
+	Base Filtering Integer:	<not set>
+	Retention time:	[0.5..7.5]
+	Mobility:	<not set>
+	MS level filter:	MS1, level = 1
+	Scan definition:	
+	Polarity:	+
+	Spectrum type:	ANY
+Scan types (IMS):	All scan types
+Mass detector:	Centroid
+	Noise level:	1000.0
+	Detect isotope signals below noise level:	false
+	Chemical elements:	[Element(184730204, S:H, AN:1), Element(1358498076, S:C, AN:6), Element(1067639138, S:N, AN:7), Element(796918078, S:O, AN:8), Element(848115376, S:S, AN:16)]
+	m/z tolerance:	5.0E-4 m/z or 10.0 ppm
+	Maximum charge of isotope m/z:	1
+Denormalize fragment scans (traps):	false
+Output netCDF filename (optional):	false	(null)
+
+ADAP Chromatogram Builder
+Raw data files:	Evaluation not executed.
+Scan filters:	MS1, level = 1, RT range (0.500 - 7.500), Polarity (+), Spectrum type (ANY), Scan definition () 
+	Scan number:	<not set>
+	Base Filtering Integer:	<not set>
+	Retention time:	[0.5..7.5]
+	Mobility:	<not set>
+	MS level filter:	MS1, level = 1
+	Scan definition:	
+	Polarity:	+
+	Spectrum type:	ANY
+Minimum consecutive scans:	5
+Minimum intensity for consecutive scans:	2000.0
+Minimum absolute height:	5000.0
+m/z tolerance (scan-to-scan):	0.008 m/z or 10.0 ppm
+Suffix:	chromatograms
+Allow single scan chromatograms:	{}
+
+ADAP feature resolver
+Feature lists:	HATS_402_041.mzML chromatograms
+HATS_403_037.mzML chromatograms
+HATS_404_040.mzML chromatograms
+HATS_401_022.mzML chromatograms
+HATS_408_043.mzML chromatograms
+HATS_405_025.mzML chromatograms
+HATS_406_055.mzML chromatograms
+HATS_407_059.mzML chromatograms
+HATS_412_019.mzML chromatograms
+HATS_409_056.mzML chromatograms
+HATS_410_018.mzML chromatograms
+HATS_411_044.mzML chromatograms
+LA2213_602_035.mzML chromatograms
+LA2213_603_045.mzML chromatograms
+LA2213_601_051.mzML chromatograms
+LA2213_604_016.mzML chromatograms
+LA2213_605_017.mzML chromatograms
+LA2213_607_032.mzML chromatograms
+LA2213_608_024.mzML chromatograms
+LA2213_606_033.mzML chromatograms
+LA2213_609_058.mzML chromatograms
+LA2213_610_050.mzML chromatograms
+LA2213_612_046.mzML chromatograms
+OH8243_801_036.mzML chromatograms
+OH8243_802_026.mzML chromatograms
+OH8243_803_030.mzML chromatograms
+OH8243_805_057.mzML chromatograms
+LA2213_611_061.mzML chromatograms
+OH8243_804_029.mzML chromatograms
+OH8243_806_027.mzML chromatograms
+OH8243_809_063.mzML chromatograms
+OH8243_807_053.mzML chromatograms
+OH8243_810_049.mzML chromatograms
+OH8243_808_038.mzML chromatograms
+OH8243_812_060.mzML chromatograms
+OH8243_811_028.mzML chromatograms
+PB_02_006.mzML chromatograms
+PB_03_007.mzML chromatograms
+PB_01_005.mzML chromatograms
+QC_02_031.mzML chromatograms
+QC_04_047.mzML chromatograms
+QC_01_023.mzML chromatograms
+QC_03_039.mzML chromatograms
+QC_05_054.mzML chromatograms
+QC_06_062.mzML chromatograms
+Suffix:	resolved
+Original feature list:	KEEP
+MS/MS scan pairing:	false
+	MS1 to MS2 precursor tolerance (m/z):	0.01 m/z or 10.0 ppm
+	Retention time filter:	RtLimitsFilter[filter=Use feature edges, rtTolerance=0.2 minutes]
+	Minimum relative feature height:	true	(0.25)
+	Minimum required signals:	true	(1)
+	Limit by ion mobility edges:	false
+	Merge MS/MS spectra (TIMS):	false
+	Minimum signal intensity (absolute, TIMS):	false	(250.0)
+	Minimum signal intensity (relative, TIMS):	true	(0.01)
+Dimension:	Retention time
+S/N threshold:	10.0
+S/N estimator:	Intensity window SN
+min feature height:	5000.0
+Coefficient/area threshold:	100.0
+Peak duration range:	[0.01..0.25]
+RT wavelet range:	[0.01..0.2]
+
+13C isotope filter (formerly: isotope grouper)
+Feature lists:	Aligned feature list gap-filled 2 isotopes deduplicated
+Name suffix:	deisotoped
+m/z tolerance (intra-sample):	0.008 m/z or 10.0 ppm
+Retention time tolerance:	0.05 minutes
+Mobility tolerance:	false	(null)
+Monotonic shape:	true
+Maximum charge:	2
+Representative isotope:	Most intense
+Never remove feature with MS2:	false
+Original feature list:	KEEP
+
+Join aligner
+Feature lists:	Aligned feature list gap-filled 2 isotopes deduplicated
+Feature list name:	Aligned feature list
+m/z tolerance (sample-to-sample):	0.008 m/z or 10.0 ppm
+Weight for m/z:	75.0
+Retention time tolerance:	0.1 minutes
+Weight for RT:	25.0
+Mobility tolerance:	false	(null)
+Mobility weight:	0.0
+Require same charge state:	false
+Require same ID:	false
+Compare isotope pattern:	false
+	Isotope m/z tolerance:	0.001 m/z or 5.0 ppm
+	Minimum absolute intensity:	2000.0
+	Minimum score:	<not set>
+Compare spectra similarity:	false
+	Spectral m/z tolerance:	0.001 m/z or 10.0 ppm
+	MS level:	2
+	Compare spectra similarity:	Weighted cosine similarity
+	Weights:	MassBank (mz^2 * I^0.5)
+	Minimum  cos similarity:	0.7
+	Handle unmatched signals:	KEEP ALL AND MATCH TO ZERO
+Original feature list:	KEEP
+
+Gap filling 
+Feature lists:	Aligned feature list gap-filled 2 isotopes deduplicated
+Name suffix:	gap-filled
+Intensity tolerance:	0.2
+m/z tolerance (sample-to-sample):	0.008 m/z or 10.0 ppm
+Retention time tolerance:	0.1 minutes
+Minimum scans (data points):	3
+Original feature list:	KEEP
+
+Filtering feature list rows
+Feature lists:	Aligned feature list gap-filled 2 isotopes deduplicated
+Name suffix:	2 isotopes
+Minimum aligned features (samples):	false	(abs=1 and rel=0)
+Minimum features in an isotope pattern:	true	(2)
+Validate 13C isotope pattern:	false
+	m/z tolerance:	5.0E-4 m/z or 10.0 ppm
+	Max charge:	1
+	Estimate minimum carbon:	true
+	Remove if 13C:	true
+	Exclude isotopes:	[Element(1986053886, S:H, AN:1), Element(2131584238, S:C, AN:6), Element(1412255201, S:N, AN:7), Element(1668522929, S:O, AN:8), Element(324324887, S:S, AN:16), Element(1986053886, S:H, AN:1), Element(2131584238, S:C, AN:6), Element(1412255201, S:N, AN:7), Element(1668522929, S:O, AN:8), Element(324324887, S:S, AN:16)]
+Remove redundant isotope rows:	false
+m/z:	false	(null)
+Retention time:	false	(null)
+features duration range:	false	([0.0..3.0])
+Chromatographic FWHM:	false	([0.0..1.0])
+Charge:	false	([1..2])
+Kendrick mass defect:	false
+	Kendrick mass defect:	[0.0..1.0]
+	Kendrick mass base:	
+	Shift:	0.0
+	Charge:	1
+	Divisor:	1
+	Use Remainder of Kendrick mass:	false
+Parameter:	No parameters defined
+Only identified?:	false
+Text in identity:	false	()
+Text in comment:	false	()
+Keep or remove rows:	Keep rows that match all criteria
+Feature with MS2 scan:	false
+Never remove feature with MS2:	true
+Reset the feature number ID:	false
+Mass defect:	false	(null)
+Original feature list:	KEEP
+
+Duplicate feature list rows filter
+Feature lists:	Aligned feature list gap-filled 2 isotopes deduplicated
+Name suffix:	deduplicated
+Filter mode:	NEW AVERAGE
+m/z tolerance:	0.008 m/z or 3.0 ppm
+RT tolerance:	0.05 minutes
+Mobility tolerance:	false	(Mobility tolerance: 0.008)
+Require same identification:	false
+Original feature list:	KEEP
+

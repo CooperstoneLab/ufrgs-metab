@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jessica Cooperstone">
+
+<title>Spectral pre-processing with MZmine</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../img/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../lectures/01_intro.html" rel="" target="">
+ <span class="dropdown-text">Introduction to metabolomics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/02_design-collection.html" rel="" target="">
+ <span class="dropdown-text">Study design and sample collection</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/03_lc-ms.html" rel="" target="">
+ <span class="dropdown-text">LC-MS data acquisition and pre-processing</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/04_data-analysis.html" rel="" target="">
+ <span class="dropdown-text">Data analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../lectures/05_compound-id.html" rel="" target="">
+ <span class="dropdown-text">Compound ID</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-activities" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Activities</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-activities">    
+        <li>
+    <a class="dropdown-item" href="../activities/02_design-experiment.html" rel="" target="">
+ <span class="dropdown-text">Design your own experiment</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../activities/03_mzmine.html" rel="" target="">
+ <span class="dropdown-text">LC-MS pre-processing with MZmine</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../activities/04_metaboanalyst.html" rel="" target="">
+ <span class="dropdown-text">Data analysis with MetaboAnalyst</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../activities/05_R.html" rel="" target="">
+ <span class="dropdown-text">Data analysis with R</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="https://mzmine.github.io/" rel="" target="">
+ <span class="dropdown-text">MZmine 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.metaboanalyst.ca/" rel="" target="">
+ <span class="dropdown-text">MetaboAnalyst</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://hmdb.ca/" rel="" target="">
+ <span class="dropdown-text">HMDB</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto tools-wide">
+    <a href="https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-cloud-arrow-down"></i></a>
+    <a href="https://github.com/CooperstoneLab/ufrgs-metabolomics" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#our-data" id="toc-our-data" class="nav-link" data-scroll-target="#our-data"><span class="header-section-number">1.1</span> Our data</a></li>
+  </ul></li>
+  <li><a href="#convert-instrument-data-files-to-open-source-format" id="toc-convert-instrument-data-files-to-open-source-format" class="nav-link" data-scroll-target="#convert-instrument-data-files-to-open-source-format"><span class="header-section-number">2</span> Convert instrument data files to open source format</a>
+  <ul class="collapse">
+  <li><a href="#download-msconvert-from-proteowizard" id="toc-download-msconvert-from-proteowizard" class="nav-link" data-scroll-target="#download-msconvert-from-proteowizard"><span class="header-section-number">2.1</span> Download <code>MSConvert</code> from <code>ProteoWizard</code></a></li>
+  <li><a href="#select-files-for-conversion" id="toc-select-files-for-conversion" class="nav-link" data-scroll-target="#select-files-for-conversion"><span class="header-section-number">2.2</span> Select files for conversion</a></li>
+  <li><a href="#set-parameters-for-conversion" id="toc-set-parameters-for-conversion" class="nav-link" data-scroll-target="#set-parameters-for-conversion"><span class="header-section-number">2.3</span> Set parameters for conversion</a></li>
+  </ul></li>
+  <li><a href="#import-into-mzmine" id="toc-import-into-mzmine" class="nav-link" data-scroll-target="#import-into-mzmine"><span class="header-section-number">3</span> Import into MZmine</a>
+  <ul class="collapse">
+  <li><a href="#using-mzmine-at-osc-ohio-supercomputer-center" id="toc-using-mzmine-at-osc-ohio-supercomputer-center" class="nav-link" data-scroll-target="#using-mzmine-at-osc-ohio-supercomputer-center"><span class="header-section-number">3.1</span> Using MZmine at OSC (Ohio Supercomputer Center)</a>
+  <ul class="collapse">
+  <li><a href="#create-an-osc-account" id="toc-create-an-osc-account" class="nav-link" data-scroll-target="#create-an-osc-account"><span class="header-section-number">3.1.1</span> Create an OSC account</a></li>
+  <li><a href="#share-your-osc-username-with-jess" id="toc-share-your-osc-username-with-jess" class="nav-link" data-scroll-target="#share-your-osc-username-with-jess"><span class="header-section-number">3.1.2</span> Share your OSC username with Jess</a></li>
+  <li><a href="#log-onto-osc" id="toc-log-onto-osc" class="nav-link" data-scroll-target="#log-onto-osc"><span class="header-section-number">3.1.3</span> Log onto OSC</a></li>
+  <li><a href="#download-the-portable-linux-version-of-mzmine" id="toc-download-the-portable-linux-version-of-mzmine" class="nav-link" data-scroll-target="#download-the-portable-linux-version-of-mzmine"><span class="header-section-number">3.1.4</span> Download the portable Linux version of MZmine</a></li>
+  <li><a href="#open-mzmine" id="toc-open-mzmine" class="nav-link" data-scroll-target="#open-mzmine"><span class="header-section-number">3.1.5</span> Open MZmine</a></li>
+  </ul></li>
+  <li><a href="#using-mzmine-on-your-own-computer" id="toc-using-mzmine-on-your-own-computer" class="nav-link" data-scroll-target="#using-mzmine-on-your-own-computer"><span class="header-section-number">3.2</span> Using MZmine on your own computer</a></li>
+  </ul></li>
+  <li><a href="#import-your-data" id="toc-import-your-data" class="nav-link" data-scroll-target="#import-your-data"><span class="header-section-number">4</span> Import your data</a>
+  <ul class="collapse">
+  <li><a href="#save-your-project" id="toc-save-your-project" class="nav-link" data-scroll-target="#save-your-project"><span class="header-section-number">4.1</span> Save your project</a></li>
+  </ul></li>
+  <li><a href="#mass-detection" id="toc-mass-detection" class="nav-link" data-scroll-target="#mass-detection"><span class="header-section-number">5</span> Mass detection</a></li>
+  <li><a href="#adap-chromatogram-builder" id="toc-adap-chromatogram-builder" class="nav-link" data-scroll-target="#adap-chromatogram-builder"><span class="header-section-number">6</span> ADAP chromatogram builder</a></li>
+  <li><a href="#chromatogram-deconvolution" id="toc-chromatogram-deconvolution" class="nav-link" data-scroll-target="#chromatogram-deconvolution"><span class="header-section-number">7</span> Chromatogram deconvolution</a></li>
+  <li><a href="#isotope-grouping" id="toc-isotope-grouping" class="nav-link" data-scroll-target="#isotope-grouping"><span class="header-section-number">8</span> Isotope grouping</a></li>
+  <li><a href="#alignment" id="toc-alignment" class="nav-link" data-scroll-target="#alignment"><span class="header-section-number">9</span> Alignment</a></li>
+  <li><a href="#gap-filling" id="toc-gap-filling" class="nav-link" data-scroll-target="#gap-filling"><span class="header-section-number">10</span> Gap filling</a></li>
+  <li><a href="#filter-for-isotopic-pattern" id="toc-filter-for-isotopic-pattern" class="nav-link" data-scroll-target="#filter-for-isotopic-pattern"><span class="header-section-number">11</span> Filter for isotopic pattern</a></li>
+  <li><a href="#remove-duplicate-features" id="toc-remove-duplicate-features" class="nav-link" data-scroll-target="#remove-duplicate-features"><span class="header-section-number">12</span> Remove duplicate features</a></li>
+  <li><a href="#export-your-feature-table" id="toc-export-your-feature-table" class="nav-link" data-scroll-target="#export-your-feature-table"><span class="header-section-number">13</span> Export your feature table</a></li>
+  <li><a href="#removing-features-coming-from-our-blanks" id="toc-removing-features-coming-from-our-blanks" class="nav-link" data-scroll-target="#removing-features-coming-from-our-blanks"><span class="header-section-number">14</span> Removing features coming from our blanks</a></li>
+  <li><a href="#removing-features-that-are-variable-in-the-qcs" id="toc-removing-features-that-are-variable-in-the-qcs" class="nav-link" data-scroll-target="#removing-features-that-are-variable-in-the-qcs"><span class="header-section-number">15</span> Removing features that are variable in the QCs</a></li>
+  <li><a href="#save-your-file" id="toc-save-your-file" class="nav-link" data-scroll-target="#save-your-file"><span class="header-section-number">16</span> Save your file</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Spectral pre-processing with MZmine</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jessica Cooperstone </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Now that we’ve gone through the collection of LC-MS metabolomics data, we will take our raw datafiles and convert them into a feature table.</p>
+<section id="our-data" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="our-data"><span class="header-section-number">1.1</span> Our data</h2>
+<p>We are going to be using some sample data coming from the my lab. These samples are methanolic extracts (more details about their creation are described in <a href="https://doi.org/10.1002/tpg2.20192">Dzakovich et al., Plant Genome 2022</a>) of tomatoes with 3 different genotypes:</p>
+<ul>
+<li>OH8243: a typical processing tomato</li>
+<li>LA2213: a wild currant tomato that is high in steroidal alkaloids</li>
+<li>HATS: a high alpha tomatine selection (HATS) that came from a breeding scheme crossing the previous two tomatoes and selecting fruits high in steroidal alkaloids.</li>
+</ul>
+<p>Additionally, we have quality control (QC) samples that are made from pools of each of the tomato extracts, and process blanks (PB) which underwent the same extraction process but instead of adding tomato, added an equivalent mass of water.</p>
+<p>The extracts were analyzed using a C18 column in positive ion mode on an Agilent 6546 QTOF-MS. The gradient portion of our method is from 0.5 - 7.5 min.</p>
+<p>You can find a link <a href="https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4">here</a> to a OneDrive folder that contains all the raw data files to download.</p>
+<p>Samples are named with the following structure:</p>
+<ul>
+<li>First term is the type of sample (OH8243, LA2213, HATS, QC or PB)</li>
+<li>The second 3 digit number starting with 4XX, 6XX, or 8XX is a plot code. The QCs and PBs have a two digit number which represents tells you which replicate it is.</li>
+<li>The last number is the run order</li>
+</ul>
+<p>I have not given you every sample from this run, so the run order numbers won’t be continuous. There are 12 of each of the tomato varieties, 6 QCs, and 3 PBs. If your MZmine is getting bogged down, you don’t need to use all of these samples, you can practice in using just the QCs. I will give you full feature tables for the data analysis next steps.</p>
+<p>Download the raw data files and put them in a known location on your computer.</p>
+</section>
+</section>
+<section id="convert-instrument-data-files-to-open-source-format" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Convert instrument data files to open source format</h1>
+<p>Different MS vendors have their files in different formats. We are going to be using today some data that was collected on an Agilent LC-MS, and the file extension here is <code>.d</code>. We are going to use the software <code>MSConvert</code> from <code>ProteoWizard</code> to convert our files into an open source file format with the extension <code>.mzML</code>.</p>
+<section id="download-msconvert-from-proteowizard" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="download-msconvert-from-proteowizard"><span class="header-section-number">2.1</span> Download <code>MSConvert</code> from <code>ProteoWizard</code></h2>
+<p>If you don’t have <code>ProteoWizard</code>, you can download it here: <a href="https://proteowizard.sourceforge.io/">https://proteowizard.sourceforge.io/</a>. Once you download the program, open <code>MSConvert</code>.</p>
+</section>
+<section id="select-files-for-conversion" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="select-files-for-conversion"><span class="header-section-number">2.2</span> Select files for conversion</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/msconvert-select.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Selecting files to convert in MSConvert</figcaption>
+</figure>
+</div>
+<ul>
+<li>Open up MSConvert and in the top left corner of the program, select the files you want to convert. Your directories are going to be different than mine depending on where your files are stored.</li>
+<li>Select where on your computer you want the converted files to go, and indicate that location in Output Directory.</li>
+</ul>
+</section>
+<section id="set-parameters-for-conversion" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="set-parameters-for-conversion"><span class="header-section-number">2.3</span> Set parameters for conversion</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/msconvert-param.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Setting parameters for conversion in MSConvert</figcaption>
+</figure>
+</div>
+<ul>
+<li>Uncheck zlib compression</li>
+<li>We are going to convert our profile into centroided data which I think makes the deconvolution in MZmine easier. We will do that by under Filter, selecting Peak Picking, and picking the Vendor option under Algorithm. Here, we only have MS1 data so we only want MS level 1. We will add this to the table below.</li>
+<li>The more files you have, the longer this will take, you can indicate that convert more than 1 file in parallel. Doing 4 at a time, about 40 samples took my lab data processing computer (which has a 128 MB RAM and 16 cores) a couple of minutes.</li>
+</ul>
+</section>
+</section>
+<section id="import-into-mzmine" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Import into MZmine</h1>
+<section id="using-mzmine-at-osc-ohio-supercomputer-center" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="using-mzmine-at-osc-ohio-supercomputer-center"><span class="header-section-number">3.1</span> Using MZmine at OSC (Ohio Supercomputer Center)</h2>
+<p>Some parts of the MZmine pre-processing can be quite ram intensive and may struggle to run on your laptop. To solve this problem, you can run your deconvolution on a supercomputer. I’m providing here some instructions on how to do this at OSC.</p>
+<section id="create-an-osc-account" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="create-an-osc-account"><span class="header-section-number">3.1.1</span> Create an OSC account</h3>
+<p>You can create an account at OSC at this <a href="https://my.osc.edu/acprod/odb_osc/r/osc/portal/login_desktop?clear=101">link</a>.</p>
+</section>
+<section id="share-your-osc-username-with-jess" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="share-your-osc-username-with-jess"><span class="header-section-number">3.1.2</span> Share your OSC username with Jess</h3>
+<p>This will allow Jess to add you to our OSC project which will direct the billing appropriately (to Jess, not to you).</p>
+</section>
+<section id="log-onto-osc" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="log-onto-osc"><span class="header-section-number">3.1.3</span> Log onto OSC</h3>
+<p>Navigate to <a href="https://ondemand.osc.edu/" class="uri">https://ondemand.osc.edu/</a> and log in. Make sure you are using PASXXXX.</p>
+</section>
+<section id="download-the-portable-linux-version-of-mzmine" class="level3" data-number="3.1.4">
+<h3 data-number="3.1.4" class="anchored" data-anchor-id="download-the-portable-linux-version-of-mzmine"><span class="header-section-number">3.1.4</span> Download the portable Linux version of MZmine</h3>
+<p>MZmine has a portal Linux version which you can download while on OSC, and then use. Navigate to <a href="https://ondemand.osc.edu/" class="uri">https://ondemand.osc.edu/</a>. You can open a Pitzer desktop session.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/pitzer.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Accessing Pitzer on OSC</figcaption>
+</figure>
+</div>
+<p>Once you are in Pitzer desktop, you can open an internet browser and navigate to <a href="https://github.com/mzmine/mzmine3/releases/tag/v3.9.0" class="uri">https://github.com/mzmine/mzmine3/releases/tag/v3.9.0</a>. At the time I put this tutorial together, the most recent version of MZmine is 3.9.0. Download the version for the Linux portable version.</p>
+</section>
+<section id="open-mzmine" class="level3" data-number="3.1.5">
+<h3 data-number="3.1.5" class="anchored" data-anchor-id="open-mzmine"><span class="header-section-number">3.1.5</span> Open MZmine</h3>
+<p>Once you download MZmine, unzip the file, right click on the <code>bin</code> directory and select <code>Open a terminal here</code>.</p>
+<p>Then in your terminal, execute the following code one line at a time:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>chmod a<span class="sc">+</span>x MZmine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>.<span class="sc">/</span>MZmine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The MZmine GUI should now be open.</p>
+</section>
+</section>
+<section id="using-mzmine-on-your-own-computer" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="using-mzmine-on-your-own-computer"><span class="header-section-number">3.2</span> Using MZmine on your own computer</h2>
+<p>If you don’t have MZmine, you can download it at this link: <a href="https://mzmine.github.io/" class="uri">https://mzmine.github.io/</a>.</p>
+<p>MZmine has extremely good documentation, so if you want to read more about any particular parameter, you can do so here: <a href="https://mzmine.github.io/mzmine_documentation/index.html" class="uri">https://mzmine.github.io/mzmine_documentation/index.html</a>.</p>
+</section>
+</section>
+<section id="import-your-data" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Import your data</h1>
+<p>Once you’ve opened GUI, go to <code>Raw data methods</code> &gt; <code>Raw data import</code> &gt; <code>mzML</code> and select all of your files to import. You should now see all your data files in the left hand column of MZmine. You can re-order them if you like by dragging them around.</p>
+<p><img src="img/03/load-files.png" class="img-fluid"></p>
+<p>Once samples are loaded, you can begin to look at them. For example, I can highlight all of my QC samples and draw out a base peak chromatogram for each to see how similar they are. I can do this by selecting the samples:</p>
+<ul>
+<li>right clicking and selecting <code>Show chromatogram</code></li>
+<li>indicate Specific raw data files (those that are highlighted)</li>
+<li>select Base peak intensity</li>
+<li>provide a <em>m</em>/<em>z</em> range (or auto-range)</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/qc-bpc.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">The BPC of all of our QCs</figcaption>
+</figure>
+</div>
+<p>How to move around figures in MZmine:</p>
+<p>Scrolling and zooming</p>
+<ul>
+<li>Highlight Regions to zoom in</li>
+<li>Left click and drag on y-axis to expand/contract height</li>
+<li>Scroll on x-axis to expand/contract width</li>
+<li>Left click and drag on x-axis to move view window</li>
+<li>Left click and quick drag up and release will reset zoom</li>
+</ul>
+<p>Double click to extract spectra at any point</p>
+<p>Side toolbar</p>
+<ul>
+<li>Toggle in and out of centroid/continuous mode</li>
+<li>See where ions were detected</li>
+<li>Toggle legend on or off (key)</li>
+<li>In the figure legend, you can click the name under the chromatogram to bold one line at a time</li>
+<li>Right click to add or remove chromatograms (can only add or remove one at a time)</li>
+</ul>
+<section id="save-your-project" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="save-your-project"><span class="header-section-number">4.1</span> Save your project</h2>
+<p>You can save your project after different steps, this process can take a little while, but it allows you to go back to any part of your workflow and look at results or make changes.</p>
+<p>In the top toolbar, navigate to <code>Project</code> &gt; <code>Save project as</code> and put your project files in an appropriate directory on your computer. A good place would be in the parent directory where your data files are.</p>
+<p>You can save your file as Referencing (small) given that you don’t move where the input files are. This takes up less space but can lead to later incompatibility projects if files get moved. The status bar at the bottom of MZmine will tell you your current status.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/save-project-as.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Saving your project in MZmine</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="mass-detection" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Mass detection</h1>
+<p>We are going to do our parameter optimization on just our QC samples as this process will go more quickly. Once you are happy with how the data looks, you can apply those parameters to your whole dataset.</p>
+<p>The first set of parameters we pick are to determine what our noise cut off is for an ion. We want to pick the intensity at which we are seeing a signal at approximately every mass. These are not real signal coming from in this case our tomatoes, but are background noise that we want to remove.</p>
+<p>Navigate to <code>Raw data methods</code> &gt; <code>Mass detection</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/mass-detection-centroid.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Mass detection parameters</figcaption>
+</figure>
+</div>
+<p><strong>Raw data files</strong>: select the samples you want to start deconvoluting. If you are setting parameters for the first time, doing this on just your QCs will make the process faster. Then when you are happy with your parameters, you can apply them to all your files.</p>
+<p><strong>Scan filters</strong>: First we will narrow down the retention time range that is for the gradient portion of our method, here from 0.5 - 7.5 min. These files contain only MS1 and are in positive mode</p>
+<p><strong>Scan types (IMS</strong>): all scan types, this is not relevant here as we do not have ion mobility data</p>
+<p><strong>Mass detector</strong>: centroid (since we have centroided data). If we click the Setup button, we can try using different noise cutoffs and see how that affects the ions that are selected.</p>
+<ul>
+<li>Pick a sample (a QC is a good choice and a process blank would be a bad one) and a scan to start. I’m picking a scan in the part of my chromatogram where I know I have lots of signal. Each of the red points indicates an ion that is detected in this spectrum.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/mass-detection-spectra.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Spectrum preview, no zooming</figcaption>
+</figure>
+</div>
+<ul>
+<li>If we zoom in, we can better see the true noise level. I like to think about the noise level being the intensity at which there is a signal at every massRight now, our noise is set to 1000 counts, and it looks like the noise in the is between 500-1000 counts. You can play around with the noise level and see how that affects which ions are selected.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/mass-detection-spectra-1500.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Spectrum preview with a cutoff of 1500 counts</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/mass-detection-spectra-1000.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Spectrum preview with a cutoff of 1000 counts</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/mass-detection-spectra-500.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Spectrum preview with a cutoff of 500 counts</figcaption>
+</figure>
+</div>
+<ul>
+<li>There is a natural tendency to want to set the noise level to be low so that you’re sure not to miss important analytes. <strong>I warn you against this approach.</strong> Having lots of noise is your dataset is going to create more problems for you than ensuring you’re capturing low intensity signal. In general I’d suggest setting this slightly higher than you think, and then adjusting if necessary. I am going to leave my noise level here at 1000 counts.</li>
+</ul>
+</section>
+<section id="adap-chromatogram-builder" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> ADAP chromatogram builder</h1>
+<p>Now its time to draw out chromatograms. We do that by going to <code>Feature detection</code> &gt; <code>ADAP chromatogram builder</code></p>
+<p><img src="img/03/adap-chromatogram-builder.png" class="img-fluid"></p>
+<p><strong>Raw data files</strong>: make sure you pick your files you’ve used for mass detection.</p>
+<p><strong>Scan filters</strong>: pick a retention time range that is the same for mass detection</p>
+<p><strong>Minimum consecutive scans</strong>: this tells you how many scans does your ion need to be detected in, above the noise thresholds you are going to set next. So for example, if you set this to 5, you need to have 5 scans where your ion is present above your noise threshold.</p>
+<p><strong>Minimum intensity for consecutive scans</strong>: what is the minimum intensity that an ion needs to be in a row - I usually make this a bit higher than my chemical noise that we set back in mass detection. Here I am picking 2000 to get out of the noise.</p>
+<p><strong>Minimum absolute height</strong>: what is the minimum height a peak needs to be (the max of that peak) to be considered a peak. Here I am picking 5000 to get out of the noise but this could be set lower.</p>
+<p><strong>m/z tolerance (scan to scan)</strong>: what is the mass error you are willing to tolerate within a sample, it is important that you put values for both m/z and ppm here, and I’m picking 0.008 m/z and 10 ppm, which are both a little more variable than I expect my data to be.</p>
+<p><strong>Suffix</strong>: this will be added to the end of your file names. Here I usually use “chromatograms”.</p>
+<p>After you set these parameters are run the ADAP chromatogram building, you will get feature lists for each sample, which you can see in the <code>Feature list</code> tab. You can right click on one of your samples (a QC would be a good choice), select <code>Open feature list</code>, and look through it to see what kinds of peaks are being picked. Based on what you see here, you can adjust your parameters. For example, if you find all your low intensity signals don’t look like peaks, you can play around with increasing your thresholds.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/adap-chromatogram-results.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Looking through the feature list results</figcaption>
+</figure>
+</div>
+</section>
+<section id="chromatogram-deconvolution" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Chromatogram deconvolution</h1>
+<p>Now that we have chromatograms, we need to integrate peaks. We can do that by going to <code>Feature Detection</code> &gt; <code>Chromatogram resolving</code> &gt; <code>ADAP resolver</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/adap-feature-resolver.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">ADAP feature resolver parameters</figcaption>
+</figure>
+</div>
+<p><strong>Feature lists</strong>: make sure you pick your files have come out of the ADAP chromatogram builder</p>
+<p><strong>Suffix</strong>: this will be added to the end of your file names. Here I usually use “resolved”.</p>
+<p><strong>Original feature list</strong>: I am setting this to REMOVE, this will delete the last feature list you made. If you select KEEP, the old feature lists per sample that end of “chromatograms” will remain.</p>
+<p><strong>MS/MS scan pairing</strong>: we don’t have MS/MS data here so we can uncheck this</p>
+<p><strong>Dimension</strong>: retention time - we want to resolve based on retention time (we don’t have ion mobility data here)</p>
+<p><strong>S/N threshold</strong>: how low can you signal to noise be and still be considered a peak. 10 is a good choice as it represents a standard limit of quantitation (you can read more about signal to noise and typical limits in this nice article by <a href="https://www.thermofisher.com/blog/analyteguru/hplc-troubleshooting-tips-why-signal-to-noise-ratio-determines/">Thermo Fisher</a>).</p>
+<p><strong>S/N estimator</strong>: I use the intensity window SN</p>
+<p><strong>Min feature height</strong>: the smallest height that would be considered a feature. I’m using 5000 here.</p>
+<p><strong>Coefficient/area threshold</strong>: a tool for filtering out bad peaks, a good number to start at here is about 100.</p>
+<p><strong>Peak duration range</strong>: how wide can a peak be? This is helpful for really tailing peaks (and reiterates again why we are using height instead of area). I am setting this to 0.01-0.25</p>
+<p><strong>RT wavelet range</strong>: what is the range of wavelets used? You can play around with this to see how changing these parametesr will affect which peaks get selected. I am setting this to be 0.01-0.2. I find this parameter makes a big difference in how many features you get at the end.</p>
+<p>It helps to look at the preview here - you can tell how the parameters you set are affecting what is considered a peak. You want the algorithm to grab peaks and not grab non-peaks. Here are some examples:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/adap-feature-resolver-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Our algorithm missing non-peaks and grabbing actual peaks</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/adap-feature-resolver-2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Our algorithm doing a generally good job of grabbing low intensity peaks.</figcaption>
+</figure>
+</div>
+<p>Once you run this module, you can look at the feature list by picking a sample (in this case with the suffix “chromatograms resolved”), right click, and select <code>Open feature list</code>. Then you can sort by height and see how your peak shapes look. If you find lots of peaks with low heights look bad, you can adjust that threshold. If peaks like they’re not being separated, you can change the min ratio of peak top/edge, or play around with other parameters.</p>
+<p>For me, this step took about 10 min to run 40 samples when I did this on a supercomputer with 1 node and 4 cores. Depending on your memory and cores, this will be likely be considerably slower on your laptop.</p>
+<p>When you are happy with what your peaks look like, you can move on to isotope grouping.</p>
+</section>
+<section id="isotope-grouping" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Isotope grouping</h1>
+<p>Now that we have deconvoluted our chromatograms, we can group features that belong to the same metabolite using the isotope grouper. If you look at the spectra below, based on our experience, we can tell that each of these ions belongs to the same feature. We can tell this because it has a characteristic isotope distribution. We want MZmine to also lump all of these features together as one, since they all belong to the same metabolite.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/isotope-pattern.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Classic isotope pattern</figcaption>
+</figure>
+</div>
+<p>If we look at the example above, we want 1034, 1035, 1036, 1037, 1038 all to be collapses together since they all belong to the same metabolite. We can do this across our dataset by going to <code>Feature list methods</code> &gt; <code>Isotopes</code> &gt; <code>13C isotope filter (formerly isotope grouper</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/isotope-param.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Setting deisotoping parameters</figcaption>
+</figure>
+</div>
+<p><strong>Feature lists</strong>: pick the output of chromatogram deconvolution, in this case the lists with the suffix “chromatograms resolved”</p>
+<p><strong>Name suffix</strong>: this will be added to the end of your file names. Here I usually use “deisotoped”.</p>
+<p><strong>m/z tolerance (intra-sample)</strong>: how different can two m/z values be and be considered the same feature? Tolerances can be provided in m/z (absolute different) or ppm (relative difference dependent on mass), and MZmine will use whichever of these is larger. Here I am going to use 0.008 m/z and 10 ppm. Sometimes for high and low intensity signals, you get mass errors that are outside the typical 3-5 ppm range expected on a QTOF, and I have found setting the mass tolerance parameters too tightly leads to feature duplication.</p>
+<p><strong>Retention time tolerance</strong>: how aligned different can two retention time values be between a feature and its putative 13C isotoplogue. This is different than retention time alignment. I am going to set this as 0.03 min (1.8 seconds) since you should have very good retention time alignment between isotoplogues.</p>
+<p><strong>Mobility tolerance</strong>: not relevant here, unchecked</p>
+<p><strong>Monotonic shape</strong>: requires a typical 13C isotope distribution. You can check this or not, I am going leave it unchecked.</p>
+<p><strong>Maximum charge</strong>: what charge states are you willing to accept? I will set this to 2.</p>
+<p><strong>Representative isotope</strong>: which isotope should represent the feature? I pick the Most intense</p>
+<p><strong>Never remove a feature with MS2</strong>: can uncheck as we don’t have MS2 data here</p>
+<p><strong>Original feature list</strong>: I am setting this to REMOVE, this will delete the last feature list you made. If you select KEEP, the old one will remain.</p>
+</section>
+<section id="alignment" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Alignment</h1>
+<p>Your samples are going to be aligned relative to your first sample, so make sure that the QCs are at the top of your feature list panel. We can align our samples by going to <code>Feature List methods</code> &gt; <code>Alignment</code> &gt; <code>Join aligner</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/join-aligner.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Setting parameters for aligning across samples</figcaption>
+</figure>
+</div>
+<p><strong>Feature lists</strong>: select the ones from the isotope grouping, in this case those that end in “chromatograms resolved deisotoped”.</p>
+<p><strong>Feature list name</strong>: this is the name of your feature list, I am going to call this “Aligned feature list”.</p>
+<p><strong>m/z tolerance (sample-to-sample)</strong>: how different can sample m/z be to be considered the same feature. Tolerances can be provided in m/z (absolute different) or ppm (relative difference dependent on mass), and MZmine will use whichever of these is larger. Here I am going to use 10 ppm though you could go lower. Sometimes for high and low intensity signals, you get mass errors that are outside the typical 3-5 ppm range expected on a QTOF.</p>
+<p><strong>Weight for m/z</strong>: how much emphasis do you want to weight on a m/z match over a retention time match? I am going to set this to be 75.</p>
+<p><strong>Retention time tolerance</strong>: how misaligned can peaks be between samples and still be considered the same feature? Take a look at your data to see what kind of shifting you’d expect, I am going to set this to be 0.1 min.</p>
+<p><strong>Weight for RT</strong>: how much emphasis to put on a retention time match. I am going to set this to be 25, consistent with what MZmine recommends (to weight a mass match higher than a retention time match.)</p>
+<p><strong>Mobility tolerance</strong>: not relevant, we don’t have mobility data</p>
+<p><strong>Mobility weight</strong>: not relevant, we don’t have mobility data</p>
+<p><strong>Require same charge state</strong>: requires that MZmine has assigned the same charge state to features, I am going to leave this unchecked.</p>
+<p><strong>Compare isotope pattern</strong>: should isotope be added into the score, I will leave this unchecked</p>
+<p><strong>Compare spectra similarity</strong>: should spectra be compared, this is more relevant for MS2 data which we do not have, so I will leave this unchecked</p>
+<p><strong>Original feature list</strong>: if you do this multiple times, you might want to remove other older feature lists. I am going to select KEEP here since we’re doing this for the first time.</p>
+<p>Now, instead of having lists per sample, we have one aligned feature list. We can right click this list and see what the features (Open feature list) are how many feature there are (Show feature list summary).</p>
+</section>
+<section id="gap-filling" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Gap filling</h1>
+<p>Now that we have aligned our samples, we have have MZmine go back and specifically draw out chromatograms for all of the features we have evidence for. This recursive process works to reduce the risk that a feature is present in a sample but not detected. We can do this by going to <code>Feature list methods</code> &gt; <code>Gap filling</code> &gt; <code>Peak finder</code>.</p>
+<p><img src="img/03/gap-filling.png" class="img-fluid"></p>
+<p><strong>Feature lists</strong>: pick the aligned feature list from the main window.</p>
+<p><strong>Name suffix</strong>: I usually add gap-filled</p>
+<p><strong>Intensity tolerance</strong>: how much can your peak shape deviate from a good looking peak. 20% is a good default here</p>
+<p><strong>m/z tolerance (sample-to-sample)</strong>: how different can sample m/z be to be considered the same feature. Tolerances can be provided in m/z (absolute different) or ppm (relative difference dependent on mass), and MZmine will use whichever of these is larger. Here I am going to use 10 ppm though you could go lower. Sometimes for high and low intensity signals, you get mass errors that are outside the typical 3-5 ppm range expected on a QTOF.</p>
+<p><strong>Retention time tolerance</strong>: how misaligned can peaks be between samples and still be considered the same feature? Take a look at your data to see what kind of shifting you’d expect, I am going to set this to be 0.1 min.</p>
+<p><strong>Minimum scans (data ponts)</strong>: how many scans does your feature need to be seen in? Typically is set lower than in the ADAP chromatogram builder and the chromatogram deconvolution. Since we set that to be 5 I am going to pick 3 here.</p>
+<p><strong>Original feature list</strong>: if you do this multiple times, you might want to remove other older feature lists that you gap filled. I am going to select KEEP here.</p>
+<p>In the table view of the feature lists, the gap filled values will now be shown with a yellow status</p>
+</section>
+<section id="filter-for-isotopic-pattern" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Filter for isotopic pattern</h1>
+<p>We want to make sure that now there are at least 2 peaks that make up an isotopic pattern. We can do that by going to <code>Feature list methods</code> &gt; <code>Feature list rows filter</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/filter-isotopic-pattern.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Parameters for filtering for isotopic pattern</figcaption>
+</figure>
+</div>
+<p><strong>Feature lists</strong>: pick the output from gap filling</p>
+<p><strong>Name suffix</strong>: what do you want this new list to be called, I am adding “2 isotopes” to the end of my list name.</p>
+<p><strong>Minimum features in an isotopic pattern</strong>: I am checking yes and 2.</p>
+<p>The rest you can leave as it is. I find this step removes a lot of features.</p>
+</section>
+<section id="remove-duplicate-features" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Remove duplicate features</h1>
+<p>MZmine (aided by our setting of parameters) does its best to try and collapse features that belong to the same metabolite together. But this happens imperfectly. Here we are going to go through our feature list and remove features that are duplicated. Having features duplicated in metabolomics is a problem because we then have to do more multiple testing correction than is really needed. It also makes our data bigger than it needs to be.</p>
+<p>We can do this by navigating to <code>Feature list method</code> &gt; <code>Feature list filtering</code> &gt; <a href="https://mzmine.github.io/mzmine_documentation/module_docs/filter_duplicate_features/duplicate_feature_filter.html#:~:text=Two%20peaks%20are%20considered%20duplicates,row%20ID%20of%20all%20duplicates."><code>Duplicate feature filter</code></a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/duplicates.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Parameters for de-duplication</figcaption>
+</figure>
+</div>
+<p><strong>Name suffix</strong>: what suffix do you want to add to your de-replicated list. I am adding “deduplicated”.</p>
+<p><strong>Filter mode</strong>: you can pick between three different methods: old average, new average, and single feature. Each work slightly differently.</p>
+<p><strong>m/z tolerance</strong>: how different can <em>m</em>/<em>z</em> be between features to be considered the same</p>
+<p><strong>RT tolerance</strong>: how different can retention times be between features to be considered the same</p>
+<p><strong>Require same identification</strong>: we won’t check this since we don’t have IDs here</p>
+<p><strong>Original feature list</strong>: if you do this multiple times, older feature lists will be removed. I am going to select KEEP here.</p>
+<p>I find that if you’ve set parameters appropriately, this step shouldn’t remove that many features.</p>
+</section>
+<section id="export-your-feature-table" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Export your feature table</h1>
+<p>Now you are ready to export your feature table out of MZmine for some manual cleanup in Excel before analysis in MetaboAnalst.</p>
+<p>You can export your data by going to <code>Feature list methods</code> &gt; <code>Export/Import</code> &gt; <code>Export CSV (legacy MZmine 2)</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/export-csv.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Exporting parameters</figcaption>
+</figure>
+</div>
+<p>We want to export at minimum the following parameters:</p>
+<ul>
+<li>Export row: this is a row ID</li>
+<li>Export row m/z: this is the average m/z for that feature</li>
+<li>Export row retention time: this is the average retention time for that feature</li>
+<li>Peak height: in general I used peak hight for metabolomics over peak area as it is less sensitive to distortions in peak shape which are relatively common</li>
+</ul>
+<p>There are other parameters you can extract but in general I find them not to be useful.</p>
+<p>Indicate a file path which includes your file name and your .csv file will be in the location you indicated.</p>
+<p>Navigate to your file and open it so you can see what it looks like:</p>
+<ul>
+<li>The first 3 columns are going to be row ID, row m/z, and row retention time</li>
+<li>The next columns will each be one of your samples</li>
+<li>The rows are each of your features</li>
+<li>The cells contain values of the height for each feature (i.e., row m/z and retention time combination) in each sample</li>
+</ul>
+<p>I would recommend that you store this file exactly how it is, and when you want to make changes to it, you create a file with a new name indicating what changes have been made. This allows you to go back to the original data should you need to.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/export-csv-screenshot.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A screenshot of our exported csv</figcaption>
+</figure>
+</div>
+<p>Before you close MZmine, you can also go to your final feature list, right click and select <code>Show feature list summary</code> and you can see all your processing parameters. If you click <code>Export</code>, you can save these parameters as a text file to refer back to in the future. I highly recommend doing this.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/save-params.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Exporting your MZmine processing parameters</figcaption>
+</figure>
+</div>
+</section>
+<section id="removing-features-coming-from-our-blanks" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Removing features coming from our blanks</h1>
+<p>Here, our goal is to remove features that are coming from non-sample parts of our analysis. Since we have extracted and run process blanks (i.e., samples that have gone through the extraction process but contain no sample), we have an example of what kind of features are coming from our background. Now we will remove those features.</p>
+<p>The criteria I tend to use for removing features coming from blanks are that:</p>
+<ul>
+<li>Features where the average intensity in the QCs divided by the average blank in a QC are below 10 are discarded.</li>
+</ul>
+<p>Worded in a different way feature needs to be at least 10x as prevalent in the QC as compared to the blank. So to figure this out we can:</p>
+<ul>
+<li>Create a new column where we calculate the average intensity of every feature in the QCs (i.e., avg_QC)</li>
+<li>Create a new column where we calculate the average intensity of every feature in the process blanks (i.e., avg_PB)</li>
+<li>Create a new column where we divide average intensity in the QCs by average intensity in the process blanks (i.e., avg_QC_div_avg_PB)</li>
+</ul>
+<p>When doing this, I like to move my PB and QC columns to the front of my dataset so its easier to see.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/pb-removal.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Setting up your spreadsheet to remove features coming things other than our samples</figcaption>
+</figure>
+</div>
+<p>Then, we can sort avg_QC_div_avg_PB from small to large, and remove all of the features where this column has a value of less than 10. Note that when your avg_PB is zero, you will get an error. We don’t want to remove these features, bceause these are absent in our blanks. Keep notes of how many features this process removes.</p>
+<p>And, now we are finished with our process blanks, so we can remove this from this dataset.</p>
+</section>
+<section id="removing-features-that-are-variable-in-the-qcs" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Removing features that are variable in the QCs</h1>
+<p>Here, our goal is to remove features that are inconsistently measured in samples that are compositionally the same (i.e., our QCs). If we can’t measure these features consistently in identical samples, we don’t really have any business making statements about them in our samples. We are going to remove all features that have a coefficient of variation greater than 30%.</p>
+<p>Remember that coefficient of variation is calculated by:</p>
+<p><span class="math display">\[
+CV = standard\ deviation / average
+\]</span></p>
+<p>We can create columns that calculate the standard deviation and average across each feature, and then divide them to calculate the CV.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/03/qc-cv.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Calculating CV in your QCs for filtering</figcaption>
+</figure>
+</div>
+<p>Then we can remove all rows where CV_QC &gt; 0.3 (or 30%).</p>
+</section>
+<section id="save-your-file" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Save your file</h1>
+<p>Now you have a feature table that after deconvolution in MZmine has been filtered to:</p>
+<ul>
+<li>Remove features that are not derived from your samples (i.e., highly abundant in your blanks compared to QCs)</li>
+<li>Remove features that are more than 30% variable in your QCs.</li>
+</ul>
+<p>This is the file that you can use for subsequent analysis in MetaboAnalyst.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Created with RStudio and <a href="https://quarto.org/">Quarto</a> <br> © Jessica Cooperstone, 2024, License: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> <br> <a href="https://osu-codeclub.github.io/#category=website">Want to make a website like this one?</a></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

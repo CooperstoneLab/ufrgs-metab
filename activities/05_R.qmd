@@ -1,0 +1,1253 @@
+---
+title: "Data analysis with R"
+author: "Jessica Cooperstone"
+title-block-banner: false
+number-depth: 4
+editor_options:
+  chunk_output_type: inline
+knitr:
+  opts_chunk:
+    out.width: "85%"
+    class-output: styled-output
+---
+
+# Introduction
+
+We aren't going to go over this in the workshop, but I wanted to show you an example of the workflow my team might use for doing the first pass analysis of metabolomics data. We are going to use the feature table directly from MZmine (without any filtering) and will conduct our filtering and analysis in R.
+
+### Load libraries
+```{r, message = FALSE, warning = FALSE}
+library(factoextra) # visualizing PCA results
+library(glue) # for easy pasting
+library(plotly) # quick interactive plots
+library(proxyC) # more efficient large matrices
+library(data.table) # easy transposing
+library(janitor) # for cleaning names and checking duplicates
+library(notame) # for collapsing ions coming from the same metabolite
+library(doParallel) # for parallelizing notame specifically
+library(patchwork) # for making multi-panel plots
+library(rstatix) # for additional univariate functionality
+
+# this is at the end hoping that the default select will be that from dplyr
+library(tidyverse) # for everything
+```
+
+Once you get deconvoluted data from MZmine or similar programs, you need to wrangle your data in such a way that you can conduct your analysis on it.
+
+## Read in Data
+First we want to read in our raw data. The code here is to read in data directly from MZmine.
+```{r}
+metabdata <- read_csv(file = "data/Feature_list_MZmine_2560.csv",
+                      col_names = TRUE) # has headers
+
+dim(metabdata)
+
+# look at beginning of the dataset
+metabdata[1:8, 1:8]
+
+# how many features do we have?
+nrow(metabdata)
+```
+
+Note there is no metadata included in this file.  Just m/z, retention time, and a column for each sample, where values are peak heights.  We are using peak height instead of peak area because it is less dependent on bad peak shape which you get sometimes with metabolomics.
+
+```{r}
+colnames(metabdata)
+```
+
+It looks like we have an extra blank column at the end - if we look at our raw data we can see OH9243_811_028 is the last sample, so I am going to remove the last column
+
+```{r}
+metabdata <- metabdata[,-49]
+
+colnames(metabdata)
+```
+
+## RT filter if necessary
+You might have deconvoluted more data than you plan to use in your analysis.  For example, you may want to exclude the first bit and last bit of your run, since you do not expect to have good reproducibility in those areas. 
+
+Here, we are filtering to only include features that elute between 0.5-7.5 min of this 10 min run. Let's check what we have.
+
+```{r}
+range(metabdata$`row retention time`)
+```
+
+Our data is already filtered for our desired retention time range, so we don't need to do anything. Below is some code you could use to filter if you needed to.
+
+```{r eval = FALSE}
+metabdata_RTfilt <- metabdata %>%
+  filter(between(`row retention time`, 0.5, 7.5))
+
+# did it work?
+range(metabdata_RTfilt$`row retention time`)
+
+# how many features do we have?
+dim(metabdata_RTfilt)
+```
+
+# Cleaning up data
+
+## Create mz_rt
+
+This creates a unique identifier for each feature using its mass-to-charge ratio (m/z) and retention time (RT).
+```{r}
+MZ_RT <- metabdata %>%
+  rename(mz = `row m/z`,
+         rt = `row retention time`,
+         row_ID = `row ID`) %>%
+  unite(mz_rt, c(mz, rt), remove = FALSE) %>% # Combine m/z & rt with _ in between
+  select(row_ID, mz, rt, mz_rt, everything()) # reorder and move row_ID to front
+
+# how does our df look?
+MZ_RT[1:8, 1:8]
+```
+
+## Clean up file names
+
+We are using [`str_remove()`](https://stringr.tidyverse.org/reference/str_remove.html) to remove some information we do not need in our sample names.  
+```{r}
+# remove stuff from the end of file names, ".mzML Peak height"
+new_col_names <- str_remove(colnames(MZ_RT), ".mzML Peak height")
+
+# did it work?
+new_col_names
+
+# assign our new column names to MZ_RT
+colnames(MZ_RT) <- new_col_names
+```
+
+What are our sample names?
+```{r}
+colnames(MZ_RT)
+```
+
+# Start filtering
+
+## Check for duplicates
+
+Sometimes you end up with duplicate data after deconvolution with MZmine. Here, we are going to check for complete, perfect duplicates and remove them. The function `get_dupes()` is from the package `janitor`.
+
+We don't want row_ID to be considered here since those are unique per row.
+```{r}
+get_dupes(MZ_RT %>% select(-row_ID))
+```
+
+We have no exact duplicate, this is great! I'm including some code that you can use to remove duplicates if you have them. 
+
+```{r, eval = FALSE}
+MZ_RT %>%
+  filter(mz_rt %in% c()) %>%
+  arrange(mz_rt)
+```
+
+```{r eval = FALSE}
+MZ_RT_nodupes <- MZ_RT %>%
+  filter(!row_ID %in% c("insert your duplicated row_IDs here"))
+```
+
+This should remove 5 rows.
+```{r eval = FALSE}
+nrow(MZ_RT) - nrow(MZ_RT_nodupes) # ok good
+```
+
+### CV function
+Since base R does not have a function to calculate coefficient of variance, let's write one.
+```{r}
+cv <- function(x){
+        (sd(x)/mean(x))
+}
+```
+
+
+## Counting QCs
+
+Subset QCs and filter features to keep only those that are present in 100% of QCs.  You could change this parameter based on your data. 
+```{r}
+# check dimensions of current df
+dim(MZ_RT)
+
+MZ_RT_QCs <- MZ_RT %>%
+  select(mz_rt, contains("QC")) %>% # select QCs
+  filter(rowSums(is.na(.)) <= 1) # remove rows that have 1 or more NAs
+```
+
+```{r}
+# check dimensions of QCs filtered df
+dim(MZ_RT_QCs)
+
+# how many features got removed with this filtering?
+nrow(MZ_RT) - nrow(MZ_RT_QCs)
+```
+
+It looks like we didn't actually remove anything by doing this.
+
+## Filter on QC CV
+
+Here we are removing features that have a CV of more than 30% in the QCs.  The rationale is that if a feature cannot be reproducibly measured in samples that are all the same, it should not be included in our analysis.
+```{r}
+# calculate CV row-wise (1 means row-wise)
+QC_CV <- apply(MZ_RT_QCs[, 2:ncol(MZ_RT_QCs)], 1, cv)
+
+# bind the CV vector back to the QC df
+MZ_RT_QCs_CV <- cbind(MZ_RT_QCs, QC_CV)
+
+# filter for keeping features with QC_CV <= 0.30 (or 30%)
+MZ_RT_QCs_CVfilt <- MZ_RT_QCs_CV %>%
+  filter(QC_CV <= 0.30)
+```
+
+How many features did I remove with this CV filtering?
+```{r}
+nrow(MZ_RT_QCs) - nrow(MZ_RT_QCs_CVfilt)
+```
+
+## Merge back the rest of the data
+
+MZ_RT_QCs_CVfilt only contains the QCs, We want to keep only the rows that are present in this df, and then merge back all of the other samples present in MZ_RT.  We will do this by creating a vector that has the mz_rt features we want to keep, and then using `filter()` and `%in%` to keep only features that are a part of this list.
+```{r}
+dim(MZ_RT_QCs_CVfilt)
+dim(MZ_RT)
+
+# make a character vector of the mz_rt features we want to keep
+# i.e., the ones that passed our previous filtering steps
+features_to_keep <- as.character(MZ_RT_QCs_CVfilt$mz_rt)
+
+MZ_RT_filt <- MZ_RT %>%
+  filter(mz_rt %in% features_to_keep)
+
+dim(MZ_RT_filt)
+
+get_dupes(MZ_RT_filt %>% select(mz_rt)) # good no dupes
+```
+
+You should have the same number of features in MZ_RT_QCs_CVfilt as you do in your new filtered df MZ_RT_filt.
+```{r}
+all.equal(MZ_RT_QCs_CVfilt$mz_rt, MZ_RT_filt$mz_rt)
+```
+
+## Process blanks
+
+We want to remove features that are present in our process blanks as they are not coming from compounds present in our samples.  In this dataset, there are three process blanks (a sample that includes all the extraction materials, minus the sample, here the tomato was replaced by mass with water) has "PB" in the sample name.
+```{r}
+# grab the name of the column/sample that is the process blank
+str_subset(colnames(MZ_RT_filt), "PB")
+```
+
+Calculate the average value across the QCs, then remove features that are not at least 10x higher in the QCs than in the process blank.  To do this we will use [`apply()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/apply).
+
+`apply(X, MARGIN, FUN,...)` where X is your df, MARGIN is 1 for row-wise, and 2 for col-wise, and FUN is your function
+
+```{r}
+# pull avg peak height across QCs
+avg_height_QC <- apply(MZ_RT_QCs_CVfilt[, 2:ncol(MZ_RT_QCs_CVfilt)], 1, mean)
+
+# bind back to rest of data
+MZ_RT_filt_QC_avg <- cbind(MZ_RT_filt, avg_height_QC)
+
+# check dimensions
+dim(MZ_RT_filt_QC_avg)
+```
+
+Pull the name of your process blank, and make a new column that indicates how many fold higher your peak height is in your average QC vs your process blank.
+```{r}
+# pull name of process blank so we can remember them
+str_subset(colnames(MZ_RT_filt), "PB")
+
+# make a new column that has a value of how many fold higher peak height is
+# in QCs as compared to PB
+# here there is only  one PB, but would be better to have > 1 but this is ok
+# then you can avg your PBs together and do the same thing
+MZ_RT_filt_PB <- MZ_RT_filt_QC_avg %>% 
+  mutate(avg_height_PB = ((PB_02_006 + PB_01_005 + PB_03_007)/3),
+         fold_higher_in_QC = avg_height_QC/avg_height_PB) %>%
+  select(row_ID, mz_rt, mz, rt, avg_height_QC, avg_height_PB, fold_higher_in_QC)
+
+head(MZ_RT_filt_PB)
+```
+
+We want to keep features that are at least 10x higher in QCs than process blanks, and we also want to keep Infs, because an Inf indicates that a feature absent in the process blanks (i.e., you get an Inf because you're trying to divide by zero).
+```{r}
+# keep features that are present at least 10x higher in QCs vs PB
+# or, keep NAs because those are absent in blank
+PB_features_to_keep <- MZ_RT_filt_PB %>%
+  filter(fold_higher_in_QC > 10 | is.infinite(fold_higher_in_QC)) 
+
+dim(PB_features_to_keep)
+```
+
+How many features did we remove?
+```{r}
+nrow(MZ_RT_filt_QC_avg) - nrow(PB_features_to_keep)
+```
+
+Removed some garbage! 
+
+Bind back metdata.
+```{r}
+MZ_RT_filt_PBremoved <- MZ_RT_filt_QC_avg %>%
+  filter(mz_rt %in% PB_features_to_keep$mz_rt)
+
+nrow(MZ_RT_filt_PBremoved)
+```
+
+
+Do we have any duplicate features?
+```{r}
+get_dupes(MZ_RT_filt_PBremoved, mz_rt)
+```
+
+Good, we shouldn't because we handled this already.
+
+Remove samples that we don't need anymore.
+```{r}
+colnames(MZ_RT_filt_PBremoved)
+
+MZ_RT_filt_PBremoved <- MZ_RT_filt_PBremoved %>%
+  select(-PB_02_006, -PB_01_005, -PB_03_007, -avg_height_QC)
+```
+
+
+## Save your file
+Now you have a list of features present in your samples after filtering for CV in QCs, and removing all the extraneous columns we added to help us do this, along with removing any process blanks.
+```{r, eval = FALSE}
+write_csv(MZ_RT_filt_PBremoved,
+          "data/post_filtering_6892.csv")
+```
+
+
+# Start analysis
+
+Take a quick look at our data.
+
+```{r}
+# look at first 5 rows, first 5 columns 
+MZ_RT_filt_PBremoved[1:5,1:10]
+```
+
+What are our column names?
+```{r}
+colnames(MZ_RT_filt_PBremoved)
+```
+
+In our dataset, missing data is coded as zero, so let's change this so they're coded as NA.
+```{r}
+MZ_RT_filt_PBremoved[MZ_RT_filt_PBremoved == 0] <- NA
+```
+
+## Wrangle sample names
+
+Here, the samples are in columns and the features are in rows. Samples are coded so that the first number is the treatment code, and the last code is the run order. We don't need pos. We are going to transpose the data so that samples are in rows and features are in tables, and we will also import the metadata about the samples.
+```{r}
+metab_t <- MZ_RT_filt_PBremoved %>%
+  select(-row_ID, -mz, -rt) %>%
+  t() %>%
+  as.data.frame() %>%
+  rownames_to_column(var = "mz_rt")
+
+# make the first row the column names
+colnames(metab_t) <- metab_t[1,]
+
+# then remove the first row and rename the column that should be called sample_name
+metab_t <- metab_t[-1,] %>%
+  rename(sample_name = mz_rt) %>%
+  mutate((across(.cols = 2:ncol(.), .fns = as.numeric)))
+
+metab_t[1:10, 1:10]
+```
+
+Add in the metadata and make a new column that will indicate whether a sample is a "sample" or a "QC". Extract the metadata out of the column names. The metadata we have for the samples we are no longer using (process blanks etc) are removed.
+```{r}
+metab_plus <- metab_t %>%
+  mutate(sample_or_qc = if_else(str_detect(sample_name, "QC"), 
+                                true = "QC", false = "Sample")) %>%
+  separate_wider_delim(cols = sample_name, delim = "_",
+                       names = c("tomato", "rep_or_plot", "run_order"),
+                       cols_remove = FALSE) %>%
+  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order, everything()) %>%
+  mutate(sample_or_qc = as.factor(sample_or_qc),
+         tomato = as.factor(tomato),
+         run_order = as.numeric(run_order))
+         
+
+# how does it look
+metab_plus[1:5, 1:8]
+```
+
+Go from wide to long data.
+```{r}
+metab_plus_long <- metab_plus %>%
+  pivot_longer(cols = -c(sample_name, sample_or_qc, tomato, rep_or_plot, run_order,),  # remove metadata
+               names_to = "mz_rt",
+               values_to = "rel_abund")
+
+glimpse(metab_plus_long)
+```
+
+Also add separate columns for mz and rt, and making both numeric.
+```{r}
+metab_plus_long <- metab_plus_long %>%
+  separate_wider_delim(cols = mz_rt,
+                       delim = "_",
+                       names = c("mz", "rt"),
+                       cols_remove = FALSE) %>%
+  mutate(across(.cols = c("mz", "rt"), .fns = as.numeric)) # convert mz and rt to numeric
+
+# how did that go?
+head(metab_plus_long)
+```
+
+
+
+## Data summaries
+What mass range do I have?
+```{r}
+range(metab_plus_long$mz)
+```
+
+What retention time range do I have?
+```{r}
+range(metab_plus_long$rt)
+```
+
+How many samples are in each of my meta-data groups?
+```{r}
+# make wide data to make some calculations easier
+metab_wide_meta <- metab_plus_long %>%
+  dplyr::select(-mz, -rt) %>%
+  pivot_wider(names_from = mz_rt,
+              values_from = rel_abund)
+
+# by sample vs QC
+metab_wide_meta %>%
+  count(sample_or_qc)
+
+# by tomato
+metab_wide_meta %>%
+  count(tomato)
+```
+
+What does my data coverage across mz and rt look like?
+```{r}
+metab_plus_long %>%
+  group_by(mz_rt) %>% # so we only have one point per feature
+  ggplot(aes(x = rt, y = mz)) +
+  geom_point(alpha = 0.01) +
+  theme_minimal() +
+  labs(x = "Retention time (min)",
+       y = "Mass to charge ratio (m/z)",
+       title = "m/z by retention time plot (all features)",
+       subtitle = "C18 reversed phase, positive ionization mode")
+```
+
+All of this overlap makes me think we have replication of features.
+
+Distribution of masses
+```{r}
+metab_plus_long %>%
+  group_by(mz_rt) %>%
+  ggplot(aes(x = mz)) +
+  geom_histogram(bins = 100) +
+  theme_minimal() +
+  labs(x = "m/z",
+       y = "Number of features",
+       title = "Distribution of features by mass")
+```
+
+Distribution of retention times
+```{r}
+metab_plus_long %>%
+  group_by(mz_rt) %>%
+  ggplot(aes(x = rt)) +
+  geom_density() +
+  theme_minimal() +
+  labs(x = "Retention time",
+       y = "Number of features",
+       title = "Distribution of features by retention time")
+```
+
+
+## Missing data
+
+### Surveying missingness
+
+How many missing values are there for each feature? In this dataset, missing values are coded as zero.
+```{r fig.width=6, fig.height=3}
+# all data including QCs
+# how many missing values are there for each feature (row)
+na_by_feature <- rowSums(is.na(MZ_RT_filt_PBremoved)) %>%
+  as.data.frame() %>%
+  rename(missing_values = 1)
+  
+
+na_by_feature %>%
+  ggplot(aes(x = missing_values)) +
+  geom_histogram(bins = 40) + # since 40 samples
+  theme_minimal() + 
+  labs(title = "Number of missing values for each feature",
+       x = "Number of missing values",
+       y = "How many features have that \nmany missing values")
+```
+
+How many features have no missing values?
+```{r}
+na_by_feature %>%
+  count(missing_values == 0)
+```
+
+How many missing values are there for each sample?
+```{r fig.width=6, fig.height=3}
+# all data including QCs
+# how many missing values are there for each feature (row)
+na_by_sample <- colSums(is.na(MZ_RT_filt_PBremoved)) %>%
+  as.data.frame() %>%
+  rename(missing_values = 1) %>%
+  rownames_to_column(var = "feature") %>%
+  filter(!feature == "mz_rt")
+
+na_by_sample %>%
+  ggplot(aes(x = missing_values)) +
+  geom_histogram(bins = 100) + # 
+  theme_minimal() + 
+  labs(title = "Number of missing values for each sample",
+       x = "Number of missing values",
+       y = "How many samples have that \nmany missing values")
+```
+
+Which features have a lot of missing values?
+```{r}
+contains_NAs_feature <- metab_plus_long %>%
+  group_by(mz_rt) %>%
+  count(is.na(rel_abund)) %>%
+  filter(`is.na(rel_abund)` == TRUE) %>%
+  arrange(desc(n))
+
+head(contains_NAs_feature)
+```
+
+Which samples have a lot of missing values?
+```{r}
+contains_NAs_sample <- metab_plus_long %>%
+  group_by(sample_name) %>%
+  count(is.na(rel_abund)) %>%
+  filter(`is.na(rel_abund)` == TRUE) %>%
+  arrange(desc(n))
+
+head(contains_NAs_sample)
+```
+
+
+Are there any missing values in the QCs? (There shouldn't be.)
+```{r}
+metab_QC <- MZ_RT_filt_PBremoved %>%
+  dplyr::select(contains("QC"))
+
+na_by_sample <- colSums(is.na(metab_QC)) %>%
+  as.data.frame() %>%
+  rename(missing_values = 1) %>%
+  rownames_to_column(var = "feature") %>%
+  filter(!feature == "mz_rt")
+
+sum(na_by_sample$missing_values) # nope
+```
+
+### Imputing missing values
+This is an optional step but some downstream analyses don't handle missingness well. Here we are imputing missing data with half the lowest value observed for that feature.
+
+```{r}
+# grab only the feature data and leave metadata
+metab_wide_meta_imputed <- metab_wide_meta %>%
+  dplyr::select(-c(1:5)) # the metadata columns
+
+metab_wide_meta_imputed[] <- lapply(metab_wide_meta_imputed,
+                                 function(x) ifelse(is.na(x), min(x, na.rm = TRUE)/2, x))
+
+# bind back the metadata
+metab_wide_meta_imputed <- bind_cols(metab_wide_meta[,1:5], metab_wide_meta_imputed)
+
+# try working from original MZ_RT_filt_PBremoved input file for notame later
+metab_imputed <- MZ_RT_filt_PBremoved %>%
+  dplyr::select(-row_ID, -mz_rt, -mz, -rt)
+
+metab_imputed[] <- lapply(metab_imputed,
+                          function(x) ifelse(is.na(x), min(x, na.rm = TRUE)/2, x))
+
+# bind back metadata
+metab_imputed <- bind_cols (MZ_RT_filt_PBremoved$mz_rt, metab_imputed) %>% # just add back mz_rt
+  rename(mz_rt = 1) # rename first column back to mz_rt
+
+```
+
+
+Did imputing work?
+```{r}
+# count missing values
+metab_wide_meta_imputed %>%
+  dplyr::select(-c(1:5)) %>% # where the metadata is
+  is.na() %>%
+  sum()
+```
+
+Create long imputed dataset.
+```{r}
+metab_long_meta_imputed <- metab_wide_meta_imputed %>%
+  pivot_longer(cols = 6:ncol(.),
+               names_to = "mz_rt",
+               values_to = "rel_abund")
+
+head(metab_long_meta_imputed)
+```
+
+Let's also make separate mz and rt columns.
+```{r}
+metab_long_meta_imputed <- metab_long_meta_imputed %>%
+  separate_wider_delim(cols = mz_rt,
+                       delim = "_",
+                       names = c("mz", "rt"),
+                       cols_remove = FALSE)
+
+metab_long_meta_imputed$mz <- as.numeric(metab_long_meta_imputed$mz)
+metab_long_meta_imputed$rt <- as.numeric(metab_long_meta_imputed$rt)
+```
+
+
+## Feature clustering with `notame`
+We want to cluster features that likely come from the same metabolite together, and we can do this using the package `notame`. You can learn more [here](http://127.0.0.1:24885/library/notame/doc/feature_clustering.html).
+
+```{r, eval = FALSE}
+browseVignettes("notame")
+```
+
+Let's make a m/z by retention time plot again before we start.
+```{r}
+(before_notame <- metab_long_meta_imputed %>%
+  group_by(mz_rt) %>% # so we only have one point per feature
+  ggplot(aes(x = rt, y = mz)) +
+  geom_point(alpha = 0.01) +
+  theme_minimal() +
+  labs(x = "Retention time (min)",
+       y = "Mass to charge ratio (m/z)",
+       title = "m/z by retention time plot before notame",
+       subtitle = "C18 reverse phase, positive ionization mode"))
+```
+
+### Wrangling data
+
+Transpose the wide data for notame and wrangle to the right format. Below is info from the documentation: 
+
+-   Data should be a data frame containing the abundances of features in each sample, one row per sample, each feature in a separate column
+-   Features should be a data frame containing information about the features, namely feature name (should be the same as the column name in data), mass and retention time
+
+Going back to the original imported data and imputing from there seems kind of silly, but I had a lot of problems structuring this data to get find_connections() to run and not throw any errors because of names that weren't the same between the features and the data inputs.
+
+It is important that for the Data, your first sample is in row 2. The code below will get you there. If you're wondering why the code is written this way instead of just using metab_wide_meta_imputed, this is why.
+```{r}
+# # create a data frame which is just the original metab data
+# transposed so samples are rows and features are columns
+data_notame <- data.frame(metab_imputed %>%
+                          t())
+
+data_notame <- data_notame %>%
+  tibble::rownames_to_column() %>% # change samples from rownames to its own column
+  row_to_names(row_number = 1) # change the feature IDs (mz_rt) from first row obs into column names
+
+# change to results to numeric
+# it is important that the first row of data has the row number 2
+# i don't know why this is but save yourself all the time maria/jess spent figuring out
+# why this wasn't working
+data_notame <- data_notame %>%
+  mutate(across(-mz_rt, as.numeric))
+
+tibble(data_notame)
+```
+
+Create df with features.
+```{r}
+features <- metab_long_meta_imputed %>%
+  dplyr::select(mz_rt, mz, rt) %>%
+  mutate(across(c(mz, rt), as.numeric)) %>%
+  as.data.frame() %>%
+  distinct()
+
+glimpse(features)
+class(features)
+```
+
+### Find connections
+Set `cache = TRUE` for this chunk since its a bit slow especially if you have a lot of features.  Here, this step took 25 min for almost 7K features or 5 min for just over 2K features.
+```{r, cache = TRUE}
+connection <- find_connections(data = data_notame,
+                               features = features,
+                               corr_thresh = 0.9,
+                               rt_window = 1/60,
+                               name_col = "mz_rt",
+                               mz_col = "mz",
+                               rt_col = "rt")
+```
+
+```{r}
+head(connection)
+```
+
+### Clustering
+Now that we have found all of the features that are connected based on the parameterers we have set, we now need to find clusters.
+```{r}
+clusters <- find_clusters(connections = connection, 
+                          d_thresh = 0.8)
+```
+
+Assign a cluster ID to each feature to keep, and the feature that is picked is the one with the highest median peak intensity across the samples.
+```{r}
+# assign a cluster ID to all features
+# clusters are named after feature with highest median peak height
+features_clustered <- assign_cluster_id(data_notame, 
+                                        clusters, 
+                                        features, 
+                                        name_col = "mz_rt")
+```
+
+Export out a list of your clusters this way you can use this later during metabolite ID.
+```{r, eval = FALSE}
+# export clustered feature list this way you have it
+write_csv(features_clustered,
+          "data/features_notame-clusters.csv")
+```
+
+Pull data out from the clusters and see how many features we removed/have now.
+```{r}
+# lets see how many features are removed when we only keep one feature per cluster
+pulled <- pull_clusters(data_notame, features_clustered, name_col = "mz_rt")
+
+cluster_data <- pulled$cdata
+cluster_features <- pulled$cfeatures
+
+# how many features did we originally have after filtering?
+nrow(metab_imputed)
+
+# how many features got removed during clustering?
+nrow(metab_imputed) - nrow(cluster_features)
+
+# what percentage of the original features were removed?
+((nrow(metab_imputed) - nrow(cluster_features))/nrow(metab_imputed)) * 100
+
+# how many features do we have now?
+nrow(cluster_features)
+```
+
+Reduce our dataset to include only our new clusters. `cluster_data` contains only the retained clusters, while `cluster_features` tells you also which features are a part of each cluster.
+```{r}
+# combined metadata_plus with cluster_features
+cluster_data <- cluster_data %>%
+  rename(sample_name = mz_rt) # since this column is actually sample name
+
+# make a wide df
+metab_imputed_clustered_wide <- left_join(metab_wide_meta_imputed[,1:5], cluster_data,
+                                          by = "sample_name") 
+
+dim(metab_imputed_clustered_wide) # we have 2474 features since 4 metadata columns
+
+# make a long/tidy df
+metab_imputed_clustered_long <- metab_imputed_clustered_wide %>%
+  pivot_longer(cols = 6:ncol(.),
+               names_to = "mz_rt",
+               values_to = "rel_abund") %>%
+  separate_wider_delim(cols = mz_rt, # make separate columns for mz and rt too
+                       delim = "_",
+                       names = c("mz", "rt"),
+                       cols_remove = FALSE) %>%
+  mutate(across(.cols = c("mz", "rt"), .fns = as.numeric)) # make mz and rt numeric
+```
+
+Let's look at a m/z by retention time plot again after clustering.
+```{r}
+(after_notame <- metab_imputed_clustered_long %>%
+  group_by(mz_rt) %>% # so we only have one point per feature
+  ggplot(aes(x = rt, y = mz)) +
+  geom_point(alpha = 0.01) +
+  theme_minimal() +
+  labs(x = "Retention time (min)",
+       y = "Mass to charge ratio (m/z)",
+       title = "m/z by retention time plot after notame",
+       subtitle = "C18 reverse phase, positive ionization mode"))
+```
+
+```{r, fig.width = 8, fig.height = 8}
+before_notame / after_notame
+```
+
+## Assessing data quality
+Let's make sure that our data is of good quality.
+
+### Untransformed data
+First we are going to convert the type of some of the columns to match what we want (e.g., run order converted to numeric, species to factor)
+```{r}
+tibble(metab_imputed_clustered_long)
+
+# make run_order numeric
+metab_imputed_clustered_long$run_order <- as.numeric(metab_imputed_clustered_long$run_order)
+
+# make treatment and sample_or_qc a factor (i.e., categorical)
+metab_imputed_clustered_long$tomato <- as.factor(metab_imputed_clustered_long$tomato)
+metab_imputed_clustered_long$sample_or_qc <- as.factor(metab_imputed_clustered_long$sample_or_qc)
+
+# did it work?
+tibble(metab_imputed_clustered_long)
+```
+
+Let's make a boxplot to see how the metabolite abundance looks across different samples.
+```{r}
+metab_imputed_clustered_long %>%
+  ggplot(aes(x = sample_name, y = rel_abund, fill = tomato)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "none") +
+  labs(title = "LC-MS (+) Feature Abundances by Sample",
+       subtitle = "Data is unscaled",
+       y = "Relative abundance")
+```
+
+Can't really see anything because data is skewed.
+
+### Transformed data
+#### Log2 transformed
+We will log2 transform our data.
+```{r}
+metab_imputed_clustered_long_log2 <- metab_imputed_clustered_long %>%
+  mutate(rel_abund = log2(rel_abund))
+```
+
+And then plot.
+```{r}
+metab_imputed_clustered_long_log2 %>%
+  ggplot(aes(x = sample_name, y = rel_abund, fill = tomato)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "none") +
+  labs(title = "LC-MS (+) Feature Abundances by Sample",
+       subtitle = "Data is log2 transformed",
+       y = "Relative abundance")
+```
+
+We can also look at this data by run order to see if we have any overall run order effects visible.
+```{r}
+metab_imputed_clustered_long_log2 %>%
+  mutate(sample_name = fct_reorder(sample_name, run_order)) %>%
+  ggplot(aes(x = sample_name, y = rel_abund, fill = tomato)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "LC-MS (+) Feature Abundances by Sample",
+       subtitle = "Data is log2 transformed",
+       y = "Relative abundance")
+```
+
+#### Log10 transformed
+We will log10 transform our data.
+```{r}
+metab_imputed_clustered_long_log10 <- metab_imputed_clustered_long %>%
+  mutate(rel_abund = log10(rel_abund))
+```
+
+We can look at this data where we group by species. 
+```{r}
+metab_imputed_clustered_long_log10 %>%
+  ggplot(aes(x = sample_name , y = rel_abund, fill = tomato)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "LC-MS (+) Feature Abundances by Sample",
+       subtitle = "Data is log10 transformed",
+       y = "Relative abundance")
+```
+
+We can also look at this data by run order to see if we have any overall run order effects visible.
+```{r}
+metab_imputed_clustered_long_log10 %>%
+  mutate(sample_name = fct_reorder(sample_name, run_order)) %>%
+  ggplot(aes(x = sample_name , y = rel_abund, fill = tomato)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "LC-MS (+) Feature Abundances by Sample",
+       subtitle = "Data is log10 transformed",
+       y = "Relative abundance")
+```
+
+
+
+#### Pareto scaled
+Pareto scaling scales but keeps the fidelity of the original differences in absolute measurement value more than autoscaling. Often data is Pareto scaled after log transofmration
+
+```{r pareto scale}
+metab_wide_meta_imputed_log2 <- metab_imputed_clustered_long_log2 %>%
+  select(-mz, -rt) %>%
+  pivot_wider(names_from = "mz_rt",
+              values_from = "rel_abund")
+
+metab_imputed_clustered_wide_log2_metabs <- 
+  metab_wide_meta_imputed_log2[,6:ncol(metab_wide_meta_imputed_log2)]
+
+pareto_scaled <- 
+  IMIFA::pareto_scale(metab_imputed_clustered_wide_log2_metabs, center = FALSE)
+
+pareto_scaled <- bind_cols(metab_wide_meta_imputed_log2[,1:6], pareto_scaled)
+```
+
+```{r}
+pareto_scaled_long <- pareto_scaled %>%
+  pivot_longer(cols = 6:ncol(.),
+               names_to = "mz_rt",
+               values_to = "rel_abund")
+
+pareto_scaled_long %>%
+  # mutate(short_sample_name = fct_reorder(short_sample_name, treatment)) %>%
+  ggplot(aes(x = sample_name, y = rel_abund, fill = tomato)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "LC-MS (+) Feature Abundances by Sample",
+       subtitle = "Data is Pareto scaled",
+       y = "Relative abundance")
+```
+
+I think pareto scaling is making everything look super the same. I am going to use log2 transformed data for the rest of this analysis.
+
+## PCAs
+### With QCs
+```{r}
+pca_qc <- prcomp(metab_wide_meta_imputed_log2[,-c(1:5)], # remove metadata
+                 scale = FALSE, # we did our own scaling
+                 center = TRUE) # true is the default
+
+summary(pca_qc)
+```
+
+Look at how much variance is explained by each PC.
+```{r}
+importance_qc <- summary(pca_qc)$importance %>%
+  as.data.frame()
+
+head(importance_qc)
+```
+
+Generate a scree plot.
+```{r}
+fviz_eig(pca_qc)
+```
+
+Generate a scores plot (points are samples) quickly with `fviz_pca_ind`.
+```{r}
+fviz_pca_ind(pca_qc)
+```
+
+Make a scores plot but prettier.
+```{r}
+# create a df of pca_qc$x
+scores_raw_qc <- as.data.frame(pca_qc$x)
+
+# bind meta-data
+scores_qc <- bind_cols(metab_wide_meta_imputed_log2[,1:5], # first 5 columns
+                       scores_raw_qc)
+```
+
+Plot.
+```{r}
+# create objects indicating percent variance explained by PC1 and PC2
+PC1_percent_qc <- round((importance_qc[2,1])*100, # index 2nd row, 1st column, times 100
+                         1) # round to 1 decimal
+PC2_percent_qc <- round((importance_qc[2,2])*100, 1) 
+
+# plot
+# aes(text) is for setting tooltip with plotly later to indicate hover text
+(scores_qc_plot <- scores_qc %>%
+  ggplot(aes(x = PC1, y = PC2, fill = tomato, text = glue("Sample: {sample_name},
+                                                           Treatment: {tomato}"))) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(shape = 21, color = "black") +
+  theme_minimal() +
+  labs(x = glue("PC1: {PC1_percent_qc}%"), 
+       y = glue("PC2: {PC2_percent_qc}%"), 
+       title = "PCA Scores Plot Colored by Tomato Type"))
+```
+
+Then make your scores plot ineractive so you can see who is who.
+```{r}
+ggplotly(scores_qc_plot, tooltip = "text")
+```
+
+
+Make a loadings plot (points are features) even though it might not be that useful.
+```{r}
+fviz_pca_var(pca_qc)
+```
+
+See what I mean? Not that useful. There are some functions in PCAtools that label only the points that most contribute to each PC. Could also do this manually if its of interest.
+
+### Without QCs
+```{r}
+metab_wide_meta_imputed_log2_noqc <- metab_wide_meta_imputed_log2 %>%
+  filter(sample_or_qc == "Sample")
+
+
+pca_noqc <- prcomp(metab_wide_meta_imputed_log2_noqc[,-c(1:5)], # remove metadata
+                 scale = FALSE, # we did our own scaling
+                 center = TRUE) # true is the default
+
+summary(pca_noqc)
+```
+
+Look at how much variance is explained by each PC.
+```{r}
+importance_noqc <- summary(pca_noqc)$importance %>%
+  as.data.frame()
+
+head(importance_noqc)
+```
+
+Generate a scree plot.
+```{r}
+fviz_eig(pca_noqc)
+```
+
+Generate a scores plot (points are samples) quickly with `fviz_pca_ind`.
+```{r}
+fviz_pca_ind(pca_noqc)
+```
+
+Make a scores plot but prettier.
+```{r}
+# create a df of pca_qc$x
+scores_raw_noqc <- as.data.frame(pca_noqc$x)
+
+# bind meta-data
+scores_noqc <- bind_cols(metab_wide_meta_imputed_log2_noqc[,1:5], # metadata
+                         scores_raw_noqc)
+```
+
+Plot.
+```{r}
+# create objects indicating percent variance explained by PC1 and PC2
+PC1_percent_noqc <- round((importance_noqc[2,1])*100, # index 2nd row, 1st column, times 100
+                         1) # round to 1 decimal
+PC2_percent_noqc <- round((importance_noqc[2,2])*100, 1) 
+
+# plot
+# aes(text) is for setting tooltip with plotly later to indicate hover text
+(scores_noqc_plot <- scores_noqc %>%
+  ggplot(aes(x = PC1, y = PC2, fill = tomato, text = glue("Sample: {sample_name},
+                                                             Treatment: {tomato}"))) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(shape = 21, color = "black") +
+  theme_minimal() +
+  labs(x = glue("PC1: {PC1_percent_noqc}%"), 
+       y = glue("PC2: {PC2_percent_noqc}%"), 
+       title = "PCA Scores Plot Colored by Tomato Type"))
+```
+
+Then make your scores plot ineractive so you can see who is who.
+```{r}
+ggplotly(scores_noqc_plot, tooltip = "text")
+```
+
+
+Make a loadings plot (points are features) even though it might not be that useful.
+```{r}
+fviz_pca_var(pca_noqc)
+```
+
+See what I mean? Not that useful. There are some functions in PCAtools that label only the points that most contribute to each PC. Could also do this manually if its of interest.
+
+
+## Univariate Testing
+I am going to include some sample univariate testing for comparisons between two and more than two groups.
+
+### ANOVA - > 2 groups
+Just to test it out, I'm going to test for significant differences between our three tomato groups.
+```{r}
+# run series of t-tests
+anova <- metab_imputed_clustered_long_log2 %>%
+  filter(!tomato == "QC") %>% # remove QCs
+  dplyr::select(sample_name, tomato, mz_rt, rel_abund) %>%
+  group_by(mz_rt) %>%
+  anova_test(rel_abund ~ tomato)
+
+# adjust pvalues for multiple testing
+anova_padjusted <- p.adjust(anova$p, method = "BH") %>%
+  as.data.frame() %>%
+  rename(p_adj = 1)
+
+anova_padj <- bind_cols(as.data.frame(anova), anova_padjusted) %>%
+  rename(padj = 9)
+
+# extract out only the significantly different features
+anova_sig <- anova_padj %>%
+  as.data.frame() %>%
+  filter(p <= 0.05)
+
+# how many features are significantly different between the groups?
+nrow(anova_sig)
+```
+
+
+Do we think this is reasonable? What if I make a quick boxplot of the relative intensity of the feature that has the smallest p-value from this comparison (236.200891807883_6.022641). 
+
+```{r}
+metab_imputed_clustered_long_log2 %>%
+  filter(mz_rt == "236.200891807883_6.022641") %>%
+  ggplot(aes(x = tomato, y = rel_abund, color = tomato)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter() +
+  theme(legend.position = "none") +
+  labs(x = "Sample type",
+       y = "Log2 relative abundance of 236.200891807883_6.022641",
+       title = "Difference in log2 relative abundance of 236.200891807883_6.022641 \nbetween tomato types")
+```
+
+Ok we can see why this is very different across the groups :)
+
+### T-test, 2 groups 
+#### Non-parametric
+Data might not be normally distributed so I did a nonparametric test.
+```{r}
+# run series of t-tests
+oh8243_hats_nonparam <- metab_imputed_clustered_long_log2 %>%
+  filter(tomato == "OH8243" | tomato == "HATS") %>%
+  dplyr::select(sample_name, tomato, mz_rt, rel_abund) %>%
+  group_by(mz_rt) %>%
+  wilcox_test(rel_abund ~ tomato, 
+         paired = FALSE, 
+         detailed = TRUE, # gives you more detail in output
+         p.adjust.method = "BH") %>% # Benjamini-Hochberg false discovery rate multiple testing correction
+  add_significance() %>%
+  arrange(p)
+
+# extract out only the significantly different features
+oh8243_hats_nonparam_sig <- oh8243_hats_nonparam %>%
+  filter(p <= 0.05)
+
+# how many features are significantly different between the groups?
+nrow(oh8243_hats_nonparam_sig)
+```
+
+Let's do the same thing again here with a boxplot.
+
+```{r}
+metab_imputed_clustered_long_log2 %>%
+  filter(mz_rt == "1004.54196498357_5.227879") %>%
+  filter(tomato == "HATS" | tomato == "OH8243") %>%
+  ggplot(aes(x = tomato, y = rel_abund, color = tomato)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter() +
+  theme(legend.position = "none") +
+  labs(x = "Sample type",
+       y = "Log2 relative abundance of 1004.54196498357_5.227879",
+       title = "Difference in log2 relative abundance of 1004.54196498357_5.227879 \nbetween OH8243 and HATS")
+```
+
+
+Write out the significantly different features.
+```{r, eval = FALSE}
+write_csv(oh8243_hats_nonparam_sig,
+          file = "data/oh8243_hats_nonparam_sig.csv")
+```
+
+#### Parametric
+Or we can assume data are normally distributed
+```{r}
+# run series of t-tests
+oh8243_hats_param <- metab_imputed_clustered_long_log2 %>%
+  filter(tomato == "OH8243" | tomato == "HATS") %>%
+  dplyr::select(sample_name, tomato, mz_rt, rel_abund) %>%
+  group_by(mz_rt) %>%
+  t_test(rel_abund ~ tomato, 
+         paired = FALSE, 
+         detailed = TRUE, # gives you more detail in output
+         p.adjust.method = "BH") %>% # Benjamini-Hochberg false discovery rate multiple testing correction
+  add_significance() %>%
+  arrange(p)
+
+# extract out only the significantly different features
+oh8243_hats_param_sig <- oh8243_hats_param %>%
+  filter(p <= 0.05)
+
+# how many features are significantly different between the groups?
+nrow(oh8243_hats_param_sig)
+```
+
+Let's do the same thing again here with a boxplot.
+
+```{r}
+metab_imputed_clustered_long_log2 %>%
+  filter(mz_rt == "474.357920874411_5.0924287") %>%
+  filter(tomato == "HATS" | tomato == "OH8243") %>%
+  ggplot(aes(x = tomato, y = rel_abund, color = tomato)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter() +
+  theme(legend.position = "none") +
+  labs(x = "Sample type",
+       y = "Log2 relative abundance of 474.357920874411_5.0924287",
+       title = "Difference in log2 relative abundance of 474.357920874411_5.0924287 \nbetween OH8243 and HATS")
+```
+
+
+Write out the significantly different features.
+```{r, eval = FALSE}
+write_csv(oh8243_hats_nonparam_sig,
+          file = "data/oh8243_hats_param_sig.csv")
+```
+
+
+#### Volcano plot
+
+Let's make a volcano plot so we can see which features are significantly different between OH8243 and HATS.
+
+First we wrangle.
+```{r}
+oh8243_hats_FC <- metab_imputed_clustered_long_log2 %>%
+  filter(tomato == "OH8243" | tomato == "HATS") %>%
+  group_by(tomato, mz_rt) %>%
+  summarize(mean = mean(rel_abund)) %>%
+  pivot_wider(names_from = tomato, values_from = mean) %>%
+  mutate(HATS_minus_OH8243_log2FC = (HATS - OH8243))
+
+oh8243_hats_FC_pval <- left_join(oh8243_hats_FC, oh8243_hats_param, by = "mz_rt") %>%
+  mutate(neglog10p = -log10(p))
+
+head(oh8243_hats_FC_pval)
+```
+
+Looking at features that are at least 2 fold change between groups and significantly different at p<0.05.
+```{r}
+higher_HATS <- oh8243_hats_FC_pval %>%
+  filter(neglog10p >= 1.3 & HATS_minus_OH8243_log2FC >= 1)
+
+higher_OH8243 <- oh8243_hats_FC_pval %>%
+  filter(neglog10p >= 1.3 & HATS_minus_OH8243_log2FC <= -1)
+
+(oh8243_hats_volcano <- oh8243_hats_FC_pval %>%
+  ggplot(aes(x = HATS_minus_OH8243_log2FC, y = neglog10p, text = mz_rt)) +
+  geom_point() +
+  geom_point(data = higher_HATS, 
+             aes(x = HATS_minus_OH8243_log2FC, y = neglog10p),
+             color = "red") +
+  geom_point(data = higher_OH8243, 
+             aes(x = HATS_minus_OH8243_log2FC, y = neglog10p),
+             color = "blue") +
+  geom_hline(yintercept = 1.3, linetype = "dashed") +
+  geom_vline(xintercept = -1, linetype = "dashed") +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  labs(x = "-log2 fold change",
+       y = "-log10 p-value",
+       title = "OH8243 vs HATS, positive mode",
+       subtitle = "Higher in HATS on top right (red), higher in OH8243 on top left (blue)",
+       caption = "Dotted lines represent a 2 fold difference between groups and a p-value < 0.05"))
+```
+
+Make the plot interactive.
+```{r}
+ggplotly(oh8243_hats_volcano, tooltip = "text")
+```
+

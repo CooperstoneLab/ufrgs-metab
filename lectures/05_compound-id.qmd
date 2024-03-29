@@ -1,6 +1,13 @@
 ---
 title: "Compound identification"
 author: "Jessica Cooperstone"
+format: 
+  revealjs:
+    slide-number: true
+    logo: "img/noun-metabolomics.png"
+    footer: "© Jessica Cooperstone, 2024"
+    theme: simple
+    echo: true
 ---
 
 Lecture slides can be found here.
