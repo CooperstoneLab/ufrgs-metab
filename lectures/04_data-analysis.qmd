@@ -139,16 +139,28 @@ log2 %>%
 
 -   How can we go about assessing if our data is of high quality when we have thousands of features and don't know what to expect?
 
-## Univariate testing, the basics
+## Overlay your BPCs
+
+## Create boxplots of features by sample
+
+## Your QCs should cluster in a PCA
+
+## Univariate testing, the categories
 
 ::: incremental
 -   Two group tests
     -   t-test (parametric)
-    -   Wilcoxon rank sum test (non-parameric
+    -   Wilcoxon rank sum test (non-parameric)
 -   More than two group tests
     -   ANOVA (parametric)
     -   Kruskal Wallis test (non-parametric)
     -   Both followed by post-hoc means separation
 :::
+
+## Big p, little n: the curse of dimensionality
+
+-   With metabolomics, we almost always have more features (p) than samples (n)
+-   This means we are making a lot of comparisons
+
 
 ## Multivariate testing

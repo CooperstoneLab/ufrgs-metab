@@ -674,7 +674,7 @@ class(features)
 
 ### Find connections
 Set `cache = TRUE` for this chunk since its a bit slow especially if you have a lot of features.  Here, this step took 25 min for almost 7K features or 5 min for just over 2K features.
-```{r, cache = TRUE}
+```{r, cache = TRUE, warning = FALSE, message = FALSE}
 connection <- find_connections(data = data_notame,
                                features = features,
                                corr_thresh = 0.9,
@@ -969,8 +969,10 @@ PC2_percent_qc <- round((importance_qc[2,2])*100, 1)
   theme_minimal() +
   labs(x = glue("PC1: {PC1_percent_qc}%"), 
        y = glue("PC2: {PC2_percent_qc}%"), 
-       title = "PCA Scores Plot Colored by Tomato Type"))
+       title = "PCA Scores Plot by Tomato Type"))
 ```
+
+
 
 Then make your scores plot ineractive so you can see who is who.
 ```{r}
@@ -984,6 +986,7 @@ fviz_pca_var(pca_qc)
 ```
 
 See what I mean? Not that useful. There are some functions in PCAtools that label only the points that most contribute to each PC. Could also do this manually if its of interest.
+
 
 ### Without QCs
 ```{r}
@@ -1190,8 +1193,18 @@ metab_imputed_clustered_long_log2 %>%
   labs(x = "Sample type",
        y = "Log2 relative abundance of 474.357920874411_5.0924287",
        title = "Difference in log2 relative abundance of 474.357920874411_5.0924287 \nbetween OH8243 and HATS")
-```
 
+plot <- metab_imputed_clustered_long_log2 %>%
+  filter(mz_rt == "474.357920874411_5.0924287") %>%
+  filter(tomato == "HATS" | tomato == "OH8243") %>%
+  ggplot(aes(x = tomato, y = rel_abund, color = tomato)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter() +
+  theme(legend.position = "none") +
+  labs(x = "Sample type",
+       y = "Log2 relative abundance of 474.3579_5.092",
+       title = "Difference in log2 relative abundance of 474.3579_5.092 \nbetween OH8243 and HATS")
+```
 
 Write out the significantly different features.
 ```{r, eval = FALSE}

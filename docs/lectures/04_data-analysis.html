@@ -474,6 +474,49 @@ Jessica Cooperstone
 <li class="fragment">Adjust based on total signal (used in older papers and for NMR but not really in MS)</li>
 </ul>
 </div>
+</section>
+<section id="assessing-data-quality" class="slide level2">
+<h2>Assessing data quality</h2>
+<ul>
+<li>How can we go about assessing if our data is of high quality when we have thousands of features and don’t know what to expect?</li>
+</ul>
+</section>
+<section id="overlay-your-bpcs" class="slide level2">
+<h2>Overlay your BPCs</h2>
+</section>
+<section id="create-boxplots-of-features-by-sample" class="slide level2">
+<h2>Create boxplots of features by sample</h2>
+</section>
+<section id="your-qcs-should-cluster-in-a-pca" class="slide level2">
+<h2>Your QCs should cluster in a PCA</h2>
+</section>
+<section id="univariate-testing-the-categories" class="slide level2">
+<h2>Univariate testing, the categories</h2>
+<div>
+<ul>
+<li class="fragment">Two group tests
+<ul>
+<li class="fragment">t-test (parametric)</li>
+<li class="fragment">Wilcoxon rank sum test (non-parameric)</li>
+</ul></li>
+<li class="fragment">More than two group tests
+<ul>
+<li class="fragment">ANOVA (parametric)</li>
+<li class="fragment">Kruskal Wallis test (non-parametric)</li>
+<li class="fragment">Both followed by post-hoc means separation</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="big-p-little-n-the-curse-of-dimensionality" class="slide level2">
+<h2>Big p, little n: the curse of dimensionality</h2>
+<ul>
+<li>With metabolomics, we almost always have more features (p) than samples (n)</li>
+<li>This means we are making a lot of comparisons</li>
+</ul>
+</section>
+<section id="multivariate-testing" class="slide level2">
+<h2>Multivariate testing</h2>
 
 
 <img src="img/noun-metabolomics.png" class="slide-logo r-stretch"><div class="footer footer-default">
