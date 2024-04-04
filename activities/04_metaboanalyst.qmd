@@ -27,7 +27,7 @@ Before we upload our data, let's make sure its in a suitable format. If we go to
 
 We will start with doing statistics (one factor) and we have a peak intensity table, so the file called [`lcms_table.csv`](https://www.xialab.ca/api/download/metaboanalyst/lcms_table.csv) is a good one for us to look at.
 
-![LCMS sample data](img/04/raw.png)
+![LCMS sample data](img/04/lc-ms-table.png)
 
 In this data, we have features in rows and samples in columns. There is also a header row which contains the unique sample names, and a second row called Label which contains the groups. We will need to adjust our data to look like this. This includes
 
@@ -44,5 +44,17 @@ In this data, we have features in rows and samples in columns. There is also a h
 Our data should now look like this:
 
 ![Our data ready to import into MetaboAnalyst](img/04/data-for-metaboanalyst.png)
+
+# Import into MetaboAnalyst
+
+# Data processing
+
+## Data check
+
+## Missing values
+
+## Data filters
+
+# Normalization
 
 

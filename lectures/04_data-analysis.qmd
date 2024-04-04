@@ -1,5 +1,5 @@
 ---
-title: "Data analysis"
+title: "Analysis of metabolomics data"
 author: "Jessica Cooperstone"
 format: 
   revealjs:
@@ -10,5 +10,145 @@ format:
     echo: true
 ---
 
-Lecture slides can be found here.
+```{r include = FALSE}
+library(tidyverse)
+library(glue)
+```
 
+## Now that we have our feature table, what happens next?
+
+::: incremental
+-   Data normalization/transformation/scaling
+-   Assess for quality (and make adjustments if needed)
+-   Univariate analysis (supervised)
+-   Multivariate analysis (supervised or unsupervised)
+:::
+
+## Data pre-treatment
+
+![](img/04/center-scaling-transformation.png)
+
+::: aside
+From [van den Berg et al., Genomics 2006](https://doi.org/10.1186/1471-2164-7-142)
+:::
+
+## Centering {style="font-size: 23px"}
+
+-   Centering converts all relative intensities to be centered around zero instead of around mean concentrations
+-   This is particularly useful in metabolomics given that more *intense* features are *not necessarily more abundant*
+-   I like to center when conducting principal components analysis (PCA, more on this later)
+
+::: columns
+::: {.column width="50%" style="font-size: 23px"}
+![](img/04/pca_not_centered.png)
+:::
+
+::: {.column width="50%" style="font-size: 23px"}
+![](img/04/pca_centered.png)
+:::
+:::
+
+## Scaling
+
+-   Uses data dispersion as a part of a scaling factor
+    -   Auto scaling: mean = 0, standard deviation = 1 (for each feature)
+    -   Pareto scaling: like auto but scaled to square root of the st dev. The most common scaling used for metabolomics
+    -   In general I find this not necessary and will just log transform (more coming next)
+
+## Log transformation - tables
+
+-   Reduce heteroscedasicity
+-   Makes large values proportionally smaller than small ones
+-   Makes distributions more normal
+
+```{r include = FALSE}
+transformations <- tribble(
+  ~sample, ~feature_1, ~feature_2,
+  "control", 10000, 1000,
+  "treatment", 11000, 2000
+)
+
+log2_transformations <- tribble(
+  ~sample, ~log2_feature_1, ~log2_feature_2,
+  "control", log2(10000), log2(1000),
+  "treatment", log2(11000), log2(2000)
+)
+```
+
+::: columns
+::: {.column width="50%" style="font-size: 23px"}
+```{r}
+#| echo: false
+knitr::kable(transformations)
+```
+:::
+
+::: {.column width="50%" style="font-size: 23px"}
+```{r}
+#| echo: false
+knitr::kable(log2_transformations, digits = 2)
+```
+:::
+:::
+
+## Log transformation - plots
+
+-   Log transforming can make your data look more normally distributed
+
+```{r include = FALSE}
+raw <- as.data.frame(rlnorm(10000,meanlog = 2,sdlog = 0.5)) %>% 
+  rename(value = 1)
+
+log2 <- raw %>%
+  mutate(value = log2(value))
+```
+
+::: columns
+::: {.column width="50%" style="font-size: 25px"}
+```{r}
+#| echo: false
+
+raw %>%
+  ggplot(aes(x = value)) +
+  geom_histogram(color = "black") +
+  labs(title = "A left skewed distribution")
+```
+:::
+
+::: {.column width="50%" style="font-size: 25px"}
+```{r}
+#| echo: false
+#| 
+log2 %>%
+  ggplot(aes(x = value)) +
+  geom_histogram(color = "black") +
+  labs(title = "Same distribution log2 normalized")
+```
+:::
+:::
+
+## Sample wise normalization
+
+::: incremental
+-   Adjust based on weight or volume (very common)
+-   Adjust based on intensity of an internal standard (used sometimes)
+-   Adjust based on total signal (used in older papers and for NMR but not really in MS)
+:::
+
+## Assessing data quality
+
+-   How can we go about assessing if our data is of high quality when we have thousands of features and don't know what to expect?
+
+## Univariate testing, the basics
+
+::: incremental
+-   Two group tests
+    -   t-test (parametric)
+    -   Wilcoxon rank sum test (non-parameric
+-   More than two group tests
+    -   ANOVA (parametric)
+    -   Kruskal Wallis test (non-parametric)
+    -   Both followed by post-hoc means separation
+:::
+
+## Multivariate testing

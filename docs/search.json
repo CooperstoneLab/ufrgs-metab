@@ -551,5 +551,82 @@
     "title": "Design your own experiment",
     "section": "",
     "text": "Get together in small groups and spend ~10-15 min designing a metabolomics experiment around a research question of one (or more than one) of the group members. After this discussion period, we will reconvene in our larger group and each team will share the following information about your experiments:\n\nWhat was your research question?\nWhat is your hypothesis?\nWhat samples are you selecting to analyze?\nHow will they be collected?\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#now-that-we-have-our-feature-table-what-happens-next",
+    "href": "lectures/04_data-analysis.html#now-that-we-have-our-feature-table-what-happens-next",
+    "title": "Analysis of metabolomics data",
+    "section": "Now that we have our feature table, what happens next?",
+    "text": "Now that we have our feature table, what happens next?\n\n\nData normalization/transformation/scaling\nAssess for quality (and make adjustments if needed)\nUnivariate analysis (supervised)\nMultivariate analysis (supervised or unsupervised)"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#data-pre-treatment-approaches",
+    "href": "lectures/04_data-analysis.html#data-pre-treatment-approaches",
+    "title": "Analysis of metabolomics data",
+    "section": "Data pre-treatment approaches",
+    "text": "Data pre-treatment approaches\n\n\nNormalize sample-wise\n\nRelative to a reference feature (i.e., internal standard)\nBy sample weight or volume\n\nNormalize feature-wise\n\nCentering\nScaling\nTransformation"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#data-pre-treatment",
+    "href": "lectures/04_data-analysis.html#data-pre-treatment",
+    "title": "Analysis of metabolomics data",
+    "section": "Data pre-treatment",
+    "text": "Data pre-treatment\n\n\n\nFrom van den Berg et al., Genomics 2006"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#centering",
+    "href": "lectures/04_data-analysis.html#centering",
+    "title": "Analysis of metabolomics data",
+    "section": "Centering",
+    "text": "Centering\n\nCentering converts all relative intensities to be centered around zero instead of around mean concentrations\nThis is particularly useful in metabolomics given that more intense features are not necessarily more abundant\nI like to center when conducting principal components analysis (PCA, more on this later)"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#scaling",
+    "href": "lectures/04_data-analysis.html#scaling",
+    "title": "Analysis of metabolomics data",
+    "section": "Scaling",
+    "text": "Scaling\n\nUses data dispersion as a part of a scaling factor\n\nAuto scaling: mean = 0, standard deviation = 1 (for each feature)\nPareto scaling: like auto but scaled to square root of the st dev. The most common scaling used for metabolomics\nIn general I find this not necessary and will just log transform (more coming next)"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#transformation",
+    "href": "lectures/04_data-analysis.html#transformation",
+    "title": "Analysis of metabolomics data",
+    "section": "Transformation",
+    "text": "Transformation\n\nMakes large values proportionally smaller than small ones\n\n\n\n\n\n\n\n\nsample\nfeature_1\nfeature_2\n\n\n\n\ncontrol\n10000\n1000\n\n\ntreatment\n9000\n2000\n\n\n\n\n\n\n\n\n\n\n\nsample\nfeature_1\nfeature_2\n\n\n\n\ncontrol\n13.29\n9.97\n\n\ntreatment\n13.14\n10.97"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#sample-wise-normalization",
+    "href": "lectures/04_data-analysis.html#sample-wise-normalization",
+    "title": "Analysis of metabolomics data",
+    "section": "Sample wise normalization",
+    "text": "Sample wise normalization\n\n\nAdjust based on weight or volume (very common)\nAdjust based on intensity of an internal standard (used sometimes)\nAdjust based on total signal (used in older papers and for NMR but not really in MS)\n\n\n\n\n\n© Jessica Cooperstone, 2024"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#log-transofmrations",
+    "href": "lectures/04_data-analysis.html#log-transofmrations",
+    "title": "Analysis of metabolomics data",
+    "section": "Log transofmrations",
+    "text": "Log transofmrations\n\nraw &lt;- as.data.frame(rbeta(10000,2,10)) %&gt;% \n  rename(dist = 1)\n\nraw %&gt;%\n  ggplot(aes(x = dist)) +\n  geom_histogram(bins = 50, color = \"black\")\n\n\n\nlog2 &lt;- raw %&gt;%\n  mutate(dist = log2(dist))\n\nlog2 %&gt;%\n  ggplot(aes(x = dist)) +\n  geom_histogram(bins = 50, color = \"black\")"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#log-transformations",
+    "href": "lectures/04_data-analysis.html#log-transformations",
+    "title": "Analysis of metabolomics data",
+    "section": "Log transformations",
+    "text": "Log transformations\n\nraw &lt;- as.data.frame(rbeta(10000,2,10)) %&gt;% \n  rename(dist = 1)\n\nraw %&gt;%\n  ggplot(aes(x = dist)) +\n  geom_histogram(bins = 50, color = \"black\")\n\n\n\nlog2 &lt;- raw %&gt;%\n  mutate(dist = log2(dist))\n\nlog2 %&gt;%\n  ggplot(aes(x = dist)) +\n  geom_histogram(bins = 50, color = \"black\")"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#log-transformation---tables",
+    "href": "lectures/04_data-analysis.html#log-transformation---tables",
+    "title": "Analysis of metabolomics data",
+    "section": "Log transformation - tables",
+    "text": "Log transformation - tables\n\nReduce heteroscedasicity\nMakes large values proportionally smaller than small ones\nMakes distributions more normal\n\n\n\n\n\n\n\n\nsample\nfeature_1\nfeature_2\n\n\n\n\ncontrol\n10000\n1000\n\n\ntreatment\n11000\n2000\n\n\n\n\n\n\n\n\n\n\n\nsample\nlog2_feature_1\nlog2_feature_2\n\n\n\n\ncontrol\n13.29\n9.97\n\n\ntreatment\n13.43\n10.97"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#log-transformation---plots",
+    "href": "lectures/04_data-analysis.html#log-transformation---plots",
+    "title": "Analysis of metabolomics data",
+    "section": "Log transformation - plots",
+    "text": "Log transformation - plots\n\nLog transforming can make your data look more normally distributed"
   }
 ]
