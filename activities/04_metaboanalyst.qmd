@@ -35,11 +35,11 @@ In this data, we have features in rows and samples in columns. There is also a h
 
 ![Add a row which contains Label and the tomato identities](img/04/add-label.png)
 
--   Creating a single column with the mz_rt as a unique identifier. We can do this with the function `=CONCATENATE()` in Excel. Then we can fill down the row. Then be sure to copy this column and `Paste` > `Paste special` > `Values` since when we later remove some of the other columns that are inputs to this one, the formulas will break.
+-   Creating a single column with the mz_rt as a unique identifier. We can do this with the function `=CONCATENATE()` in Excel. Then we can fill down the row. Then be sure to copy this column and `Paste` \> `Paste special` \> `Values` since when we later remove some of the other columns that are inputs to this one, the formulas will break.
 
 ![How to combine the row m/z and row retention time columns to be one unique mz_rt](img/04/add-mz_rt.png)
 
--   Now we can remove row ID, row m/z and row retention time. 
+-   Now we can remove row ID, row m/z and row retention time.
 
 Our data should now look like this:
 
@@ -47,14 +47,122 @@ Our data should now look like this:
 
 # Import into MetaboAnalyst
 
+Remember that when you are using MetaboAnalyst through the web browser that it will eventually time out, so starting an analysis, and walking away for a period of time is not a good idea. Make sure you keep good notes on what you do during your analysis.
+
+Navigate to <https://www.metaboanalyst.ca/> and click on the red "Click here to start button".
+
+![Get started in MetaboAnalyst](img/04/metaboanalyst-start.png)
+
+We have already processed out spectra so we are going to click on Statistical Analysis (one factor).
+
+![Begin statistical analysis in MetaboAnalyst](img/04/metaboanalyst-start.png)
+
+Now we want to upload our data. We have our file saved as a .csv and our data is as peak intensities. In our case, samples are in columns and data is unpaired. Once we have done this, we can press submit just to the right of our input.
+
+![Upload our data](img/04/upload.png)
+
 # Data processing
 
 ## Data check
 
+Once the data has been imported, we can first look at the data integrity check.
+
+![Data integrity check](img/04/integrity-check.png)
+
+We see that:
+
+-   Samples are in columns and features in rows
+-   Our data is in `.csv` format
+-   We have 42 samples and 2514 peaks - this is what we would expect
+-   Samples are not paired - this is what we would expect
+-   3 groups were dtected - I might expect 4 groups - OH8243, LA2213, HATS, and QCs. If we click the "Edit Groups" button we can see that the Label for each of our groups has inherited correctly, but that it seems like QC isn't being counted as a group.
+-   A total of 0 (0%) missing values were detected - this makes sense as data that is missing here is coded as zero.
+
+If we agree with this, we can click Proceed. MetaboAnalyst will bring you directly to the Data filtering step, but we can go back one to see how missing values are handled.
+
 ## Missing values
+
+Here you can tell MetaboAnalyst what you want done with missing values. Here we don't have any, but if you did you could indicate:
+
+-   Whether you want to remove features that have a lot of missing values
+-   What you want to do to estimate the remaining missing values.
 
 ## Data filters
 
+In this step, we can filter variables based on different rules. These include:
+
+-   Features that are very variable i nthe QCs. We don't need to do this because we already did it manually.
+-   Features that are near constant across the conditions (i.e., those that have very low standard deviations)
+-   Features that are very low
+
+I prefer to do this kind of filtering outside of MetaboAnalyst - you could do this in Excel if you wanted to. Here, we are not going to do any more filtering. We can just click Proceed (and skip this filtering).
+
 # Normalization
 
+We can normalize our samples in different ways. MetaboAnalyst gives is 3 categories of transformation types:
 
+-   Sample normalization for general adjustment for systemic differences across samples. Here would could adjust by weight, by a reference features, or by total signal.
+-   Data transformation including by log (base 10), square root, or cubed room
+-   Data scaling
+
+You can pick a nornalization and view the result. This is nice because you can see what your normalization will do before picking the most appropriate one.
+
+For example, I am going to try just log10 transforming my samples. When I do this, I can look at the result from both a feature and sample view.
+
+::: panel-tabset
+## Feature view
+![Feature view after log10 normalization](img/04/log10-feature-view.png)
+
+## Sample view
+![Sample view after log10 normalization](img/04/log10-sample-view.png)
+:::
+
+I can contrast this with a log10 transformation and then Pareto scaling.
+
+::: panel-tabset
+## Feature view
+![Feature view after log10 normalization](img/04/log10-pareto-feature-view.png)
+
+## Sample view
+![Sample view after log10 normalization](img/04/log10-pareto-sample-view.png)
+:::
+
+# Statistics
+
+Now that our data is set, we can use different analysis methods to understand our data quality, and differences among sample groups. Remember, there are analyses we want to do both with and without the QCs. I like to see a PCA that includes the QCs, but then I'd remove them and retain our three tomato groups for further analysis.
+
+Let's look with our QCs at the PCA first, and then we will remove those samples.
+
+## PCA
+
+![](img/04/pca-qcs-scores-5PC.png)
+
+![](img/04/pca-qc-scree.png)
+
+![](img/04/pca-qc-scores.png)
+
+![](img/04/pca-qc-loadings.png)
+
+![](img/04/578.5296215_5.0895395_qc.png)
+
+
+That that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to `Processing` > `Data editor` in the left part of the browser.
+
+![](img/04/data-editor.png)
+
+Don't forget to re-normalize.
+
+## PCA
+
+## ANOVA
+
+## Dendrogram (i.e., hierarchical clustering)
+
+## K-means (a different type of clustering)
+
+## Correlations
+
+## Random forest
+
+
+## Pattern hunter

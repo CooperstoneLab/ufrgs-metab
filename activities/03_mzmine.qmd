@@ -79,13 +79,17 @@ This will allow Jess to add you to our OSC project which will direct the billing
 
 ### Log onto OSC
 
-Navigate to <https://ondemand.osc.edu/> and log in. Make sure you are using PASXXXX.
+Navigate to <https://ondemand.osc.edu/> and log in. Make sure you are using **PAS2568**.
 
 ### Download the portable Linux version of MZmine
 
 MZmine has a portal Linux version which you can download while on OSC, and then use. Navigate to <https://ondemand.osc.edu/>. You can open a Pitzer desktop session.
 
 ![Accessing Pitzer on OSC](img/03/pitzer.png)
+
+You can use the parameters below for launching the Pitzer desktop. Make sure you select project **PAS2568**. You can adjust how many hours you need based on what time you have. Then click "Launch" in blue at the bottom.
+
+![Set parameters for launching a Pitzer desktop](img/03/pitzer-params.png)
 
 Once you are in Pitzer desktop, you can open an internet browser and navigate to <https://github.com/mzmine/mzmine3/releases/tag/v3.9.0>. At the time I put this tutorial together, the most recent version of MZmine is 3.9.0. Download the version for the Linux portable version.
 
