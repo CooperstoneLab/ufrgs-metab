@@ -10,5 +10,6 @@ format:
     echo: true
 ---
 
-Lecture slides can be found here.
+## Generalized approaches to compound ID
 
+## Starting with a *m*/*z*

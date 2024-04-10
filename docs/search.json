@@ -347,7 +347,7 @@
     "href": "activities/05_R.html",
     "title": "Data analysis with R",
     "section": "",
-    "text": "We aren’t going to go over this in the workshop, but I wanted to show you an example of the workflow my team might use for doing the first pass analysis of metabolomics data. We are going to use the feature table directly from MZmine (without any filtering) and will conduct our filtering and analysis in R.\n\n\n\nlibrary(factoextra) # visualizing PCA results\nlibrary(glue) # for easy pasting\nlibrary(plotly) # quick interactive plots\nlibrary(proxyC) # more efficient large matrices\nlibrary(data.table) # easy transposing\nlibrary(janitor) # for cleaning names and checking duplicates\nlibrary(notame) # for collapsing ions coming from the same metabolite\nlibrary(doParallel) # for parallelizing notame specifically\nlibrary(patchwork) # for making multi-panel plots\nlibrary(rstatix) # for additional univariate functionality\n\n# this is at the end hoping that the default select will be that from dplyr\nlibrary(tidyverse) # for everything\n\nOnce you get deconvoluted data from MZmine or similar programs, you need to wrangle your data in such a way that you can conduct your analysis on it.\n\n\n\nFirst we want to read in our raw data. The code here is to read in data directly from MZmine.\n\nmetabdata &lt;- read_csv(file = \"data/Feature_list_MZmine_2560.csv\",\n                      col_names = TRUE) # has headers\n\nNew names:\nRows: 2560 Columns: 49\n── Column specification\n──────────────────────────────────────────────────────── Delimiter: \",\" dbl\n(48): row ID, row m/z, row retention time, HATS_402_041.mzML Peak height... lgl\n(1): ...49\nℹ Use `spec()` to retrieve the full column specification for this data. ℹ\nSpecify the column types or set `show_col_types = FALSE` to quiet this message.\n• `` -&gt; `...49`\n\ndim(metabdata)\n\n[1] 2560   49\n\n# look at beginning of the dataset\nmetabdata[1:8, 1:8]\n\n# A tibble: 8 × 8\n  `row ID` `row m/z` `row retention time` `HATS_402_041.mzML Peak height`\n     &lt;dbl&gt;     &lt;dbl&gt;                &lt;dbl&gt;                           &lt;dbl&gt;\n1     3106      100.                2.78                           26623.\n2      364      101.                0.611                         105494.\n3      453      102.                0.641                         413981.\n4     5568      103.                3.98                            9505.\n5     2723      103.                2.54                          196964.\n6     1424      104.                1.07                           75342.\n7      397      104.                0.630                         911384.\n8      426      104.                0.629                        2498815 \n# ℹ 4 more variables: `HATS_403_037.mzML Peak height` &lt;dbl&gt;,\n#   `HATS_404_040.mzML Peak height` &lt;dbl&gt;,\n#   `HATS_401_022.mzML Peak height` &lt;dbl&gt;,\n#   `HATS_408_043.mzML Peak height` &lt;dbl&gt;\n\n# how many features do we have?\nnrow(metabdata)\n\n[1] 2560\n\n\nNote there is no metadata included in this file. Just m/z, retention time, and a column for each sample, where values are peak heights. We are using peak height instead of peak area because it is less dependent on bad peak shape which you get sometimes with metabolomics.\n\ncolnames(metabdata)\n\n [1] \"row ID\"                          \"row m/z\"                        \n [3] \"row retention time\"              \"HATS_402_041.mzML Peak height\"  \n [5] \"HATS_403_037.mzML Peak height\"   \"HATS_404_040.mzML Peak height\"  \n [7] \"HATS_401_022.mzML Peak height\"   \"HATS_408_043.mzML Peak height\"  \n [9] \"HATS_405_025.mzML Peak height\"   \"HATS_406_055.mzML Peak height\"  \n[11] \"HATS_407_059.mzML Peak height\"   \"HATS_412_019.mzML Peak height\"  \n[13] \"HATS_409_056.mzML Peak height\"   \"HATS_410_018.mzML Peak height\"  \n[15] \"HATS_411_044.mzML Peak height\"   \"LA2213_602_035.mzML Peak height\"\n[17] \"LA2213_603_045.mzML Peak height\" \"LA2213_601_051.mzML Peak height\"\n[19] \"LA2213_604_016.mzML Peak height\" \"LA2213_605_017.mzML Peak height\"\n[21] \"LA2213_607_032.mzML Peak height\" \"LA2213_608_024.mzML Peak height\"\n[23] \"LA2213_606_033.mzML Peak height\" \"LA2213_609_058.mzML Peak height\"\n[25] \"LA2213_610_050.mzML Peak height\" \"LA2213_612_046.mzML Peak height\"\n[27] \"OH8243_801_036.mzML Peak height\" \"OH8243_802_026.mzML Peak height\"\n[29] \"OH8243_803_030.mzML Peak height\" \"OH8243_805_057.mzML Peak height\"\n[31] \"LA2213_611_061.mzML Peak height\" \"OH8243_804_029.mzML Peak height\"\n[33] \"OH8243_806_027.mzML Peak height\" \"OH8243_809_063.mzML Peak height\"\n[35] \"OH8243_807_053.mzML Peak height\" \"OH8243_810_049.mzML Peak height\"\n[37] \"OH8243_808_038.mzML Peak height\" \"OH8243_812_060.mzML Peak height\"\n[39] \"OH8243_811_028.mzML Peak height\" \"PB_02_006.mzML Peak height\"     \n[41] \"PB_03_007.mzML Peak height\"      \"PB_01_005.mzML Peak height\"     \n[43] \"QC_02_031.mzML Peak height\"      \"QC_04_047.mzML Peak height\"     \n[45] \"QC_01_023.mzML Peak height\"      \"QC_03_039.mzML Peak height\"     \n[47] \"QC_05_054.mzML Peak height\"      \"QC_06_062.mzML Peak height\"     \n[49] \"...49\"                          \n\n\nIt looks like we have an extra blank column at the end - if we look at our raw data we can see OH9243_811_028 is the last sample, so I am going to remove the last column\n\nmetabdata &lt;- metabdata[,-49]\n\ncolnames(metabdata)\n\n [1] \"row ID\"                          \"row m/z\"                        \n [3] \"row retention time\"              \"HATS_402_041.mzML Peak height\"  \n [5] \"HATS_403_037.mzML Peak height\"   \"HATS_404_040.mzML Peak height\"  \n [7] \"HATS_401_022.mzML Peak height\"   \"HATS_408_043.mzML Peak height\"  \n [9] \"HATS_405_025.mzML Peak height\"   \"HATS_406_055.mzML Peak height\"  \n[11] \"HATS_407_059.mzML Peak height\"   \"HATS_412_019.mzML Peak height\"  \n[13] \"HATS_409_056.mzML Peak height\"   \"HATS_410_018.mzML Peak height\"  \n[15] \"HATS_411_044.mzML Peak height\"   \"LA2213_602_035.mzML Peak height\"\n[17] \"LA2213_603_045.mzML Peak height\" \"LA2213_601_051.mzML Peak height\"\n[19] \"LA2213_604_016.mzML Peak height\" \"LA2213_605_017.mzML Peak height\"\n[21] \"LA2213_607_032.mzML Peak height\" \"LA2213_608_024.mzML Peak height\"\n[23] \"LA2213_606_033.mzML Peak height\" \"LA2213_609_058.mzML Peak height\"\n[25] \"LA2213_610_050.mzML Peak height\" \"LA2213_612_046.mzML Peak height\"\n[27] \"OH8243_801_036.mzML Peak height\" \"OH8243_802_026.mzML Peak height\"\n[29] \"OH8243_803_030.mzML Peak height\" \"OH8243_805_057.mzML Peak height\"\n[31] \"LA2213_611_061.mzML Peak height\" \"OH8243_804_029.mzML Peak height\"\n[33] \"OH8243_806_027.mzML Peak height\" \"OH8243_809_063.mzML Peak height\"\n[35] \"OH8243_807_053.mzML Peak height\" \"OH8243_810_049.mzML Peak height\"\n[37] \"OH8243_808_038.mzML Peak height\" \"OH8243_812_060.mzML Peak height\"\n[39] \"OH8243_811_028.mzML Peak height\" \"PB_02_006.mzML Peak height\"     \n[41] \"PB_03_007.mzML Peak height\"      \"PB_01_005.mzML Peak height\"     \n[43] \"QC_02_031.mzML Peak height\"      \"QC_04_047.mzML Peak height\"     \n[45] \"QC_01_023.mzML Peak height\"      \"QC_03_039.mzML Peak height\"     \n[47] \"QC_05_054.mzML Peak height\"      \"QC_06_062.mzML Peak height\"     \n\n\n\n\n\nYou might have deconvoluted more data than you plan to use in your analysis. For example, you may want to exclude the first bit and last bit of your run, since you do not expect to have good reproducibility in those areas.\nHere, we are filtering to only include features that elute between 0.5-7.5 min of this 10 min run. Let’s check what we have.\n\nrange(metabdata$`row retention time`)\n\n[1] 0.5184004 7.4863230\n\n\nOur data is already filtered for our desired retention time range, so we don’t need to do anything. Below is some code you could use to filter if you needed to.\n\nmetabdata_RTfilt &lt;- metabdata %&gt;%\n  filter(between(`row retention time`, 0.5, 7.5))\n\n# did it work?\nrange(metabdata_RTfilt$`row retention time`)\n\n# how many features do we have?\ndim(metabdata_RTfilt)"
+    "text": "We aren’t going to go over this in the workshop, but I wanted to show you an example of the workflow my team might use for doing the first pass analysis of metabolomics data. We are going to use the feature table directly from MZmine (without any filtering) and will conduct our filtering and analysis in R.\n\n\n\nlibrary(factoextra) # visualizing PCA results\nlibrary(glue) # for easy pasting\nlibrary(plotly) # quick interactive plots\nlibrary(proxyC) # more efficient large matrices\nlibrary(data.table) # easy transposing\nlibrary(janitor) # for cleaning names and checking duplicates\nlibrary(notame) # for collapsing ions coming from the same metabolite\nlibrary(doParallel) # for parallelizing notame specifically\nlibrary(patchwork) # for making multi-panel plots\nlibrary(rstatix) # for additional univariate functionality\nlibrary(philentropy) # for hierarchical clustering\nlibrary(ggdendro) # for hierarchical clustering plotting\nlibrary(ropls) # for pls\n\n# this is at the end hoping that the default select will be that from dplyr\nlibrary(tidyverse) # for everything\n\nOnce you get deconvoluted data from MZmine or similar programs, you need to wrangle your data in such a way that you can conduct your analysis on it.\n\n\n\nFirst we want to read in our raw data. The code here is to read in data directly from MZmine.\n\nmetabdata &lt;- read_csv(file = \"data/Feature_list_MZmine_2560.csv\",\n                      col_names = TRUE) # has headers\n\nNew names:\nRows: 2560 Columns: 49\n── Column specification\n──────────────────────────────────────────────────────── Delimiter: \",\" dbl\n(48): row ID, row m/z, row retention time, HATS_402_041.mzML Peak height... lgl\n(1): ...49\nℹ Use `spec()` to retrieve the full column specification for this data. ℹ\nSpecify the column types or set `show_col_types = FALSE` to quiet this message.\n• `` -&gt; `...49`\n\ndim(metabdata)\n\n[1] 2560   49\n\n# look at beginning of the dataset\nmetabdata[1:8, 1:8]\n\n# A tibble: 8 × 8\n  `row ID` `row m/z` `row retention time` `HATS_402_041.mzML Peak height`\n     &lt;dbl&gt;     &lt;dbl&gt;                &lt;dbl&gt;                           &lt;dbl&gt;\n1     3106      100.                2.78                           26623.\n2      364      101.                0.611                         105494.\n3      453      102.                0.641                         413981.\n4     5568      103.                3.98                            9505.\n5     2723      103.                2.54                          196964.\n6     1424      104.                1.07                           75342.\n7      397      104.                0.630                         911384.\n8      426      104.                0.629                        2498815 \n# ℹ 4 more variables: `HATS_403_037.mzML Peak height` &lt;dbl&gt;,\n#   `HATS_404_040.mzML Peak height` &lt;dbl&gt;,\n#   `HATS_401_022.mzML Peak height` &lt;dbl&gt;,\n#   `HATS_408_043.mzML Peak height` &lt;dbl&gt;\n\n# how many features do we have?\nnrow(metabdata)\n\n[1] 2560\n\n\nNote there is no metadata included in this file. Just m/z, retention time, and a column for each sample, where values are peak heights. We are using peak height instead of peak area because it is less dependent on bad peak shape which you get sometimes with metabolomics.\n\ncolnames(metabdata)\n\n [1] \"row ID\"                          \"row m/z\"                        \n [3] \"row retention time\"              \"HATS_402_041.mzML Peak height\"  \n [5] \"HATS_403_037.mzML Peak height\"   \"HATS_404_040.mzML Peak height\"  \n [7] \"HATS_401_022.mzML Peak height\"   \"HATS_408_043.mzML Peak height\"  \n [9] \"HATS_405_025.mzML Peak height\"   \"HATS_406_055.mzML Peak height\"  \n[11] \"HATS_407_059.mzML Peak height\"   \"HATS_412_019.mzML Peak height\"  \n[13] \"HATS_409_056.mzML Peak height\"   \"HATS_410_018.mzML Peak height\"  \n[15] \"HATS_411_044.mzML Peak height\"   \"LA2213_602_035.mzML Peak height\"\n[17] \"LA2213_603_045.mzML Peak height\" \"LA2213_601_051.mzML Peak height\"\n[19] \"LA2213_604_016.mzML Peak height\" \"LA2213_605_017.mzML Peak height\"\n[21] \"LA2213_607_032.mzML Peak height\" \"LA2213_608_024.mzML Peak height\"\n[23] \"LA2213_606_033.mzML Peak height\" \"LA2213_609_058.mzML Peak height\"\n[25] \"LA2213_610_050.mzML Peak height\" \"LA2213_612_046.mzML Peak height\"\n[27] \"OH8243_801_036.mzML Peak height\" \"OH8243_802_026.mzML Peak height\"\n[29] \"OH8243_803_030.mzML Peak height\" \"OH8243_805_057.mzML Peak height\"\n[31] \"LA2213_611_061.mzML Peak height\" \"OH8243_804_029.mzML Peak height\"\n[33] \"OH8243_806_027.mzML Peak height\" \"OH8243_809_063.mzML Peak height\"\n[35] \"OH8243_807_053.mzML Peak height\" \"OH8243_810_049.mzML Peak height\"\n[37] \"OH8243_808_038.mzML Peak height\" \"OH8243_812_060.mzML Peak height\"\n[39] \"OH8243_811_028.mzML Peak height\" \"PB_02_006.mzML Peak height\"     \n[41] \"PB_03_007.mzML Peak height\"      \"PB_01_005.mzML Peak height\"     \n[43] \"QC_02_031.mzML Peak height\"      \"QC_04_047.mzML Peak height\"     \n[45] \"QC_01_023.mzML Peak height\"      \"QC_03_039.mzML Peak height\"     \n[47] \"QC_05_054.mzML Peak height\"      \"QC_06_062.mzML Peak height\"     \n[49] \"...49\"                          \n\n\nIt looks like we have an extra blank column at the end - if we look at our raw data we can see OH9243_811_028 is the last sample, so I am going to remove the last column\n\nmetabdata &lt;- metabdata[,-49]\n\ncolnames(metabdata)\n\n [1] \"row ID\"                          \"row m/z\"                        \n [3] \"row retention time\"              \"HATS_402_041.mzML Peak height\"  \n [5] \"HATS_403_037.mzML Peak height\"   \"HATS_404_040.mzML Peak height\"  \n [7] \"HATS_401_022.mzML Peak height\"   \"HATS_408_043.mzML Peak height\"  \n [9] \"HATS_405_025.mzML Peak height\"   \"HATS_406_055.mzML Peak height\"  \n[11] \"HATS_407_059.mzML Peak height\"   \"HATS_412_019.mzML Peak height\"  \n[13] \"HATS_409_056.mzML Peak height\"   \"HATS_410_018.mzML Peak height\"  \n[15] \"HATS_411_044.mzML Peak height\"   \"LA2213_602_035.mzML Peak height\"\n[17] \"LA2213_603_045.mzML Peak height\" \"LA2213_601_051.mzML Peak height\"\n[19] \"LA2213_604_016.mzML Peak height\" \"LA2213_605_017.mzML Peak height\"\n[21] \"LA2213_607_032.mzML Peak height\" \"LA2213_608_024.mzML Peak height\"\n[23] \"LA2213_606_033.mzML Peak height\" \"LA2213_609_058.mzML Peak height\"\n[25] \"LA2213_610_050.mzML Peak height\" \"LA2213_612_046.mzML Peak height\"\n[27] \"OH8243_801_036.mzML Peak height\" \"OH8243_802_026.mzML Peak height\"\n[29] \"OH8243_803_030.mzML Peak height\" \"OH8243_805_057.mzML Peak height\"\n[31] \"LA2213_611_061.mzML Peak height\" \"OH8243_804_029.mzML Peak height\"\n[33] \"OH8243_806_027.mzML Peak height\" \"OH8243_809_063.mzML Peak height\"\n[35] \"OH8243_807_053.mzML Peak height\" \"OH8243_810_049.mzML Peak height\"\n[37] \"OH8243_808_038.mzML Peak height\" \"OH8243_812_060.mzML Peak height\"\n[39] \"OH8243_811_028.mzML Peak height\" \"PB_02_006.mzML Peak height\"     \n[41] \"PB_03_007.mzML Peak height\"      \"PB_01_005.mzML Peak height\"     \n[43] \"QC_02_031.mzML Peak height\"      \"QC_04_047.mzML Peak height\"     \n[45] \"QC_01_023.mzML Peak height\"      \"QC_03_039.mzML Peak height\"     \n[47] \"QC_05_054.mzML Peak height\"      \"QC_06_062.mzML Peak height\"     \n\n\n\n\n\nYou might have deconvoluted more data than you plan to use in your analysis. For example, you may want to exclude the first bit and last bit of your run, since you do not expect to have good reproducibility in those areas.\nHere, we are filtering to only include features that elute between 0.5-7.5 min of this 10 min run. Let’s check what we have.\n\nrange(metabdata$`row retention time`)\n\n[1] 0.5184004 7.4863230\n\n\nOur data is already filtered for our desired retention time range, so we don’t need to do anything. Below is some code you could use to filter if you needed to.\n\nmetabdata_RTfilt &lt;- metabdata %&gt;%\n  filter(between(`row retention time`, 0.5, 7.5))\n\n# did it work?\nrange(metabdata_RTfilt$`row retention time`)\n\n# how many features do we have?\ndim(metabdata_RTfilt)"
   },
   {
     "objectID": "activities/05_R.html#read-in-data",
@@ -577,8 +577,8 @@
     "objectID": "lectures/04_data-analysis.html#now-that-we-have-our-feature-table-what-happens-next",
     "href": "lectures/04_data-analysis.html#now-that-we-have-our-feature-table-what-happens-next",
     "title": "Analysis of metabolomics data",
-    "section": "Now that we have our feature table, what happens next?",
-    "text": "Now that we have our feature table, what happens next?\n\n\nData normalization/transformation/scaling\nAssess for quality (and make adjustments if needed)\nUnivariate analysis (supervised)\nMultivariate analysis (supervised or unsupervised)"
+    "section": "",
+    "text": "Data normalization/transformation/scaling\nAssess for quality (and make adjustments if needed)\nUnivariate analysis (supervised)\nMultivariate analysis (supervised or unsupervised)"
   },
   {
     "objectID": "lectures/04_data-analysis.html#data-pre-treatment",
@@ -613,14 +613,14 @@
     "href": "lectures/04_data-analysis.html#log-transformation---plots",
     "title": "Analysis of metabolomics data",
     "section": "Log transformation - plots",
-    "text": "Log transformation - plots\n\nLog transforming can make your data look more normally distributed"
+    "text": "Log transformation - plots\n\nLog transforming can make your data look more normally distributed\n\n\n\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`."
   },
   {
     "objectID": "lectures/04_data-analysis.html#sample-wise-normalization",
     "href": "lectures/04_data-analysis.html#sample-wise-normalization",
     "title": "Analysis of metabolomics data",
     "section": "Sample wise normalization",
-    "text": "Sample wise normalization\n\n\nAdjust based on weight or volume (very common)\nAdjust based on intensity of an internal standard (used sometimes)\nAdjust based on total signal (used in older papers and for NMR but not really in MS)"
+    "text": "Sample wise normalization\n\nAdjust based on weight or volume (very common)\nAdjust based on intensity of an internal standard (used sometimes)\nAdjust based on total signal (used in older MS papers and for NMR but not really in MS)"
   },
   {
     "objectID": "lectures/04_data-analysis.html#assessing-data-quality",
@@ -634,14 +634,14 @@
     "href": "lectures/04_data-analysis.html#overlay-your-bpcs",
     "title": "Analysis of metabolomics data",
     "section": "Overlay your BPCs",
-    "text": "Overlay your BPCs"
+    "text": "Overlay your BPCs\n\n\n\nOverlaid base peak chromatograms in MZmine"
   },
   {
     "objectID": "lectures/04_data-analysis.html#create-boxplots-of-features-by-sample",
     "href": "lectures/04_data-analysis.html#create-boxplots-of-features-by-sample",
     "title": "Analysis of metabolomics data",
     "section": "Create boxplots of features by sample",
-    "text": "Create boxplots of features by sample"
+    "text": "Create boxplots of features by sample\n\n\nOrdering by sample groups \n\nOrdering by run order"
   },
   {
     "objectID": "lectures/04_data-analysis.html#your-qcs-should-cluster-in-a-pca",
@@ -662,7 +662,7 @@
     "href": "lectures/04_data-analysis.html#big-p-little-n-the-curse-of-dimensionality",
     "title": "Analysis of metabolomics data",
     "section": "Big p, little n: the curse of dimensionality",
-    "text": "Big p, little n: the curse of dimensionality\n\nWith metabolomics, we almost always have more features (p) than samples (n)\nThis means we are making a lot of comparisons"
+    "text": "Big p, little n: the curse of dimensionality\n\nWith metabolomics, we almost always have more features (p) than samples (n)\nThis means we are making a lot of comparisons\nIf we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.\nIf we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)\nIf we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p &lt; 0.05 but are not truly different between our groups"
   },
   {
     "objectID": "lectures/04_data-analysis.html#multivariate-testing",
@@ -719,5 +719,152 @@
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.7 Random forest",
     "text": "5.7 Random forest"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#zoom-in-and-look-at-your-bpcs-carefully",
+    "href": "lectures/04_data-analysis.html#zoom-in-and-look-at-your-bpcs-carefully",
+    "title": "Analysis of metabolomics data",
+    "section": "Zoom in and look at your BPCs carefully",
+    "text": "Zoom in and look at your BPCs carefully\n\n\n\nOverlaid base peak chromatograms in MassHunter"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#look-at-a-single-feature-for-retention-time-shifting",
+    "href": "lectures/04_data-analysis.html#look-at-a-single-feature-for-retention-time-shifting",
+    "title": "Analysis of metabolomics data",
+    "section": "Look at a single feature for retention time shifting",
+    "text": "Look at a single feature for retention time shifting\n\n\n\nOverlaid extracted ion chromatograms in MassHunter"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#ways-to-control-for-multiple-testing",
+    "href": "lectures/04_data-analysis.html#ways-to-control-for-multiple-testing",
+    "title": "Analysis of metabolomics data",
+    "section": "Ways to control for multiple testing",
+    "text": "Ways to control for multiple testing\n\nBonferroni correction: \\(α/number\\,of\\,comparisons\\) (very conservative, leads to false negatives)\nBenjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)\n\n\n\n\n\n\n\nFig. from https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#data-analysis-can-be-unsupervised-or-supervised",
+    "href": "lectures/04_data-analysis.html#data-analysis-can-be-unsupervised-or-supervised",
+    "title": "Analysis of metabolomics data",
+    "section": "Data analysis can be unsupervised or supervised",
+    "text": "Data analysis can be unsupervised or supervised\n\n\n\nUnsupervised (model does not know which samples belong to which groups):\n\nPrincipal components analysis (PCA)\nHierarchical clustering analysis (HCA)\nK-means clustering\n\n\n\n\nSupervised (model knows group composition):\n\nUnivariate (or multivariate) group comparisons\nPredictive/classification models\n\nPartial least squares regression (PLS-R)\nPLS-discriminant analysis (PLS-DA)\nRandom forest\nArtificial neural networks\nOthers"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#unsupervised-principal-components-analysis-pca",
+    "href": "lectures/04_data-analysis.html#unsupervised-principal-components-analysis-pca",
+    "title": "Analysis of metabolomics data",
+    "section": "Unsupervised: Principal Components Analysis (PCA)",
+    "text": "Unsupervised: Principal Components Analysis (PCA)\n\n\n\nA dimensionality reduction approach that transforms our data into a new system where principal coordinates (PCs) are drawn maximizing variation in our data.\nEach new PC is orthogonal to the previous one.\nCan interpret points closer together as more similar that those further apart\nThe loadings plot helps us understand which features are most influential for each PC\n\n\n\n\n\nFig from https://www.ibm.com/topics/principal-component-analysis"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#unsupervised-hierarchical-clustering-analysis-hca",
+    "href": "lectures/04_data-analysis.html#unsupervised-hierarchical-clustering-analysis-hca",
+    "title": "Analysis of metabolomics data",
+    "section": "Unsupervised: Hierarchical Clustering Analysis (HCA)",
+    "text": "Unsupervised: Hierarchical Clustering Analysis (HCA)\n\nAn approach “cluster” samples based on their distance/similarity\nFind two most similar samples and merge into cluster, and repeat\nDifferent methods for determining both distance and linkage\nThink of these like a phylogenic tree - samples that are closer together are more similar\nCan cluster samples, features, or both\nStatQuest video on hierarchical clustering"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#unsupervised-k-means-clustering",
+    "href": "lectures/04_data-analysis.html#unsupervised-k-means-clustering",
+    "title": "Analysis of metabolomics data",
+    "section": "Unsupervised: K-means clustering",
+    "text": "Unsupervised: K-means clustering\n\n\n\nRandomly assigns all samples to be a part of \\(k\\) clusters\nCalculates centroids and assigns samples to the nearest one\nIterates until centroids stability or reach some maximum\nCan figure out number of clusters using a scree plot to visualize within cluster sums\nStatQuest explains K-means clustering"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#supervised-univariate-testing-the-categories",
+    "href": "lectures/04_data-analysis.html#supervised-univariate-testing-the-categories",
+    "title": "Analysis of metabolomics data",
+    "section": "Supervised: Univariate testing, the categories",
+    "text": "Supervised: Univariate testing, the categories\n\nTwo group tests\n\nt-test (parametric)\nWilcoxon rank sum test (non-parameric)\n\nMore than two group tests\n\nANOVA (parametric)\nKruskal Wallis test (non-parametric)\nBoth followed by post-hoc means separation"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#should-i-use-parametric-or-non-parametric-tests",
+    "href": "lectures/04_data-analysis.html#should-i-use-parametric-or-non-parametric-tests",
+    "title": "Analysis of metabolomics data",
+    "section": "Should I use parametric or non-parametric tests?",
+    "text": "Should I use parametric or non-parametric tests?"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#multivariate-testing-in-metabolomics",
+    "href": "lectures/04_data-analysis.html#multivariate-testing-in-metabolomics",
+    "title": "Analysis of metabolomics data",
+    "section": "Multivariate testing in metabolomics",
+    "text": "Multivariate testing in metabolomics\n\nMultivariate approaches allow the investigation of more than one feature at once\nApproaches can be unsupervised or supervised\nBe sure to select the most appropriate method given the nature of your data and question"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#supervised-pls-da",
+    "href": "lectures/04_data-analysis.html#supervised-pls-da",
+    "title": "Analysis of metabolomics data",
+    "section": "Supervised: PLS-DA",
+    "text": "Supervised: PLS-DA\n\nPartial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups\nTwo data matrices, X: contains your features, Y: contains group identity"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#interpreting-pcas",
+    "href": "lectures/04_data-analysis.html#interpreting-pcas",
+    "title": "Analysis of metabolomics data",
+    "section": "Interpreting PCAs",
+    "text": "Interpreting PCAs\n\n\n\nPCA A) scores and B) loadings (from Dzakovich et al., 2022)"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#what-you-should-be-doing-with-your-pcas",
+    "href": "lectures/04_data-analysis.html#what-you-should-be-doing-with-your-pcas",
+    "title": "Analysis of metabolomics data",
+    "section": "What you should be doing with your PCAs",
+    "text": "What you should be doing with your PCAs\n\nCheck for samples that are very different from the rest\nShow that your QCs cluster together\nLook for batch effects\nObserve the distance between your samples within a group, and between groups\nSee how much variation is being explained by each PC\nLook for clusters in your data"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#hca-applied-to-metabolomics",
+    "href": "lectures/04_data-analysis.html#hca-applied-to-metabolomics",
+    "title": "Analysis of metabolomics data",
+    "section": "HCA applied to metabolomics",
+    "text": "HCA applied to metabolomics\n\n\n\nFrom Dzakovich et al., 2024"
+  },
+  {
+    "objectID": "activities/05_R.html#k-means-clustering",
+    "href": "activities/05_R.html#k-means-clustering",
+    "title": "Data analysis with R",
+    "section": "K-means clustering",
+    "text": "K-means clustering\nConduct k-means clustering on our data to see if we do have a natural 3 groups here.\nFirst I am wrangling the data by removing metadata.\n\nfor_kmeans &lt;- metab_wide_meta_imputed_log2 %&gt;%\n  filter(!sample_or_qc == \"QC\") %&gt;%\n  select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order)\n\nThen I can calculate within cluster sum of square errors.\n\n# calculate within cluster sum of squared errors wss\nwss &lt;- vector()\nfor (i in 1:10) {\n  tomato_kmeans &lt;- kmeans(for_kmeans, centers = i, nstart = 20)\n  wss[i] &lt;- tomato_kmeans$tot.withinss\n}\n\nFollowed by a scree plot which helps us see how many clusters we might have in our data.\n\nplot(1:10, wss, type = \"b\", \n     xlab = \"Number of Clusters\", \n     ylab = \"Within groups sum of squares\")\n\n\n\n\nTo me, I might pick the elbow at 3 clusters. You could change this or try different numbers of clusters and see how that affects your results.\n\n# set number of clusters to be 3\nk &lt;- 3\n\n\nkmeans_3 &lt;- kmeans(for_kmeans, \n                   centers = k, \n                   nstart = 20, \n                   iter.max = 200)\n\nsummary(kmeans_3)\n\n             Length Class  Mode   \ncluster        36   -none- numeric\ncenters      3834   -none- numeric\ntotss           1   -none- numeric\nwithinss        3   -none- numeric\ntot.withinss    1   -none- numeric\nbetweenss       1   -none- numeric\nsize            3   -none- numeric\niter            1   -none- numeric\nifault          1   -none- numeric\n\n\nWhich samples are in which cluster?\n\nkmeans_3$cluster\n\n [1] 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 1 2 2 2 2 2 2 2 2\n\n\nNow we can add the cluster identity to our metadata so we can visualizate our data based on the kmeans clustering.\n\n# Add the cluster group to the parent datafile\nscores_noqc_kmeans &lt;- scores_noqc %&gt;%\n  mutate(kmeans_3 = kmeans_3$cluster)\n\n# reorder so kmeans cluster is towards the beginning\nscores_noqc_kmeans &lt;- scores_noqc_kmeans %&gt;%\n  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order, kmeans_3, everything())\n\n# check the reordering\nknitr::kable(scores_noqc_kmeans[, 1:7])\n\n\n\n\n\n\n\n\n\n\n\n\n\nsample_name\nsample_or_qc\ntomato\nrep_or_plot\nrun_order\nkmeans_3\nPC1\n\n\n\n\nHATS_402_041\nSample\nHATS\n402\n41\n3\n-23.24793\n\n\nHATS_403_037\nSample\nHATS\n403\n37\n3\n-17.01461\n\n\nHATS_404_040\nSample\nHATS\n404\n40\n3\n-21.49241\n\n\nHATS_401_022\nSample\nHATS\n401\n22\n3\n-16.35241\n\n\nHATS_408_043\nSample\nHATS\n408\n43\n3\n-15.27909\n\n\nHATS_405_025\nSample\nHATS\n405\n25\n3\n-20.42581\n\n\nHATS_406_055\nSample\nHATS\n406\n55\n3\n-20.87974\n\n\nHATS_407_059\nSample\nHATS\n407\n59\n3\n-21.20251\n\n\nHATS_412_019\nSample\nHATS\n412\n19\n3\n-14.14882\n\n\nHATS_409_056\nSample\nHATS\n409\n56\n3\n-15.66016\n\n\nHATS_410_018\nSample\nHATS\n410\n18\n3\n-15.15110\n\n\nHATS_411_044\nSample\nHATS\n411\n44\n3\n-15.69849\n\n\nLA2213_602_035\nSample\nLA2213\n602\n35\n1\n41.19750\n\n\nLA2213_603_045\nSample\nLA2213\n603\n45\n1\n49.19390\n\n\nLA2213_601_051\nSample\nLA2213\n601\n51\n1\n49.69095\n\n\nLA2213_604_016\nSample\nLA2213\n604\n16\n1\n46.56555\n\n\nLA2213_605_017\nSample\nLA2213\n605\n17\n1\n46.48514\n\n\nLA2213_607_032\nSample\nLA2213\n607\n32\n1\n45.99993\n\n\nLA2213_608_024\nSample\nLA2213\n608\n24\n1\n45.81353\n\n\nLA2213_606_033\nSample\nLA2213\n606\n33\n1\n49.70804\n\n\nLA2213_609_058\nSample\nLA2213\n609\n58\n1\n45.76014\n\n\nLA2213_610_050\nSample\nLA2213\n610\n50\n1\n43.55337\n\n\nLA2213_612_046\nSample\nLA2213\n612\n46\n1\n44.25618\n\n\nOH8243_801_036\nSample\nOH8243\n801\n36\n2\n-22.74986\n\n\nOH8243_802_026\nSample\nOH8243\n802\n26\n2\n-25.64428\n\n\nOH8243_803_030\nSample\nOH8243\n803\n30\n2\n-26.66404\n\n\nOH8243_805_057\nSample\nOH8243\n805\n57\n2\n-31.27910\n\n\nLA2213_611_061\nSample\nLA2213\n611\n61\n1\n50.50206\n\n\nOH8243_804_029\nSample\nOH8243\n804\n29\n2\n-30.49216\n\n\nOH8243_806_027\nSample\nOH8243\n806\n27\n2\n-36.03705\n\n\nOH8243_809_063\nSample\nOH8243\n809\n63\n2\n-29.82613\n\n\nOH8243_807_053\nSample\nOH8243\n807\n53\n2\n-28.82398\n\n\nOH8243_810_049\nSample\nOH8243\n810\n49\n2\n-26.33023\n\n\nOH8243_808_038\nSample\nOH8243\n808\n38\n2\n-26.40468\n\n\nOH8243_812_060\nSample\nOH8243\n812\n60\n2\n-31.83884\n\n\nOH8243_811_028\nSample\nOH8243\n811\n28\n2\n-26.08287\n\n\n\n\n\nNow we can color our PCA based on our kmeans clustering.\n\n(scores_noqc_kmeans_plot &lt;- scores_noqc_kmeans %&gt;%\n  ggplot(aes(x = PC1, y = PC2, fill = as.factor(kmeans_3), shape = tomato,\n               text = glue(\"Sample: {sample_name},\n                            Treatment: {tomato}\"))) +\n  geom_hline(yintercept = 0, linetype = \"dashed\") +\n  geom_vline(xintercept = 0, linetype = \"dashed\") +\n  geom_point(shape = 21, color = \"black\") +\n  theme_minimal() +\n  labs(x = glue(\"PC1: {PC1_percent_noqc}%\"), \n       y = glue(\"PC2: {PC2_percent_noqc}%\"), \n       title = \"PCA Scores Plot Colored by K-means Cluster\",\n       fill = \"K-means cluster\"))\n\n\n\n\nLooks like the K-means clusters are aligned exactly with our tomato type."
+  },
+  {
+    "objectID": "activities/05_R.html#hierarchical-clustering",
+    "href": "activities/05_R.html#hierarchical-clustering",
+    "title": "Data analysis with R",
+    "section": "Hierarchical clustering",
+    "text": "Hierarchical clustering\nConduct hierarchical clustering to see if our data naturally is clustered into our three tomato groups. Here I will calculate a distance matrix using Wards distance, or minimal increase in sum of squares (MISSQ), good for more cloud and spherical shaped groups, and running HCA\n\n# the df for kmeans also works for HCA but needs to be a matrix\nfor_hca &lt;- as.matrix(for_kmeans)\n\n# calculate a distance matrix\ndist_matrix &lt;- distance(for_hca)\n\nMetric: 'euclidean'; comparing: 36 vectors.\n\n# making the true distance matrix\ntrue_dist_matrix &lt;- as.dist(dist_matrix)\n\n# conduct HCA\nhclust_output &lt;- hclust(d = true_dist_matrix, method = \"ward.D\")\n\nsummary(hclust_output)\n\n            Length Class  Mode     \nmerge       70     -none- numeric  \nheight      35     -none- numeric  \norder       36     -none- numeric  \nlabels      36     -none- character\nmethod       1     -none- character\ncall         3     -none- call     \ndist.method  0     -none- NULL     \n\n\nNow we can plot:\n\nplot(hclust_output,\n     main = \"Hierarchical clustering of samples\")\n\n\n\n\nOur samples are not named, let’s bring back which sample is which.\n\n# grab metadata\nhca_meta &lt;- metab_wide_meta_imputed_log2 %&gt;%\n  filter(!sample_or_qc == \"QC\") %&gt;%\n  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order)\n\n# bind to hca object\nhclust_output$labels &lt;- hca_meta$sample_name\n\nNow we can plot:\n\nplot(hclust_output,\n     main = \"Hierarchical clustering of samples\")\n\n\n\n\nThis base R plotting is too ugly for me I gotta do something about it.\n\nggdendrogram(hclust_output, rotate = TRUE, theme_dendro = FALSE)\n\n\n\n\n\n# create a dendrogram object so we can plot better late\ndend &lt;- as.dendrogram(hclust_output)\n\ndend_data &lt;- dendro_data(dend, type = \"rectangle\")\nnames(dend_data)\n\n[1] \"segments\"    \"labels\"      \"leaf_labels\" \"class\"      \n\nhead(dend_data$segments)\n\n         x         y     xend      yend\n1 14.32812 734.90047  6.87500 734.90047\n2  6.87500 734.90047  6.87500  49.19104\n3 14.32812 734.90047 21.78125 734.90047\n4 21.78125 734.90047 21.78125 225.75525\n5  6.87500  49.19104  3.62500  49.19104\n6  3.62500  49.19104  3.62500  32.07677\n\nhead(dend_data$labels)\n\n  x y          label\n1 1 0 LA2213_608_024\n2 2 0 LA2213_609_058\n3 3 0 LA2213_610_050\n4 4 0 LA2213_606_033\n5 5 0 LA2213_611_061\n6 6 0 LA2213_604_016\n\n# create a new column called group so we can color by it\ndend_data$labels &lt;- dend_data$labels %&gt;%\n  separate_wider_delim(cols = label, \n                       delim = \"_\", \n                       names = c(\"group\", \"rep\", \"run_order\"),\n                       cols_remove = FALSE) %&gt;%\n  select(x, y, label, group)\n\nggplot(dend_data$segments) + \n  geom_segment(aes(x = x, y = y, xend = xend, yend = yend))+\n  geom_text(data = dend_data$labels, aes(x, y, label = label, color = group),\n            hjust = 1, angle = 90, size = 3) +\n  ylim(-300, 800) +\n  labs(title = \"Hierarchical clustering of tomato samples\")"
+  },
+  {
+    "objectID": "activities/05_R.html#pls-da",
+    "href": "activities/05_R.html#pls-da",
+    "title": "Data analysis with R",
+    "section": "PLS-DA",
+    "text": "PLS-DA\nPartiap least squares discriminant analysis (or regression) is a method for classification/prediction of high dimensional data. Many people use PLS to find the features most distinguishing groups (or more associated with an outcome Y). Personally I don’t really like PLS analysis - I don’t find its any more useful that running a series of univariate tests to see which feautures are differentially abundant by group, and it has a bad tendency to overfit especially with noisy data (and one could argue metabolomics data is always noisy). Still, I’ll show you how to do it.\nAs we went over in the lecture material, PLS based methods are prediction methods though most use them in metabolomics to discover features of interest.\n\nfor_PLS &lt;- metab_wide_meta_imputed_log2 %&gt;%\n  select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order) # remove meta\n\npls &lt;- opls(x = for_PLS, y = metab_wide_meta_imputed_log2$tomato,\n            orthoI = 0) # for PLS\n\nPLS-DA\n42 samples x 1278 variables and 1 response\nstandard scaling of predictors and response(s)\n      R2X(cum) R2Y(cum) Q2(cum)  RMSEE pre ort pR2Y  pQ2\nTotal    0.727    0.986   0.964 0.0528   5   0 0.05 0.05"
+  },
+  {
+    "objectID": "activities/05_R.html#random-forest",
+    "href": "activities/05_R.html#random-forest",
+    "title": "Data analysis with R",
+    "section": "Random forest",
+    "text": "Random forest"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html",
+    "href": "lectures/04_data-analysis.html",
+    "title": "Analysis of metabolomics data",
+    "section": "",
+    "text": "Data normalization/transformation/scaling\nAssess for quality (and make adjustments if needed)\nUnivariate analysis (supervised)\nMultivariate analysis (supervised or unsupervised)"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#generalized-approaches-to-compound-id",
+    "href": "lectures/05_compound-id.html#generalized-approaches-to-compound-id",
+    "title": "Compound identification",
+    "section": "Generalized approaches to compound ID",
+    "text": "Generalized approaches to compound ID"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#starting-with-a-mz",
+    "href": "lectures/05_compound-id.html#starting-with-a-mz",
+    "title": "Compound identification",
+    "section": "Starting with a m/z",
+    "text": "Starting with a m/z\n\n\n\n© Jessica Cooperstone, 2024"
   }
 ]

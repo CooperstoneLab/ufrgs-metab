@@ -55,7 +55,7 @@ Navigate to <https://www.metaboanalyst.ca/> and click on the red "Click here to 
 
 We have already processed out spectra so we are going to click on Statistical Analysis (one factor).
 
-![Begin statistical analysis in MetaboAnalyst](img/04/metaboanalyst-start.png)
+![Begin statistical analysis in MetaboAnalyst](img/04/statistical-analysis.png)
 
 Now we want to upload our data. We have our file saved as a .csv and our data is as peak intensities. In our case, samples are in columns and data is unpaired. Once we have done this, we can press submit just to the right of our input.
 

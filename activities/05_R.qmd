@@ -27,6 +27,9 @@ library(notame) # for collapsing ions coming from the same metabolite
 library(doParallel) # for parallelizing notame specifically
 library(patchwork) # for making multi-panel plots
 library(rstatix) # for additional univariate functionality
+library(philentropy) # for hierarchical clustering
+library(ggdendro) # for hierarchical clustering plotting
+library(ropls) # for pls
 
 # this is at the end hoping that the default select will be that from dplyr
 library(tidyverse) # for everything
@@ -1263,4 +1266,189 @@ Make the plot interactive.
 ```{r}
 ggplotly(oh8243_hats_volcano, tooltip = "text")
 ```
+
+
+
+
+
+
+
+## K-means clustering
+
+Conduct k-means clustering on our data to see if we do have a natural 3 groups here.
+
+First I am wrangling the data by removing metadata.
+```{r}
+for_kmeans <- metab_wide_meta_imputed_log2 %>%
+  filter(!sample_or_qc == "QC") %>%
+  select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order)
+```
+
+Then I can calculate within cluster sum of square errors.
+```{r}
+# calculate within cluster sum of squared errors wss
+wss <- vector()
+for (i in 1:10) {
+  tomato_kmeans <- kmeans(for_kmeans, centers = i, nstart = 20)
+  wss[i] <- tomato_kmeans$tot.withinss
+}
+```
+
+
+Followed by a scree plot which helps us see how many clusters we might have in our data.
+
+```{r}
+plot(1:10, wss, type = "b", 
+     xlab = "Number of Clusters", 
+     ylab = "Within groups sum of squares")
+```
+
+To me, I might pick the elbow at 3 clusters. You could change this or try different numbers of clusters and see how that affects your results.
+
+```{r}
+# set number of clusters to be 3
+k <- 3
+```
+
+
+```{r}
+kmeans_3 <- kmeans(for_kmeans, 
+                   centers = k, 
+                   nstart = 20, 
+                   iter.max = 200)
+
+summary(kmeans_3)
+```
+
+Which samples are in which cluster?
+```{r}
+kmeans_3$cluster
+```
+
+Now we can add the cluster identity to our metadata so we can visualizate our data based on the kmeans clustering.
+```{r}
+# Add the cluster group to the parent datafile
+scores_noqc_kmeans <- scores_noqc %>%
+  mutate(kmeans_3 = kmeans_3$cluster)
+
+# reorder so kmeans cluster is towards the beginning
+scores_noqc_kmeans <- scores_noqc_kmeans %>%
+  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order, kmeans_3, everything())
+
+# check the reordering
+knitr::kable(scores_noqc_kmeans[, 1:7])
+```
+
+Now we can color our PCA based on our kmeans clustering.
+
+```{r}
+(scores_noqc_kmeans_plot <- scores_noqc_kmeans %>%
+  ggplot(aes(x = PC1, y = PC2, fill = as.factor(kmeans_3), shape = tomato,
+               text = glue("Sample: {sample_name},
+                            Treatment: {tomato}"))) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(shape = 21, color = "black") +
+  theme_minimal() +
+  labs(x = glue("PC1: {PC1_percent_noqc}%"), 
+       y = glue("PC2: {PC2_percent_noqc}%"), 
+       title = "PCA Scores Plot Colored by K-means Cluster",
+       fill = "K-means cluster"))
+```
+
+Looks like the K-means clusters are aligned exactly with our tomato type.
+
+## Hierarchical clustering
+
+Conduct hierarchical clustering to see if our data naturally is clustered into our three tomato groups. Here I will calculate a distance matrix using Wards distance, or minimal increase in sum of squares (MISSQ), good for more cloud and spherical shaped groups, and running HCA
+
+```{r}
+# the df for kmeans also works for HCA but needs to be a matrix
+for_hca <- as.matrix(for_kmeans)
+
+# calculate a distance matrix
+dist_matrix <- distance(for_hca)
+
+# making the true distance matrix
+true_dist_matrix <- as.dist(dist_matrix)
+
+# conduct HCA
+hclust_output <- hclust(d = true_dist_matrix, method = "ward.D")
+
+summary(hclust_output)
+```
+
+Now we can plot:
+```{r}
+plot(hclust_output,
+     main = "Hierarchical clustering of samples")
+```
+
+Our samples are not named, let's bring back which sample is which.
+
+```{r}
+# grab metadata
+hca_meta <- metab_wide_meta_imputed_log2 %>%
+  filter(!sample_or_qc == "QC") %>%
+  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order)
+
+# bind to hca object
+hclust_output$labels <- hca_meta$sample_name
+```
+
+Now we can plot:
+```{r}
+plot(hclust_output,
+     main = "Hierarchical clustering of samples")
+```
+
+This base R plotting is too ugly for me I gotta do something about it.
+
+```{r}
+ggdendrogram(hclust_output, rotate = TRUE, theme_dendro = FALSE)
+```
+
+```{r}
+# create a dendrogram object so we can plot better late
+dend <- as.dendrogram(hclust_output)
+
+dend_data <- dendro_data(dend, type = "rectangle")
+names(dend_data)
+
+head(dend_data$segments)
+
+head(dend_data$labels)
+
+# create a new column called group so we can color by it
+dend_data$labels <- dend_data$labels %>%
+  separate_wider_delim(cols = label, 
+                       delim = "_", 
+                       names = c("group", "rep", "run_order"),
+                       cols_remove = FALSE) %>%
+  select(x, y, label, group)
+
+ggplot(dend_data$segments) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend))+
+  geom_text(data = dend_data$labels, aes(x, y, label = label, color = group),
+            hjust = 1, angle = 90, size = 3) +
+  ylim(-300, 800) +
+  labs(title = "Hierarchical clustering of tomato samples")
+```
+
+## PLS-DA
+
+Partiap least squares discriminant analysis (or regression) is a method for classification/prediction of high dimensional data. Many people use PLS to find the features most distinguishing groups (or more associated with an outcome Y). Personally I don't really like PLS analysis - I don't find its any more useful that running a series of univariate tests to see which feautures are differentially abundant by group, and it has a [bad tendency to overfit](10.2174/2213235X11301010092) especially with noisy data (and one could argue metabolomics data is always noisy). Still, I'll show you how to do it.
+
+As we went over in the lecture material, PLS based methods are prediction methods though most use them in metabolomics to discover features of interest. 
+
+```{r}
+for_PLS <- metab_wide_meta_imputed_log2 %>%
+  select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order) # remove meta
+
+pls <- opls(x = for_PLS, y = metab_wide_meta_imputed_log2$tomato,
+            orthoI = 0) # for PLS
+```
+
+
+## Random forest
 

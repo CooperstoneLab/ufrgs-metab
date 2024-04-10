@@ -8,6 +8,7 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
+    incremental: true
 ---
 
 ```{r include = FALSE}
@@ -17,12 +18,10 @@ library(glue)
 
 ## Now that we have our feature table, what happens next?
 
-::: incremental
 -   Data normalization/transformation/scaling
 -   Assess for quality (and make adjustments if needed)
 -   Univariate analysis (supervised)
 -   Multivariate analysis (supervised or unsupervised)
-:::
 
 ## Data pre-treatment
 
@@ -39,12 +38,12 @@ From [van den Berg et al., Genomics 2006](https://doi.org/10.1186/1471-2164-7-14
 -   I like to center when conducting principal components analysis (PCA, more on this later)
 
 ::: columns
-::: {.column width="50%" style="font-size: 23px"}
-![](img/04/pca_not_centered.png)
+::: {.column width="50%" style="font-size: 23px" .fragment}
+![](img/04/pca_not_centered.png){width="80%"}
 :::
 
-::: {.column width="50%" style="font-size: 23px"}
-![](img/04/pca_centered.png)
+::: {.column width="50%" style="font-size: 23px" .fragment}
+![](img/04/pca_centered.png){width="80%"}
 :::
 :::
 
@@ -76,14 +75,14 @@ log2_transformations <- tribble(
 ```
 
 ::: columns
-::: {.column width="50%" style="font-size: 23px"}
+::: {.column width="50%" style="font-size: 23px" .fragment}
 ```{r}
 #| echo: false
 knitr::kable(transformations)
 ```
 :::
 
-::: {.column width="50%" style="font-size: 23px"}
+::: {.column width="50%" style="font-size: 23px" .fragment}
 ```{r}
 #| echo: false
 knitr::kable(log2_transformations, digits = 2)
@@ -104,7 +103,7 @@ log2 <- raw %>%
 ```
 
 ::: columns
-::: {.column width="50%" style="font-size: 25px"}
+::: {.column width="50%" style="font-size: 25px" .fragment}
 ```{r}
 #| echo: false
 
@@ -115,7 +114,7 @@ raw %>%
 ```
 :::
 
-::: {.column width="50%" style="font-size: 25px"}
+::: {.column width="50%" style="font-size: 25px" .fragment}
 ```{r}
 #| echo: false
 #| 
@@ -129,11 +128,10 @@ log2 %>%
 
 ## Sample wise normalization
 
-::: incremental
 -   Adjust based on weight or volume (very common)
 -   Adjust based on intensity of an internal standard (used sometimes)
--   Adjust based on total signal (used in older papers and for NMR but not really in MS)
-:::
+-   Adjust based on total signal (used in older MS papers and for NMR but not really in MS)
+
 
 ## Assessing data quality
 
@@ -141,13 +139,131 @@ log2 %>%
 
 ## Overlay your BPCs
 
+![Overlaid base peak chromatograms in MZmine](img/04/qc-bpc.png)
+
+## Zoom in and look at your BPCs carefully
+
+![Overlaid base peak chromatograms in MassHunter](img/04/qc-bpc-zoom.png)
+
+## Look at a single feature for retention time shifting
+
+![Overlaid extracted ion chromatograms in MassHunter](img/04/qc-eic-zoom.png)
+
 ## Create boxplots of features by sample
+
+::: columns
+::: {.column width="50%" style="font-size: 25px"}
+Ordering by sample groups ![](img/04/quality-boxplot-log2.png)
+:::
+
+::: {.column width="50%" style="font-size: 25px"}
+Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
+:::
+:::
 
 ## Your QCs should cluster in a PCA
 
-## Univariate testing, the categories
+![](img/04/pca_centered.png)
 
-::: incremental
+## Data analysis can be unsupervised or supervised
+
+::: columns
+::: {.column width="50%" style="font-size: 25px"}
+### Unsupervised (model does not know which samples belong to which groups):
+
+-   Principal components analysis (PCA)
+-   Hierarchical clustering analysis (HCA)
+-   K-means clustering
+:::
+
+::: {.column width="50%" style="font-size: 25px"}
+### Supervised (model knows group composition):
+
+-   Univariate (or multivariate) group comparisons
+-   Predictive/classification models
+    -   Partial least squares regression (PLS-R)
+    -   PLS-discriminant analysis (PLS-DA)
+    -   Random forest
+    -   Artificial neural networks
+    -   Others
+:::
+:::
+
+## Unsupervised: Principal Components Analysis (PCA)
+
+::: columns
+::: {.column width="50%" style="font-size: 25px"}
+-   A dimensionality reduction approach that transforms our data into a new system where principal coordinates (PCs) are drawn maximizing variation in our data.
+-   Each new PC is orthogonal to the previous one.
+-   Can interpret points closer together as more similar that those further apart
+-   The loadings plot helps us understand which features are most influential for each PC
+:::
+
+::: {.column width="50%" style="font-size: 25px" .fragment}
+
+![Fig from [https://www.ibm.com/topics/principal-component-analysis](https://www.ibm.com/topics/principal-component-analysis)](img/04/pca-explained.png)
+
+:::
+:::
+
+## Interpreting PCAs
+
+![](img/04/pca-interpretation.png)
+
+::: aside
+PCA A) scores and B) loadings (from [Dzakovich et al., 2022](https://doi.org/10.1002/tpg2.20192))
+:::
+
+## What you should be doing with your PCAs
+
+-   Check for samples that are very different from the rest
+-   Show that your QCs cluster together
+-   Look for batch effects
+-   Observe the distance between your samples within a group, and between groups
+-   See how much variation is being explained by each PC
+-   Look for clusters in your data
+
+## Unsupervised: Hierarchical Clustering Analysis (HCA)
+
+-   An approach "cluster" samples based on their distance/similarity
+-   Find two most similar samples and merge into cluster, and repeat
+-   Different methods for determining both distance and linkage
+-   Think of these like a phylogenic tree - samples that are closer together are more similar
+-   Can cluster samples, features, or both
+-   [StatQuest video on hierarchical clustering](https://www.youtube.com/watch?v=7xHsRkOdVwo)
+
+## HCA applied to metabolomics
+
+![](img/04/hca-example.jpeg)
+
+::: aside
+From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
+:::
+
+## Unsupervised: K-means clustering
+
+::: columns
+::: {.column width="50%" style="font-size: 25px"}
+-   Randomly assigns all samples to be a part of $k$ clusters
+-   Calculates centroids and assigns samples to the nearest one
+-   Iterates until centroids stability or reach some maximum
+-   Can figure out number of clusters using a scree plot to visualize within cluster sums
+-   [StatQuest explains K-means clustering](https://www.youtube.com/watch?v=4b5d3muPQmA)
+:::
+
+::: {.column width="50%" style="font-size: 25px" .fragment}
+![](https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif)
+
+:::
+:::
+
+
+
+
+
+
+## Supervised: Univariate testing, the categories
+
 -   Two group tests
     -   t-test (parametric)
     -   Wilcoxon rank sum test (non-parameric)
@@ -155,12 +271,35 @@ log2 %>%
     -   ANOVA (parametric)
     -   Kruskal Wallis test (non-parametric)
     -   Both followed by post-hoc means separation
-:::
 
-## Big p, little n: the curse of dimensionality
+## Big p, little n: the curse of dimensionality {.incremental style="font-size: 30px"}
 
 -   With metabolomics, we almost always have more features (p) than samples (n)
 -   This means we are making a lot of comparisons
+-   If we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.
+-   If we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)
+-   If we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p \< 0.05 but are not truly different between our groups
 
+## Ways to control for multiple testing
 
-## Multivariate testing
+-   Bonferroni correction: $α/number\,of\,comparisons$ (very conservative, leads to false negatives)
+-   Benjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)
+
+::: {style="font-size: 15px" .fragment}
+![](img/04/fdr.png){fig-align="center" width="800px"}
+
+Fig. from [https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/](https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/)
+:::
+
+## Should I use parametric or non-parametric tests?
+
+## Multivariate testing in metabolomics
+
+-   Multivariate approaches allow the investigation of more than one feature at once
+-   Approaches can be unsupervised or supervised
+-   Be sure to select the most appropriate method given the nature of your data and question
+
+## Supervised: PLS-DA
+
+-   Partial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups
+-   Two data matrices, X: contains your features, Y: contains group identity
