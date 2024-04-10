@@ -340,10 +340,10 @@ Jessica Cooperstone
 <section id="now-that-we-have-our-feature-table-what-happens-next" class="slide level2">
 <h2>Now that we have our feature table, what happens next?</h2>
 <ul>
-<li class="fragment">Data normalization/transformation/scaling</li>
-<li class="fragment">Assess for quality (and make adjustments if needed)</li>
-<li class="fragment">Univariate analysis (supervised)</li>
-<li class="fragment">Multivariate analysis (supervised or unsupervised)</li>
+<li>Data normalization/transformation/scaling</li>
+<li>Assess for quality (and make adjustments if needed)</li>
+<li>Univariate analysis (supervised)</li>
+<li>Multivariate analysis (supervised or unsupervised)</li>
 </ul>
 </section>
 <section id="data-pre-treatment" class="slide level2">
@@ -356,9 +356,9 @@ Jessica Cooperstone
 <section id="centering" class="slide level2" style="font-size: 23px">
 <h2>Centering</h2>
 <ul>
-<li class="fragment">Centering converts all relative intensities to be centered around zero instead of around mean concentrations</li>
-<li class="fragment">This is particularly useful in metabolomics given that more <em>intense</em> features are <em>not necessarily more abundant</em></li>
-<li class="fragment">I like to center when conducting principal components analysis (PCA, more on this later)</li>
+<li>Centering converts all relative intensities to be centered around zero instead of around mean concentrations</li>
+<li>This is particularly useful in metabolomics given that more <em>intense</em> features are <em>not necessarily more abundant</em></li>
+<li>I like to center when conducting principal components analysis (PCA, more on this later)</li>
 </ul>
 <div class="columns">
 <div class="column fragment" style="font-size: 23px">
@@ -371,20 +371,20 @@ Jessica Cooperstone
 <section id="scaling" class="slide level2">
 <h2>Scaling</h2>
 <ul>
-<li class="fragment">Uses data dispersion as a part of a scaling factor
+<li>Uses data dispersion as a part of a scaling factor
 <ul>
-<li class="fragment">Auto scaling: mean = 0, standard deviation = 1 (for each feature)</li>
-<li class="fragment">Pareto scaling: like auto but scaled to square root of the st dev. The most common scaling used for metabolomics</li>
-<li class="fragment">In general I find this not necessary and will just log transform (more coming next)</li>
+<li>Auto scaling: mean = 0, standard deviation = 1 (for each feature)</li>
+<li>Pareto scaling: like auto but scaled to square root of the st dev. The most common scaling used for metabolomics</li>
+<li>In general I find this not necessary and will just log transform (more coming next)</li>
 </ul></li>
 </ul>
 </section>
 <section id="log-transformation---tables" class="slide level2">
 <h2>Log transformation - tables</h2>
 <ul>
-<li class="fragment">Reduce heteroscedasicity</li>
-<li class="fragment">Makes large values proportionally smaller than small ones</li>
-<li class="fragment">Makes distributions more normal</li>
+<li>Reduce heteroscedasicity</li>
+<li>Makes large values proportionally smaller than small ones</li>
+<li>Makes distributions more normal</li>
 </ul>
 <div class="columns">
 <div class="column fragment" style="font-size: 23px">
@@ -445,7 +445,7 @@ Jessica Cooperstone
 <section id="log-transformation---plots" class="slide level2">
 <h2>Log transformation - plots</h2>
 <ul>
-<li class="fragment">Log transforming can make your data look more normally distributed</li>
+<li>Log transforming can make your data look more normally distributed</li>
 </ul>
 <div class="columns">
 <div class="column fragment" style="font-size: 25px">
@@ -466,15 +466,15 @@ Jessica Cooperstone
 <section id="sample-wise-normalization" class="slide level2">
 <h2>Sample wise normalization</h2>
 <ul>
-<li class="fragment">Adjust based on weight or volume (very common)</li>
-<li class="fragment">Adjust based on intensity of an internal standard (used sometimes)</li>
-<li class="fragment">Adjust based on total signal (used in older MS papers and for NMR but not really in MS)</li>
+<li>Adjust based on weight or volume (very common)</li>
+<li>Adjust based on intensity of an internal standard (used sometimes)</li>
+<li>Adjust based on total signal (used in older MS papers and for NMR but not really in MS)</li>
 </ul>
 </section>
 <section id="assessing-data-quality" class="slide level2">
 <h2>Assessing data quality</h2>
 <ul>
-<li class="fragment">How can we go about assessing if our data is of high quality when we have thousands of features and don’t know what to expect?</li>
+<li>How can we go about assessing if our data is of high quality when we have thousands of features and don’t know what to expect?</li>
 </ul>
 </section>
 <section id="overlay-your-bpcs" class="slide level2">
@@ -509,21 +509,21 @@ Jessica Cooperstone
 <div class="column" style="font-size: 25px">
 <h3 id="unsupervised-model-does-not-know-which-samples-belong-to-which-groups">Unsupervised (model does not know which samples belong to which groups):</h3>
 <ul>
-<li class="fragment">Principal components analysis (PCA)</li>
-<li class="fragment">Hierarchical clustering analysis (HCA)</li>
-<li class="fragment">K-means clustering</li>
+<li>Principal components analysis (PCA)</li>
+<li>Hierarchical clustering analysis (HCA)</li>
+<li>K-means clustering</li>
 </ul>
 </div><div class="column" style="font-size: 25px">
 <h3 id="supervised-model-knows-group-composition">Supervised (model knows group composition):</h3>
 <ul>
-<li class="fragment">Univariate (or multivariate) group comparisons</li>
-<li class="fragment">Predictive/classification models
+<li>Univariate (or multivariate) group comparisons</li>
+<li>Predictive/classification models
 <ul>
-<li class="fragment">Partial least squares regression (PLS-R)</li>
-<li class="fragment">PLS-discriminant analysis (PLS-DA)</li>
-<li class="fragment">Random forest</li>
-<li class="fragment">Artificial neural networks</li>
-<li class="fragment">Others</li>
+<li>Partial least squares regression (PLS-R)</li>
+<li>PLS-discriminant analysis (PLS-DA)</li>
+<li>Random forest</li>
+<li>Artificial neural networks</li>
+<li>Others</li>
 </ul></li>
 </ul>
 </div>
@@ -534,10 +534,10 @@ Jessica Cooperstone
 <div class="columns">
 <div class="column" style="font-size: 25px">
 <ul>
-<li class="fragment">A dimensionality reduction approach that transforms our data into a new system where principal coordinates (PCs) are drawn maximizing variation in our data.</li>
-<li class="fragment">Each new PC is orthogonal to the previous one.</li>
-<li class="fragment">Can interpret points closer together as more similar that those further apart</li>
-<li class="fragment">The loadings plot helps us understand which features are most influential for each PC</li>
+<li>A dimensionality reduction approach that transforms our data into a new system where principal coordinates (PCs) are drawn maximizing variation in our data.</li>
+<li>Each new PC is orthogonal to the previous one.</li>
+<li>Can interpret points closer together as more similar that those further apart</li>
+<li>The loadings plot helps us understand which features are most influential for each PC</li>
 </ul>
 </div><div class="column fragment" style="font-size: 25px">
 <div class="quarto-figure quarto-figure-center">
@@ -559,23 +559,23 @@ Jessica Cooperstone
 <section id="what-you-should-be-doing-with-your-pcas" class="slide level2">
 <h2>What you should be doing with your PCAs</h2>
 <ul>
-<li class="fragment">Check for samples that are very different from the rest</li>
-<li class="fragment">Show that your QCs cluster together</li>
-<li class="fragment">Look for batch effects</li>
-<li class="fragment">Observe the distance between your samples within a group, and between groups</li>
-<li class="fragment">See how much variation is being explained by each PC</li>
-<li class="fragment">Look for clusters in your data</li>
+<li>Check for samples that are very different from the rest</li>
+<li>Show that your QCs cluster together</li>
+<li>Look for batch effects</li>
+<li>Observe the distance between your samples within a group, and between groups</li>
+<li>See how much variation is being explained by each PC</li>
+<li>Look for clusters in your data</li>
 </ul>
 </section>
 <section id="unsupervised-hierarchical-clustering-analysis-hca" class="slide level2">
 <h2>Unsupervised: Hierarchical Clustering Analysis (HCA)</h2>
 <ul>
-<li class="fragment">An approach “cluster” samples based on their distance/similarity</li>
-<li class="fragment">Find two most similar samples and merge into cluster, and repeat</li>
-<li class="fragment">Different methods for determining both distance and linkage</li>
-<li class="fragment">Think of these like a phylogenic tree - samples that are closer together are more similar</li>
-<li class="fragment">Can cluster samples, features, or both</li>
-<li class="fragment"><a href="https://www.youtube.com/watch?v=7xHsRkOdVwo">StatQuest video on hierarchical clustering</a></li>
+<li>An approach “cluster” samples based on their distance/similarity</li>
+<li>Find two most similar samples and merge into cluster, and repeat</li>
+<li>Different methods for determining both distance and linkage</li>
+<li>Think of these like a phylogenic tree - samples that are closer together are more similar</li>
+<li>Can cluster samples, features, or both</li>
+<li><a href="https://www.youtube.com/watch?v=7xHsRkOdVwo">StatQuest video on hierarchical clustering</a></li>
 </ul>
 </section>
 <section id="hca-applied-to-metabolomics" class="slide level2">
@@ -590,11 +590,11 @@ Jessica Cooperstone
 <div class="columns">
 <div class="column" style="font-size: 25px">
 <ul>
-<li class="fragment">Randomly assigns all samples to be a part of <span class="math inline">\(k\)</span> clusters</li>
-<li class="fragment">Calculates centroids and assigns samples to the nearest one</li>
-<li class="fragment">Iterates until centroids stability or reach some maximum</li>
-<li class="fragment">Can figure out number of clusters using a scree plot to visualize within cluster sums</li>
-<li class="fragment"><a href="https://www.youtube.com/watch?v=4b5d3muPQmA">StatQuest explains K-means clustering</a></li>
+<li>Randomly assigns all samples to be a part of <span class="math inline">\(k\)</span> clusters</li>
+<li>Calculates centroids and assigns samples to the nearest one</li>
+<li>Iterates until centroids stability or reach some maximum</li>
+<li>Can figure out number of clusters using a scree plot to visualize within cluster sums</li>
+<li><a href="https://www.youtube.com/watch?v=4b5d3muPQmA">StatQuest explains K-means clustering</a></li>
 </ul>
 </div><div class="column fragment" style="font-size: 25px">
 <p><img data-src="https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif"></p>
@@ -604,34 +604,34 @@ Jessica Cooperstone
 <section id="supervised-univariate-testing-the-categories" class="slide level2">
 <h2>Supervised: Univariate testing, the categories</h2>
 <ul>
-<li class="fragment">Two group tests
+<li>Two group tests
 <ul>
-<li class="fragment">t-test (parametric)</li>
-<li class="fragment">Wilcoxon rank sum test (non-parameric)</li>
+<li>t-test (parametric)</li>
+<li>Wilcoxon rank sum test (non-parameric)</li>
 </ul></li>
-<li class="fragment">More than two group tests
+<li>More than two group tests
 <ul>
-<li class="fragment">ANOVA (parametric)</li>
-<li class="fragment">Kruskal Wallis test (non-parametric)</li>
-<li class="fragment">Both followed by post-hoc means separation</li>
+<li>ANOVA (parametric)</li>
+<li>Kruskal Wallis test (non-parametric)</li>
+<li>Both followed by post-hoc means separation</li>
 </ul></li>
 </ul>
 </section>
 <section id="big-p-little-n-the-curse-of-dimensionality" class="slide level2 incremental" style="font-size: 30px">
 <h2>Big p, little n: the curse of dimensionality</h2>
 <ul>
-<li class="fragment">With metabolomics, we almost always have more features (p) than samples (n)</li>
-<li class="fragment">This means we are making a lot of comparisons</li>
-<li class="fragment">If we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.</li>
-<li class="fragment">If we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)</li>
-<li class="fragment">If we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p &lt; 0.05 but are not truly different between our groups</li>
+<li>With metabolomics, we almost always have more features (p) than samples (n)</li>
+<li>This means we are making a lot of comparisons</li>
+<li>If we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.</li>
+<li>If we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)</li>
+<li>If we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p &lt; 0.05 but are not truly different between our groups</li>
 </ul>
 </section>
 <section id="ways-to-control-for-multiple-testing" class="slide level2">
 <h2>Ways to control for multiple testing</h2>
 <ul>
-<li class="fragment">Bonferroni correction: <span class="math inline">\(α/number\,of\,comparisons\)</span> (very conservative, leads to false negatives)</li>
-<li class="fragment">Benjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)</li>
+<li>Bonferroni correction: <span class="math inline">\(α/number\,of\,comparisons\)</span> (very conservative, leads to false negatives)</li>
+<li>Benjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)</li>
 </ul>
 <div class="fragment" style="font-size: 15px">
 <div class="quarto-figure quarto-figure-center">
@@ -648,16 +648,16 @@ Jessica Cooperstone
 <section id="multivariate-testing-in-metabolomics" class="slide level2">
 <h2>Multivariate testing in metabolomics</h2>
 <ul>
-<li class="fragment">Multivariate approaches allow the investigation of more than one feature at once</li>
-<li class="fragment">Approaches can be unsupervised or supervised</li>
-<li class="fragment">Be sure to select the most appropriate method given the nature of your data and question</li>
+<li>Multivariate approaches allow the investigation of more than one feature at once</li>
+<li>Approaches can be unsupervised or supervised</li>
+<li>Be sure to select the most appropriate method given the nature of your data and question</li>
 </ul>
 </section>
 <section id="supervised-pls-da" class="slide level2">
 <h2>Supervised: PLS-DA</h2>
 <ul>
-<li class="fragment">Partial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups</li>
-<li class="fragment">Two data matrices, X: contains your features, Y: contains group identity</li>
+<li>Partial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups</li>
+<li>Two data matrices, X: contains your features, Y: contains group identity</li>
 </ul>
 
 
