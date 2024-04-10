@@ -7,7 +7,6 @@ format:
     logo: "img/noun-metabolomics.png"
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
-    echo: true
     incremental: true
 ---
 

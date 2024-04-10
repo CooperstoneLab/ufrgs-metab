@@ -8,6 +8,7 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
+    incrememental: true
 ---
 
 ## Generalized approaches to compound ID

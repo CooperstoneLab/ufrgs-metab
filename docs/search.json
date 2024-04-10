@@ -577,8 +577,8 @@
     "objectID": "lectures/04_data-analysis.html#now-that-we-have-our-feature-table-what-happens-next",
     "href": "lectures/04_data-analysis.html#now-that-we-have-our-feature-table-what-happens-next",
     "title": "Analysis of metabolomics data",
-    "section": "",
-    "text": "Data normalization/transformation/scaling\nAssess for quality (and make adjustments if needed)\nUnivariate analysis (supervised)\nMultivariate analysis (supervised or unsupervised)"
+    "section": "Now that we have our feature table, what happens next?",
+    "text": "Now that we have our feature table, what happens next?\n\nData normalization/transformation/scaling\nAssess for quality (and make adjustments if needed)\nUnivariate analysis (supervised)\nMultivariate analysis (supervised or unsupervised)"
   },
   {
     "objectID": "lectures/04_data-analysis.html#data-pre-treatment",
@@ -613,7 +613,7 @@
     "href": "lectures/04_data-analysis.html#log-transformation---plots",
     "title": "Analysis of metabolomics data",
     "section": "Log transformation - plots",
-    "text": "Log transformation - plots\n\nLog transforming can make your data look more normally distributed\n\n\n\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\n\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`."
+    "text": "Log transformation - plots\n\nLog transforming can make your data look more normally distributed"
   },
   {
     "objectID": "lectures/04_data-analysis.html#sample-wise-normalization",
@@ -634,7 +634,7 @@
     "href": "lectures/04_data-analysis.html#overlay-your-bpcs",
     "title": "Analysis of metabolomics data",
     "section": "Overlay your BPCs",
-    "text": "Overlay your BPCs\n\n\n\nOverlaid base peak chromatograms in MZmine"
+    "text": "Overlay your BPCs\n\nOverlaid base peak chromatograms in MZmine"
   },
   {
     "objectID": "lectures/04_data-analysis.html#create-boxplots-of-features-by-sample",
@@ -725,14 +725,14 @@
     "href": "lectures/04_data-analysis.html#zoom-in-and-look-at-your-bpcs-carefully",
     "title": "Analysis of metabolomics data",
     "section": "Zoom in and look at your BPCs carefully",
-    "text": "Zoom in and look at your BPCs carefully\n\n\n\nOverlaid base peak chromatograms in MassHunter"
+    "text": "Zoom in and look at your BPCs carefully\n\nOverlaid base peak chromatograms in MassHunter"
   },
   {
     "objectID": "lectures/04_data-analysis.html#look-at-a-single-feature-for-retention-time-shifting",
     "href": "lectures/04_data-analysis.html#look-at-a-single-feature-for-retention-time-shifting",
     "title": "Analysis of metabolomics data",
     "section": "Look at a single feature for retention time shifting",
-    "text": "Look at a single feature for retention time shifting\n\n\n\nOverlaid extracted ion chromatograms in MassHunter"
+    "text": "Look at a single feature for retention time shifting\n\nOverlaid extracted ion chromatograms in MassHunter"
   },
   {
     "objectID": "lectures/04_data-analysis.html#ways-to-control-for-multiple-testing",
@@ -746,7 +746,7 @@
     "href": "lectures/04_data-analysis.html#data-analysis-can-be-unsupervised-or-supervised",
     "title": "Analysis of metabolomics data",
     "section": "Data analysis can be unsupervised or supervised",
-    "text": "Data analysis can be unsupervised or supervised\n\n\n\nUnsupervised (model does not know which samples belong to which groups):\n\nPrincipal components analysis (PCA)\nHierarchical clustering analysis (HCA)\nK-means clustering\n\n\n\n\nSupervised (model knows group composition):\n\nUnivariate (or multivariate) group comparisons\nPredictive/classification models\n\nPartial least squares regression (PLS-R)\nPLS-discriminant analysis (PLS-DA)\nRandom forest\nArtificial neural networks\nOthers"
+    "text": "Data analysis can be unsupervised or supervised\n\n\nUnsupervised (model does not know which samples belong to which groups):\n\nPrincipal components analysis (PCA)\nHierarchical clustering analysis (HCA)\nK-means clustering\n\n\nSupervised (model knows group composition):\n\nUnivariate (or multivariate) group comparisons\nPredictive/classification models\n\nPartial least squares regression (PLS-R)\nPLS-discriminant analysis (PLS-DA)\nRandom forest\nArtificial neural networks\nOthers"
   },
   {
     "objectID": "lectures/04_data-analysis.html#unsupervised-principal-components-analysis-pca",
@@ -795,7 +795,7 @@
     "href": "lectures/04_data-analysis.html#supervised-pls-da",
     "title": "Analysis of metabolomics data",
     "section": "Supervised: PLS-DA",
-    "text": "Supervised: PLS-DA\n\nPartial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups\nTwo data matrices, X: contains your features, Y: contains group identity"
+    "text": "Supervised: PLS-DA\n\nPartial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups\nTwo data matrices, X: contains your features, Y: contains group identity\n\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
     "objectID": "lectures/04_data-analysis.html#interpreting-pcas",
