@@ -127,24 +127,61 @@ I can contrast this with a log10 transformation and then Pareto scaling.
 ![Sample view after log10 normalization](img/04/log10-pareto-sample-view.png)
 :::
 
+I think these look pretty similar and I think it would be ok to use either transformation. I am going to continue the rest of the analysis with just the log10 transformed data.
+
 # Statistics
 
 Now that our data is set, we can use different analysis methods to understand our data quality, and differences among sample groups. Remember, there are analyses we want to do both with and without the QCs. I like to see a PCA that includes the QCs, but then I'd remove them and retain our three tomato groups for further analysis.
 
 Let's look with our QCs at the PCA first, and then we will remove those samples.
 
-## PCA
+## PCA with our QCs
 
-![](img/04/pca-qcs-scores-5PC.png)
+When we look at the PCA tab, we can see:
+
+-   An overview - which includes PCA scores plot for each combination of PCs 1 through 5. The most conventional one to look at would be PC1 vs PC2.
+-   A scree plot - this shows us how much variation is explained by each of the PCs
+-   A 2D scores plot - this shows us each sample's new coordinates in a reduced dimensionality space. We can indicate what PC should be on which axis (though again it's hard for me to think of a reason to do something different from PC1 on x and PC2 on y)
+-   A loadings plot - this shows us how the variables (here, features) are weighted in contributing to each PC
+-   3D plots - I find these to be terrible and never use them
+-   A biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.
+
+Let's look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.
+
+![](img/04/pca-qcs-scores-5PC.png)    
+
+In the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs. PC2.
 
 ![](img/04/pca-qc-scree.png)
 
+When looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn't explain all that much additional variation.
+
 ![](img/04/pca-qc-scores.png)
+
+When we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:
+
+-   Our QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.
+-   PC1 mostly separates LA2213 (the wild tomato) from OH8243 and HATS (the cultivated tomatoes). 
+-   PC2 mostly separates OH8243 (the commercial parent) from HATS (the tomato that has been introgressed for the trait of high steroidal alkaloids).
+-   Overall, HATS and OH8243 are more similar than either of those two are to LA2213.
+
+You can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.
+
+I would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.
 
 ![](img/04/pca-qc-loadings.png)
 
+The loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.
+
+For example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups. 
+
 ![](img/04/578.5296215_5.0895395_qc.png)
 
+Similarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.
+
+![](img/04/474.3577933_6.587835_qc.png)
+
+## PCA without QCs
 
 That that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to `Processing` > `Data editor` in the left part of the browser.
 
@@ -152,7 +189,7 @@ That that we can see that our QCs are tightly clustering together, we can save t
 
 Don't forget to re-normalize.
 
-## PCA
+This dataset (without the QCs) is what I would use for the rest of this analysis.
 
 ## ANOVA
 
@@ -166,3 +203,5 @@ Don't forget to re-normalize.
 
 
 ## Pattern hunter
+
+# References

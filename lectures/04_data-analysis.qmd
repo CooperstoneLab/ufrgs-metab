@@ -234,7 +234,7 @@ PCA A) scores and B) loadings (from [Dzakovich et al., 2022](https://doi.org/10.
 
 ## HCA applied to metabolomics
 
-![](img/04/hca-example.jpeg)
+![](img/04/hca-example.jpeg){width="50%"}
 
 ::: aside
 From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
@@ -243,7 +243,7 @@ From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
 ## Unsupervised: K-means clustering
 
 ::: columns
-::: {.column width="50%" style="font-size: 25px"}
+::: {.column width="50%" style="font-size: 25px" .incremental}
 -   Randomly assigns all samples to be a part of $k$ clusters
 -   Calculates centroids and assigns samples to the nearest one
 -   Iterates until centroids stability or reach some maximum
@@ -256,11 +256,6 @@ From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
 
 :::
 :::
-
-
-
-
-
 
 ## Supervised: Univariate testing, the categories
 

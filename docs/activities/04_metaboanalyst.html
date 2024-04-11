@@ -205,8 +205,8 @@ div.csl-indent {
   <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization"><span class="header-section-number">4</span> Normalization</a></li>
   <li><a href="#statistics" id="toc-statistics" class="nav-link" data-scroll-target="#statistics"><span class="header-section-number">5</span> Statistics</a>
   <ul class="collapse">
-  <li><a href="#pca" id="toc-pca" class="nav-link" data-scroll-target="#pca"><span class="header-section-number">5.1</span> PCA</a></li>
-  <li><a href="#pca-1" id="toc-pca-1" class="nav-link" data-scroll-target="#pca-1"><span class="header-section-number">5.2</span> PCA</a></li>
+  <li><a href="#pca-with-our-qcs" id="toc-pca-with-our-qcs" class="nav-link" data-scroll-target="#pca-with-our-qcs"><span class="header-section-number">5.1</span> PCA with our QCs</a></li>
+  <li><a href="#pca-without-qcs" id="toc-pca-without-qcs" class="nav-link" data-scroll-target="#pca-without-qcs"><span class="header-section-number">5.2</span> PCA without QCs</a></li>
   <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">5.3</span> ANOVA</a></li>
   <li><a href="#dendrogram-i.e.-hierarchical-clustering" id="toc-dendrogram-i.e.-hierarchical-clustering" class="nav-link" data-scroll-target="#dendrogram-i.e.-hierarchical-clustering"><span class="header-section-number">5.4</span> Dendrogram (i.e., hierarchical clustering)</a></li>
   <li><a href="#k-means-a-different-type-of-clustering" id="toc-k-means-a-different-type-of-clustering" class="nav-link" data-scroll-target="#k-means-a-different-type-of-clustering"><span class="header-section-number">5.5</span> K-means (a different type of clustering)</a></li>
@@ -214,6 +214,7 @@ div.csl-indent {
   <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">5.7</span> Random forest</a></li>
   <li><a href="#pattern-hunter" id="toc-pattern-hunter" class="nav-link" data-scroll-target="#pattern-hunter"><span class="header-section-number">5.8</span> Pattern hunter</a></li>
   </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -415,24 +416,51 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<p>I think these look pretty similar and I think it would be ok to use either transformation. I am going to continue the rest of the analysis with just the log10 transformed data.</p>
 </section>
 <section id="statistics" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Statistics</h1>
 <p>Now that our data is set, we can use different analysis methods to understand our data quality, and differences among sample groups. Remember, there are analyses we want to do both with and without the QCs. I like to see a PCA that includes the QCs, but then I’d remove them and retain our three tomato groups for further analysis.</p>
 <p>Let’s look with our QCs at the PCA first, and then we will remove those samples.</p>
-<section id="pca" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="pca"><span class="header-section-number">5.1</span> PCA</h2>
+<section id="pca-with-our-qcs" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="pca-with-our-qcs"><span class="header-section-number">5.1</span> PCA with our QCs</h2>
+<p>When we look at the PCA tab, we can see:</p>
+<ul>
+<li>An overview - which includes PCA scores plot for each combination of PCs 1 through 5. The most conventional one to look at would be PC1 vs PC2.</li>
+<li>A scree plot - this shows us how much variation is explained by each of the PCs</li>
+<li>A 2D scores plot - this shows us each sample’s new coordinates in a reduced dimensionality space. We can indicate what PC should be on which axis (though again it’s hard for me to think of a reason to do something different from PC1 on x and PC2 on y)</li>
+<li>A loadings plot - this shows us how the variables (here, features) are weighted in contributing to each PC</li>
+<li>3D plots - I find these to be terrible and never use them</li>
+<li>A biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.</li>
+</ul>
+<p>Let’s look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.</p>
 <p><img src="img/04/pca-qcs-scores-5PC.png" class="img-fluid"></p>
+<p>In the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs.&nbsp;PC2.</p>
 <p><img src="img/04/pca-qc-scree.png" class="img-fluid"></p>
+<p>When looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn’t explain all that much additional variation.</p>
 <p><img src="img/04/pca-qc-scores.png" class="img-fluid"></p>
+<p>When we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:</p>
+<ul>
+<li>Our QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.</li>
+<li>PC1 mostly separates LA2213 (the wild tomato) from OH8243 and HATS (the cultivated tomatoes).</li>
+<li>PC2 mostly separates OH8243 (the commercial parent) from HATS (the tomato that has been introgressed for the trait of high steroidal alkaloids).</li>
+<li>Overall, HATS and OH8243 are more similar than either of those two are to LA2213.</li>
+</ul>
+<p>You can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.</p>
+<p>I would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.</p>
 <p><img src="img/04/pca-qc-loadings.png" class="img-fluid"></p>
+<p>The loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.</p>
+<p>For example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups.</p>
 <p><img src="img/04/578.5296215_5.0895395_qc.png" class="img-fluid"></p>
+<p>Similarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.</p>
+<p><img src="img/04/474.3577933_6.587835_qc.png" class="img-fluid"></p>
+</section>
+<section id="pca-without-qcs" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="pca-without-qcs"><span class="header-section-number">5.2</span> PCA without QCs</h2>
 <p>That that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to <code>Processing</code> &gt; <code>Data editor</code> in the left part of the browser.</p>
 <p><img src="img/04/data-editor.png" class="img-fluid"></p>
 <p>Don’t forget to re-normalize.</p>
-</section>
-<section id="pca-1" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="pca-1"><span class="header-section-number">5.2</span> PCA</h2>
+<p>This dataset (without the QCs) is what I would use for the rest of this analysis.</p>
 </section>
 <section id="anova" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="anova"><span class="header-section-number">5.3</span> ANOVA</h2>
@@ -450,14 +478,17 @@ div.csl-indent {
 <h2 data-number="5.7" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.7</span> Random forest</h2>
 </section>
 <section id="pattern-hunter" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.8</span> Pattern hunter</h2>
+</section>
+</section>
+<section id="references" class="level1" data-number="6">
 
 
 
 
 </section>
-</section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">5.8 Pattern hunter</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">6 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-ewald2024" class="csl-entry" role="listitem">
 Ewald, Jessica D., Guangyan Zhou, Yao Lu, Jelena Kolic, Cara Ellis, James D. Johnson, Patrick E. Macdonald, and Jianguo Xia. 2024. <span>“Web-Based Multi-Omics Integration Using the Analyst Software Suite.”</span> <em>Nature Protocols</em>, February. <a href="https://doi.org/10.1038/s41596-023-00950-4">https://doi.org/10.1038/s41596-023-00950-4</a>.
 </div>
