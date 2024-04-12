@@ -1,5 +1,5 @@
 ---
-title: "Compound identification"
+title: "Compound identification in metabolomics"
 author: "Jessica Cooperstone"
 format: 
   revealjs:
@@ -11,6 +11,28 @@ format:
     incrememental: true
 ---
 
-## Generalized approaches to compound ID
+## How do we go from features to metabolites?
+
+-   Individually (one feature at a time)
+    -   Manual, very high confidence in ID
+-   In bulk (many features at a time)
+    -   Computational, generally lower confidence in ID
 
 ## Starting with a *m*/*z*
+
+::: columns
+::: {.column width="50%" style="font-size: 25px" .fragment}
+
+-   A feature of interest differentially present in commercial vs. wild tomatoes.  We want to know what this is.
+-   UHPLC-QTOF-MS, ESI+, reversed phase C18,mMethanol extract
+-   A useful [adduct calculator](https://fiehnlab.ucdavis.edu/staff/kind/Metabolomics/MS-Adduct-Calculator/)
+:::
+
+::: {.column width="50%" style="font-size: 25px" .fragment}
+
+![Relative intensity of 1092 m/z in tomatoes](img/05/1092_boxplot.png)
+
+:::
+:::
+
+## MS/MS online databases

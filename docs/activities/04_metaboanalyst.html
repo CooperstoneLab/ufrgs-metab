@@ -210,11 +210,13 @@ div.csl-indent {
   <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">5.3</span> ANOVA</a></li>
   <li><a href="#dendrogram-i.e.-hierarchical-clustering" id="toc-dendrogram-i.e.-hierarchical-clustering" class="nav-link" data-scroll-target="#dendrogram-i.e.-hierarchical-clustering"><span class="header-section-number">5.4</span> Dendrogram (i.e., hierarchical clustering)</a></li>
   <li><a href="#k-means-a-different-type-of-clustering" id="toc-k-means-a-different-type-of-clustering" class="nav-link" data-scroll-target="#k-means-a-different-type-of-clustering"><span class="header-section-number">5.5</span> K-means (a different type of clustering)</a></li>
-  <li><a href="#correlations" id="toc-correlations" class="nav-link" data-scroll-target="#correlations"><span class="header-section-number">5.6</span> Correlations</a></li>
-  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">5.7</span> Random forest</a></li>
-  <li><a href="#pattern-hunter" id="toc-pattern-hunter" class="nav-link" data-scroll-target="#pattern-hunter"><span class="header-section-number">5.8</span> Pattern hunter</a></li>
+  <li><a href="#heatmaps" id="toc-heatmaps" class="nav-link" data-scroll-target="#heatmaps"><span class="header-section-number">5.6</span> Heatmaps</a></li>
+  <li><a href="#correlations" id="toc-correlations" class="nav-link" data-scroll-target="#correlations"><span class="header-section-number">5.7</span> Correlations</a></li>
+  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">5.8</span> Random forest</a></li>
+  <li><a href="#pattern-hunter" id="toc-pattern-hunter" class="nav-link" data-scroll-target="#pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</a></li>
   </ul></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
+  <li><a href="#concluding-thoughts" id="toc-concluding-thoughts" class="nav-link" data-scroll-target="#concluding-thoughts"><span class="header-section-number">6</span> Concluding thoughts</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -454,41 +456,119 @@ div.csl-indent {
 <p><img src="img/04/578.5296215_5.0895395_qc.png" class="img-fluid"></p>
 <p>Similarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.</p>
 <p><img src="img/04/474.3577933_6.587835_qc.png" class="img-fluid"></p>
+<p>You can also download the raw data for your loadings. This might be helpful to see which features have the highest and lowest values on loadings 1 and 2. You can also view boxplots of the feature abundances in this same view and sort your loadings.</p>
 </section>
 <section id="pca-without-qcs" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="pca-without-qcs"><span class="header-section-number">5.2</span> PCA without QCs</h2>
 <p>That that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to <code>Processing</code> &gt; <code>Data editor</code> in the left part of the browser.</p>
-<p><img src="img/04/data-editor.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/data-editor.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Removing the QCs from our data</figcaption>
+</figure>
+</div>
 <p>Don’t forget to re-normalize.</p>
 <p>This dataset (without the QCs) is what I would use for the rest of this analysis.</p>
+<p>Here is a PCA that could be used as a figure in a paper.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pca-noqc-scores.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">PCA scores plot without the QCs</figcaption>
+</figure>
+</div>
+<p>We see the message of this PCA looks basically the same as when we had our QCs. But, we wouldn’t want to progress to univariate or multivariate statistics including our QCs as a group, since it is not an experimental group per se. I’m not going to go through all the plots again since we just did that with the QCs and the message is not changing.</p>
 </section>
 <section id="anova" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="anova"><span class="header-section-number">5.3</span> ANOVA</h2>
+<p>We might be interested to see which features are significantly different across the 3 tomato groups, and we can assess that using ANOVA. We can set what our FDR cut-off should be, and I am going to be a little bit more stringent here and set this to 0.01.</p>
+<p>In this case, this step isn’t that helpful since 2168 out of 2514 features are significantly different between at least two of our tomato groups. That doesn’t help us narrow down much of anything.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/aov_0.01.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">ANOVA visualization of features significantly different across tomato groups</figcaption>
+</figure>
+</div>
 </section>
 <section id="dendrogram-i.e.-hierarchical-clustering" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="dendrogram-i.e.-hierarchical-clustering"><span class="header-section-number">5.4</span> Dendrogram (i.e., hierarchical clustering)</h2>
+<p>Hierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to “natural clusters” in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heurestical natural clusters in your data, hierarchical clustering can help</p>
+<p><img src="img/04/dendrogram_euclidean_ward.png" class="img-fluid"></p>
+<p>Here we can see a dendrogram (like a phylogenetic tree) which clusters samples based on a distance metric and clustering algorithm. Samples that are more similar should be close to one another, and the longer the distance is on the x-axis, the less similar samples are.</p>
+<p>In this particular case, we can see 3 clusters derived of our 3 tomato groups. We can also see that HATS and OH8243 are more closely clustered compared to LA2213. This is consistent with what we see in our PCA.</p>
 </section>
 <section id="k-means-a-different-type-of-clustering" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="k-means-a-different-type-of-clustering"><span class="header-section-number">5.5</span> K-means (a different type of clustering)</h2>
+<p>K-means is another unsupervised clustering technique that has a similarly interpreted output to HCA but with different underlying assumptions and math. Here, we have to provide how much clusters we have (you can learn more about how to figure this out <a href="https://cooperstonelab.github.io/ufrgs-metab/activities/05_R.html#k-means-clustering">here</a>. I am going to pick 3 because we have 3 tomato groups, and want to know if our samples will segregate based on group identity across 3 clusters.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/km_3.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">K-means clustering with 3 clusters</figcaption>
+</figure>
+</div>
+<p>Here, we can see that when we indicate 3 clusters, the tomato groups separate perfectly. This gives us some additional support that we have 3 distinct clusters in our data, and those are our tomato groups.</p>
+<p>Alternatively, if we look for 2 or 4 clusters, we will see something different.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/km_2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">K-means clustering with 2 clusters</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/km_4.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">K-means clustering with 4 clusters</figcaption>
+</figure>
+</div>
+<p>This looks to me actually like 3 clusters, but it’s not. If we click the spreadsheet beside the artists palette, we can see which samples belong to which cluster.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/km_4_cluster_id.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">K-means cluster identities with 4 clusters</figcaption>
+</figure>
+</div>
 </section>
-<section id="correlations" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="correlations"><span class="header-section-number">5.6</span> Correlations</h2>
+<section id="heatmaps" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="heatmaps"><span class="header-section-number">5.6</span> Heatmaps</h2>
+<p>A heatmap is a nice way to look at lots of data at once. It doesn’t give you lots of resolution but allows you to see trends in your data you can then investigate in other ways.</p>
+<p>When you create the heatmap, you can elect to:</p>
+<ul>
+<li>Data source: use normalized or the original data - I’d use normalized</li>
+<li>Standardization: I would autoscale features - this way each feature is normalized so more abundant ones aren’t weighted more heavily</li>
+<li>Distance measure and clustering method: these are for the hierarchical clustering</li>
+</ul>
+<p><img src="img/04/heatmap.svg" class="img-fluid"></p>
+<p>As we saw with the HCA, our samples are clustering by which tomato group they are a part of. But here we can see which features have the same trends and this can be useful to us!</p>
 </section>
-<section id="random-forest" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.7</span> Random forest</h2>
+<section id="correlations" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="correlations"><span class="header-section-number">5.7</span> Correlations</h2>
+<p>The correlations analysis calculates a correlation coefficient between every pair of features. This plot is really crowed and hard to look at, but the concept is useful. We might be interested to know which groups of features have the same pattern of response across our samples. Or to know which features are highly negatively correlated.</p>
+<p>I find this format hard to sort through, but this approach to be generally useful.</p>
+<p><img src="img/04/correlation_table.svg" class="img-fluid"></p>
 </section>
-<section id="pattern-hunter" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.8</span> Pattern hunter</h2>
+<section id="random-forest" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.8</span> Random forest</h2>
+</section>
+<section id="pattern-hunter" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</h2>
+<p>You might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.</p>
+<p>In this case, I am interested in features that follow this trend: OH8243 &lt; HATS &lt; LA2213.</p>
+<p><img src="img/04/pattern-hunter.png" class="img-fluid"></p>
+<p>You can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like.</p>
+<p><img src="img/04/1081.564533_4.6453156.png" class="img-fluid"></p>
 </section>
 </section>
-<section id="references" class="level1" data-number="6">
+<section id="concluding-thoughts" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Concluding thoughts</h1>
+<p>MetaboAnalyst is a really powerful tool for metabolomic analysis. Without knowing how to code, you can analyze your data in lots of interesting and useful ways, quickly. However you might find yourself wanting to do analysis that isn’t a part of the MetaboAnalyst suite of tools, or needing to export data for some other special analysis. I’ve included here some <a href="https://cooperstonelab.github.io/ufrgs-metab/activities/05_R.html">general code that my group uses for doing first pass metabolomics filtering and analysis in R</a> - feel free to use it as it makes sense for your work.</p>
+</section>
+<section id="references" class="level1" data-number="7">
 
 
 
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">6 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">7 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-ewald2024" class="csl-entry" role="listitem">
 Ewald, Jessica D., Guangyan Zhou, Yao Lu, Jelena Kolic, Cara Ellis, James D. Johnson, Patrick E. Macdonald, and Jianguo Xia. 2024. <span>“Web-Based Multi-Omics Integration Using the Analyst Software Suite.”</span> <em>Nature Protocols</em>, February. <a href="https://doi.org/10.1038/s41596-023-00950-4">https://doi.org/10.1038/s41596-023-00950-4</a>.
 </div>

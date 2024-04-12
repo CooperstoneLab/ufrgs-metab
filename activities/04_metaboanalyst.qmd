@@ -181,27 +181,100 @@ Similarly, the point with the highest value on the y axis 474.3578_6.5878 is hig
 
 ![](img/04/474.3577933_6.587835_qc.png)
 
+You can also download the raw data for your loadings. This might be helpful to see which features have the highest and lowest values on loadings 1 and 2. You can also view boxplots of the feature abundances in this same view and sort your loadings.
+
 ## PCA without QCs
 
 That that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to `Processing` > `Data editor` in the left part of the browser.
 
-![](img/04/data-editor.png)
+![Removing the QCs from our data](img/04/data-editor.png)
 
 Don't forget to re-normalize.
 
 This dataset (without the QCs) is what I would use for the rest of this analysis.
 
+Here is a PCA that could be used as a figure in a paper. 
+
+![PCA scores plot without the QCs](img/04/pca-noqc-scores.png)
+
+We see the message of this PCA looks basically the same as when we had our QCs. But, we wouldn't want to progress to univariate or multivariate statistics including our QCs as a group, since it is not an experimental group per se. I'm not going to go through all the plots again since we just did that with the QCs and the message is not changing.
+
 ## ANOVA
+
+We might be interested to see which features are significantly different across the 3 tomato groups, and we can assess that using ANOVA. We can set what our FDR cut-off should be, and I am going to be a little bit more stringent here and set this to 0.01.
+
+In this case, this step isn't that helpful since 2168 out of 2514 features are significantly different between at least two of our tomato groups. That doesn't help us narrow down much of anything.
+
+![ANOVA visualization of features significantly different across tomato groups](img/04/aov_0.01.png)
 
 ## Dendrogram (i.e., hierarchical clustering)
 
+Hierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to "natural clusters" in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heurestical natural clusters in your data, hierarchical clustering can help
+
+![](img/04/dendrogram_euclidean_ward.png)
+
+Here we can see a dendrogram (like a phylogenetic tree) which clusters samples based on a distance metric and clustering algorithm. Samples that are more similar should be close to one another, and the longer the distance is on the x-axis, the less similar samples are.
+
+In this particular case, we can see 3 clusters derived of our 3 tomato groups. We can also see that HATS and OH8243 are more closely clustered compared to LA2213. This is consistent with what we see in our PCA.
+
 ## K-means (a different type of clustering)
+
+K-means is another unsupervised clustering technique that has a similarly interpreted output to HCA but with different underlying assumptions and math. Here, we have to provide how much clusters we have (you can learn more about how to figure this out [here](https://cooperstonelab.github.io/ufrgs-metab/activities/05_R.html#k-means-clustering). I am going to pick 3 because we have 3 tomato groups, and want to know if our samples will segregate based on group identity across 3 clusters.
+
+![K-means clustering with 3 clusters](img/04/km_3.png)
+
+Here, we can see that when we indicate 3 clusters, the tomato groups separate perfectly. This gives us some additional support that we have 3 distinct clusters in our data, and those are our tomato groups.
+
+Alternatively, if we look for 2 or 4 clusters, we will see something different.
+
+![K-means clustering with 2 clusters](img/04/km_2.png)
+
+![K-means clustering with 4 clusters](img/04/km_4.png)
+
+This looks to me actually like 3 clusters, but it's not. If we click the spreadsheet beside the artists palette, we can see which samples belong to which cluster.
+
+![K-means cluster identities with 4 clusters](img/04/km_4_cluster_id.png)
+
+## Heatmaps
+
+A heatmap is a nice way to look at lots of data at once. It doesn't give you lots of resolution but allows you to see trends in your data you can then investigate in other ways.
+
+When you create the heatmap, you can elect to:
+
+-   Data source: use normalized or the original data - I'd use normalized
+-   Standardization: I would autoscale features - this way each feature is normalized so more abundant ones aren't weighted more heavily
+-   Distance measure and clustering method: these are for the hierarchical clustering
+
+![](img/04/heatmap.svg)
+
+As we saw with the HCA, our samples are clustering by which tomato group they are a part of. But here we can see which features have the same trends and this can be useful to us! 
 
 ## Correlations
 
+The correlations analysis calculates a correlation coefficient between every pair of features. This plot is really crowed and hard to look at, but the concept is useful. We might be interested to know which groups of features have the same pattern of response across our samples. Or to know which features are highly negatively correlated.
+
+I find this format hard to sort through, but this approach to be generally useful.
+
+![](img/04/correlation_table.svg)
+
 ## Random forest
 
-
 ## Pattern hunter
+
+You might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.
+
+In this case, I am interested in features that follow this trend: OH8243 < HATS < LA2213.
+
+![](img/04/pattern-hunter.png)
+
+You can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like.
+
+![](img/04/1081.564533_4.6453156.png)
+
+
+# Concluding thoughts
+
+MetaboAnalyst is a really powerful tool for metabolomic analysis. Without knowing how to code, you can analyze your data in lots of interesting and useful ways, quickly. However you might find yourself wanting to do analysis that isn't a part of the MetaboAnalyst suite of tools, or needing to export data for some other special analysis. I've included here some [general code that my group uses for doing first pass metabolomics filtering and analysis in R](https://cooperstonelab.github.io/ufrgs-metab/activities/05_R.html) - feel free to use it as it makes sense for your work.
+
 
 # References

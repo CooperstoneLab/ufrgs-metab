@@ -557,7 +557,7 @@
     "href": "index.html",
     "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
     "section": "",
-    "text": "Instructor: Jessica Cooperstone, Ph.D. Associate Professor, Horticulture and Crop Science, Food Science and Technology The Ohio State University\nThe purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.\nBelow is an overview of the material to be covered in this workshop.\n\n\n\nTopic\n\n\nIntroduction to metabolomics\n\n\nStudy design and sample collection\n\n\nLC-MS data acquisition and pre-processing:\n\nBasics of LC and MS\nSample preparation\nData collection\nRaw data processing to create a feature table using MZmine\n\n\n\nData analysis using MetaboAnalyst:\n\nLook at your data and assess quality\nCreating principal components analysis (PCA) plots\nUnivariate group difference testing\nMultivariate analysis\n\n\n\nCompound ID:\n\nUsing MS1 and MS2 databases\nInterpreting MS/MS spectra\nConfirmation with authentic standards\n\n\n\n\n\n\n\n Back to top"
+    "text": "Instructor: Jessica Cooperstone, Ph.D. Associate Professor, Horticulture and Crop Science, Food Science and Technology The Ohio State University\nThe purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.\nBelow is an overview of the material to be covered in this workshop.\n\n\n\nTopic\nMaterial\n\n\nIntroduction to metabolomics\nLecture\n\n\nStudy design and sample collection\nLecture\nDesign a metabolomics experiment\n\n\nLC-MS data acquisition and pre-processing:\n\nBasics of LC and MS\nSample preparation\nData collection\nRaw data processing to create a feature table using MZmine\n\nLecture\nSpectral pre-processing with MZmine\n\n\nData analysis using MetaboAnalyst:\n\nLook at your data and assess quality\nCreating principal components analysis (PCA) plots\nUnivariate group difference testing\nMultivariate analysis\n\nLecture\nData analysis with MetaboAn alyst\nData analysis with R\n\n\nCompound ID:\n\nConfirmation with authentic standards\nUsing MS1 and MS2 databases\nInterpreting MS/MS spectra\n\nLecture\n\n\n\n\n\n\n Back to top"
   },
   {
     "objectID": "activities/04_metaboanalyst.html",
@@ -595,53 +595,67 @@
     "text": "3.3 Data filters\nIn this step, we can filter variables based on different rules. These include:\n\nFeatures that are very variable i nthe QCs. We don’t need to do this because we already did it manually.\nFeatures that are near constant across the conditions (i.e., those that have very low standard deviations)\nFeatures that are very low\n\nI prefer to do this kind of filtering outside of MetaboAnalyst - you could do this in Excel if you wanted to. Here, we are not going to do any more filtering. We can just click Proceed (and skip this filtering)."
   },
   {
-    "objectID": "activities/04_metaboanalyst.html#pca",
-    "href": "activities/04_metaboanalyst.html#pca",
+    "objectID": "activities/04_metaboanalyst.html#pca-with-our-qcs",
+    "href": "activities/04_metaboanalyst.html#pca-with-our-qcs",
     "title": "Data analysis with MetaboAnalyst",
-    "section": "5.1 PCA",
-    "text": "5.1 PCA\n\n\n\n\n\nThat that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to Processing &gt; Data editor in the left part of the browser.\n\nDon’t forget to re-normalize."
+    "section": "5.1 PCA with our QCs",
+    "text": "5.1 PCA with our QCs\nWhen we look at the PCA tab, we can see:\n\nAn overview - which includes PCA scores plot for each combination of PCs 1 through 5. The most conventional one to look at would be PC1 vs PC2.\nA scree plot - this shows us how much variation is explained by each of the PCs\nA 2D scores plot - this shows us each sample’s new coordinates in a reduced dimensionality space. We can indicate what PC should be on which axis (though again it’s hard for me to think of a reason to do something different from PC1 on x and PC2 on y)\nA loadings plot - this shows us how the variables (here, features) are weighted in contributing to each PC\n3D plots - I find these to be terrible and never use them\nA biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.\n\nLet’s look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.\n\nIn the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs. PC2.\n\nWhen looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn’t explain all that much additional variation.\n\nWhen we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:\n\nOur QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.\nPC1 mostly separates LA2213 (the wild tomato) from OH8243 and HATS (the cultivated tomatoes).\nPC2 mostly separates OH8243 (the commercial parent) from HATS (the tomato that has been introgressed for the trait of high steroidal alkaloids).\nOverall, HATS and OH8243 are more similar than either of those two are to LA2213.\n\nYou can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.\nI would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.\n\nThe loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.\nFor example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups.\n\nSimilarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.\n\nYou can also download the raw data for your loadings. This might be helpful to see which features have the highest and lowest values on loadings 1 and 2. You can also view boxplots of the feature abundances in this same view and sort your loadings."
   },
   {
-    "objectID": "activities/04_metaboanalyst.html#pca-1",
-    "href": "activities/04_metaboanalyst.html#pca-1",
+    "objectID": "activities/04_metaboanalyst.html#pca-without-qcs",
+    "href": "activities/04_metaboanalyst.html#pca-without-qcs",
     "title": "Data analysis with MetaboAnalyst",
-    "section": "5.2 PCA",
-    "text": "5.2 PCA"
+    "section": "5.2 PCA without QCs",
+    "text": "5.2 PCA without QCs\nThat that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to Processing &gt; Data editor in the left part of the browser.\n\n\n\nRemoving the QCs from our data\n\n\nDon’t forget to re-normalize.\nThis dataset (without the QCs) is what I would use for the rest of this analysis.\nHere is a PCA that could be used as a figure in a paper.\n\n\n\nPCA scores plot without the QCs\n\n\nWe see the message of this PCA looks basically the same as when we had our QCs. But, we wouldn’t want to progress to univariate or multivariate statistics including our QCs as a group, since it is not an experimental group per se. I’m not going to go through all the plots again since we just did that with the QCs and the message is not changing."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#anova",
     "href": "activities/04_metaboanalyst.html#anova",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.3 ANOVA",
-    "text": "5.3 ANOVA"
+    "text": "5.3 ANOVA\nWe might be interested to see which features are significantly different across the 3 tomato groups, and we can assess that using ANOVA. We can set what our FDR cut-off should be, and I am going to be a little bit more stringent here and set this to 0.01.\nIn this case, this step isn’t that helpful since 2168 out of 2514 features are significantly different between at least two of our tomato groups. That doesn’t help us narrow down much of anything.\n\n\n\nANOVA visualization of features significantly different across tomato groups"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#dendrogram-i.e.-hierarchical-clustering",
     "href": "activities/04_metaboanalyst.html#dendrogram-i.e.-hierarchical-clustering",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.4 Dendrogram (i.e., hierarchical clustering)",
-    "text": "5.4 Dendrogram (i.e., hierarchical clustering)"
+    "text": "5.4 Dendrogram (i.e., hierarchical clustering)\nHierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to “natural clusters” in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heurestical natural clusters in your data, hierarchical clustering can help\n\nHere we can see a dendrogram (like a phylogenetic tree) which clusters samples based on a distance metric and clustering algorithm. Samples that are more similar should be close to one another, and the longer the distance is on the x-axis, the less similar samples are.\nIn this particular case, we can see 3 clusters derived of our 3 tomato groups. We can also see that HATS and OH8243 are more closely clustered compared to LA2213. This is consistent with what we see in our PCA."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#k-means-a-different-type-of-clustering",
     "href": "activities/04_metaboanalyst.html#k-means-a-different-type-of-clustering",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.5 K-means (a different type of clustering)",
-    "text": "5.5 K-means (a different type of clustering)"
+    "text": "5.5 K-means (a different type of clustering)\nK-means is another unsupervised clustering technique that has a similarly interpreted output to HCA but with different underlying assumptions and math. Here, we have to provide how much clusters we have (you can learn more about how to figure this out here. I am going to pick 3 because we have 3 tomato groups, and want to know if our samples will segregate based on group identity across 3 clusters.\n\n\n\nK-means clustering with 3 clusters\n\n\nHere, we can see that when we indicate 3 clusters, the tomato groups separate perfectly. This gives us some additional support that we have 3 distinct clusters in our data, and those are our tomato groups.\nAlternatively, if we look for 2 or 4 clusters, we will see something different.\n\n\n\nK-means clustering with 2 clusters\n\n\n\n\n\nK-means clustering with 4 clusters\n\n\nThis looks to me actually like 3 clusters, but it’s not. If we click the spreadsheet beside the artists palette, we can see which samples belong to which cluster.\n\n\n\nK-means cluster identities with 4 clusters"
+  },
+  {
+    "objectID": "activities/04_metaboanalyst.html#heatmaps",
+    "href": "activities/04_metaboanalyst.html#heatmaps",
+    "title": "Data analysis with MetaboAnalyst",
+    "section": "5.6 Heatmaps",
+    "text": "5.6 Heatmaps\nA heatmap is a nice way to look at lots of data at once. It doesn’t give you lots of resolution but allows you to see trends in your data you can then investigate in other ways.\nWhen you create the heatmap, you can elect to:\n\nData source: use normalized or the original data - I’d use normalized\nStandardization: I would autoscale features - this way each feature is normalized so more abundant ones aren’t weighted more heavily\nDistance measure and clustering method: these are for the hierarchical clustering\n\n\nAs we saw with the HCA, our samples are clustering by which tomato group they are a part of. But here we can see which features have the same trends and this can be useful to us!"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#correlations",
     "href": "activities/04_metaboanalyst.html#correlations",
     "title": "Data analysis with MetaboAnalyst",
-    "section": "5.6 Correlations",
-    "text": "5.6 Correlations"
+    "section": "5.7 Correlations",
+    "text": "5.7 Correlations\nThe correlations analysis calculates a correlation coefficient between every pair of features. This plot is really crowed and hard to look at, but the concept is useful. We might be interested to know which groups of features have the same pattern of response across our samples. Or to know which features are highly negatively correlated.\nI find this format hard to sort through, but this approach to be generally useful."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#random-forest",
     "href": "activities/04_metaboanalyst.html#random-forest",
     "title": "Data analysis with MetaboAnalyst",
-    "section": "5.7 Random forest",
-    "text": "5.7 Random forest"
+    "section": "5.8 Random forest",
+    "text": "5.8 Random forest"
+  },
+  {
+    "objectID": "activities/04_metaboanalyst.html#pattern-hunter",
+    "href": "activities/04_metaboanalyst.html#pattern-hunter",
+    "title": "Data analysis with MetaboAnalyst",
+    "section": "5.9 Pattern hunter",
+    "text": "5.9 Pattern hunter\nYou might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.\nIn this case, I am interested in features that follow this trend: OH8243 &lt; HATS &lt; LA2213.\n\nYou can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like."
   },
   {
     "objectID": "activities/02_design-experiment.html",
@@ -833,38 +847,24 @@
     "text": "Supervised: PLS-DA\n\nPartial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups\nTwo data matrices, X: contains your features, Y: contains group identity\n\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
-    "objectID": "lectures/05_compound-id.html#generalized-approaches-to-compound-id",
-    "href": "lectures/05_compound-id.html#generalized-approaches-to-compound-id",
-    "title": "Compound identification",
-    "section": "Generalized approaches to compound ID",
-    "text": "Generalized approaches to compound ID"
+    "objectID": "lectures/05_compound-id.html#how-do-we-go-from-features-to-metabolites",
+    "href": "lectures/05_compound-id.html#how-do-we-go-from-features-to-metabolites",
+    "title": "Compound identification in metabolomics",
+    "section": "How do we go from features to metabolites?",
+    "text": "How do we go from features to metabolites?\n\nIndividually (one feature at a time)\n\nManual, very high confidence in ID\n\nIn bulk (many features at a time)\n\nComputational, generally lower confidence in ID"
   },
   {
     "objectID": "lectures/05_compound-id.html#starting-with-a-mz",
     "href": "lectures/05_compound-id.html#starting-with-a-mz",
-    "title": "Compound identification",
+    "title": "Compound identification in metabolomics",
     "section": "Starting with a m/z",
-    "text": "Starting with a m/z\n\n\n\n© Jessica Cooperstone, 2024"
+    "text": "Starting with a m/z\n\n\n\nA feature of interest differentially present in commercial vs. wild tomatoes. We want to know what this is.\nUHPLC-QTOF-MS, ESI+, reversed phase C18,mMethanol extract\nA useful adduct calculator\n\n\n\n\n\nRelative intensity of 1092 m/z in tomatoes"
   },
   {
-    "objectID": "activities/04_metaboanalyst.html#pca-with-our-qcs",
-    "href": "activities/04_metaboanalyst.html#pca-with-our-qcs",
-    "title": "Data analysis with MetaboAnalyst",
-    "section": "5.1 PCA with our QCs",
-    "text": "5.1 PCA with our QCs\nWhen we look at the PCA tab, we can see:\n\nAn overview - which includes PCA scores plot for each combination of PCs 1 through 5. The most conventional one to look at would be PC1 vs PC2.\nA scree plot - this shows us how much variation is explained by each of the PCs\nA 2D scores plot - this shows us each sample’s new coordinates in a reduced dimensionality space. We can indicate what PC should be on which axis (though again it’s hard for me to think of a reason to do something different from PC1 on x and PC2 on y)\nA loadings plot - this shows us how the variables (here, features) are weighted in contributing to each PC\n3D plots - I find these to be terrible and never use them\nA biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.\n\nLet’s look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.\n\nIn the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs. PC2.\n\nWhen looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn’t explain all that much additional variation.\n\nWhen we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:\n\nOur QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.\nPC1 mostly separates LA2213 (the wild tomato) from OH8243 and HATS (the cultivated tomatoes).\nPC2 mostly separates OH8243 (the commercial parent) from HATS (the tomato that has been introgressed for the trait of high steroidal alkaloids).\nOverall, HATS and OH8243 are more similar than either of those two are to LA2213.\n\nYou can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.\nI would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.\n\nThe loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.\nFor example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups.\n\nSimilarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes."
-  },
-  {
-    "objectID": "activities/04_metaboanalyst.html#pca-without-qcs",
-    "href": "activities/04_metaboanalyst.html#pca-without-qcs",
-    "title": "Data analysis with MetaboAnalyst",
-    "section": "5.2 PCA without QCs",
-    "text": "5.2 PCA without QCs\nThat that we can see that our QCs are tightly clustering together, we can save that PCA scores plot and remove our QC samples. We can do that by navigating to Processing &gt; Data editor in the left part of the browser.\n\nDon’t forget to re-normalize.\nThis dataset (without the QCs) is what I would use for the rest of this analysis."
-  },
-  {
-    "objectID": "activities/04_metaboanalyst.html#pattern-hunter",
-    "href": "activities/04_metaboanalyst.html#pattern-hunter",
-    "title": "Data analysis with MetaboAnalyst",
-    "section": "5.8 Pattern hunter",
-    "text": "5.8 Pattern hunter"
+    "objectID": "lectures/05_compound-id.html#msms-online-databases",
+    "href": "lectures/05_compound-id.html#msms-online-databases",
+    "title": "Compound identification in metabolomics",
+    "section": "MS/MS online databases",
+    "text": "MS/MS online databases\n\n\n\n© Jessica Cooperstone, 2024"
   }
 ]
