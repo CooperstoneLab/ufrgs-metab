@@ -35,4 +35,18 @@ format:
 :::
 :::
 
+## Search in MS databases - HMDB
+
+![](img/05/hmdb-search.png)
+
+## Download structure
+
+![](img/05/save-sdf.png)
+
+## Import into ChemSketch
+
+![](img/05/chemsketch-open.png)
+
+## How can we improve the confidence of our ID?
+
 ## MS/MS online databases

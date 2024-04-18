@@ -259,6 +259,24 @@ I find this format hard to sort through, but this approach to be generally usefu
 
 ## Random forest
 
+This isn't that good of an example for random forest classification since our samples are so different.
+
+Random forest is a machine learning class predition approach. In MetaboAnalyst, you can pick how many trees to draw and how many predictors to use.
+
+![](img/04/random-forest-classification.png)
+
+In this case, we can see that our out of bag error rate is 0, and with using very few trees, we are able to perfectly classify samples as to whether they belong to each of the three tomato groups.
+
+If you look under the variable importance tab you can see the features that are most important in generating this model. You can look at this as a figure, or you can download a file to see how each one affects the mean decrease in accuracy. You can sort this list from high to low or low to high.
+
+![](img/04/random-forest-vip.png)
+
+You can then look for each of those figures how the relative intensity compares between tomato groups.
+
+![](img/04/1035.29429_5.111745_random-forest.png)
+
+Another option for random forest is to have a training and a test set. As far as I can tell, MetaboAnalyst does this by calculating the out of bag error but there are also other approaches.
+
 ## Pattern hunter
 
 You might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.
@@ -271,6 +289,45 @@ You can also click on the spreadsheet to see the correlation among each feature,
 
 ![](img/04/1081.564533_4.6453156.png)
 
+## Fold change analysis
+
+There are some analyses that can be only done with two groups (versus the three that we've had for the previous analyses). To demonstrate how these work, I am going to only keep the samples that are a part of the HATS and OH8243 groups.
+
+I can edit that using the Data editor on the leftside panel.
+
+![](img/04/data-editor-2.png)
+
+Remember that when you do this, you will need to re-normalized.
+
+Now, we have access to new analyses. We will start with fold change analysis.
+
+We can set what our fold change threshold is going to be, and what the direction of the comparison is.
+
+![](img/04/fold-change.png)
+
+We can then click on any of the points to see how the relative intensity of that features is different among our groups.
+
+![](img/04/474.3577933_6.587835_fc.png)
+
+You can also click on the spreadsheet icon to view and/or download the full set of mean fold changes for each feature between the groups.
+
+
+
+## T-test
+
+Like we did with an ANOVA for > 2 groups, we might want to see if there are any differences in the intensity of each feature between our two tomato groups. We can do that using t-tests (parametric) or Wilcoxon rank-sum tests. We can select whether we have equal variance between or groups, whether we want to use a non-parametric test (if data is non-normal), what our p-value threshold is, and whether we are doing a multiple testing correct (you should be!).
+
+![](img/04/t-test-all-features.png)
+
+You again can click on the spreadhseet icon to download the full feature set along with p-values, FDR adjusted p-values, and -log10 p-values. 
+
+## Volcano plots
+
+Volcano plots are nice as they incorporate both those features that are significantly different between groups, and the fold chance of that differences. 
+
+![](img/04/volcano.png)
+
+If you click on any feature, you can see the relative intensity across our two groups.
 
 # Concluding thoughts
 

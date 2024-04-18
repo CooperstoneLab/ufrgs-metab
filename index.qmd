@@ -14,70 +14,27 @@ introduction to the metabolomics workflow, experimental design process,
 collection of data via LC combined with high resolution MS, data analysis
 process, and compound identification.
 
-Below is an overview of the material to be covered in this workshop.
+Below is an overview of the material to be covered in this workshop. The top
+toolbar has lecture material under the `Lectures` tab and Hands on activities
+under the `Activities` tab.
 
-+-------------------------------------------------+----------------------------+
-| ### Topic                                       | ### Material               |
-+-------------------------------------------------+----------------------------+
-| Introduction to metabolomics                    | [Lecture](h%20ttps://co    |
-|                                                 | operstonelab.gith%20ub.io/ |
-|                                                 | ufrgs-metab/lectures%20/01 |
-|                                                 | _intro.html#/title-slid%20 |
-|                                                 | e "Intro to metabolomics") |
-+-------------------------------------------------+----------------------------+
-| Study design and sample collection              | [Lecture](https://co       |
-|                                                 | operstonelab.git%20hub.io/ |
-|                                                 | ufrgs-metab/lecture%20s/02 |
-|                                                 | _design-collection.htm%20l |
-|                                                 | #/title-slide "Study desi  |
-|                                                 | gn and sample collection") |
-|                                                 |                            |
-|                                                 | [Design a metabolomics     |
-|                                                 | experiment](htt            |
-|                                                 | ps://cooperstonel%20ab.git |
-|                                                 | hub.io/ufrgs-metab/a%20cti |
-|                                                 | vities/02_design-experi%20 |
-|                                                 | ment.html "Design your own |
-|                                                 |  metabolomics experiment") |
-+-------------------------------------------------+----------------------------+
-| LC-MS data acquisition and pre-processing:      | [Lecture](ht%20tps://      |
-|                                                 | cooperstonelab.githu%20b.i |
-| -   Basics of LC and MS                         | o/ufrgs-metab/lectures/%20 |
-| -   Sample preparation                          | 03_lc-ms.html#/title-slide |
-| -   Data collection                             |  "LC-MS data acquisition") |
-| -   Raw data processing to create a feature     |                            |
-|     table using MZmine                          | [Spectral pre-processing   |
-|                                                 | with                       |
-|                                                 | MZmine](https%20://coop    |
-|                                                 | erstonelab.github.i%20o/uf |
-|                                                 | rgs-metab/activities/0%203 |
-|                                                 | _mzmine.html "Spectral pr  |
-|                                                 | e-processing with MZmine") |
-+-------------------------------------------------+----------------------------+
-| Data analysis using MetaboAnalyst:              | [Lecture](h%20ttps://co    |
-|                                                 | operstonelab.gith%20ub.io/ |
-| -   Look at your data and assess quality        | ufrgs-metab/lectures%20/04 |
-| -   Creating principal components analysis      | _data-analysis.html#/ti%20 |
-|     (PCA) plots                                 | tle-slide "Data analysis") |
-| -   Univariate group difference testing         |                            |
-| -   Multivariate analysis                       | [Data analysis with        |
-|                                                 | MetaboAn                   |
-|                                                 | alyst](https://c%20ooperst |
-|                                                 | onelab.github.io/uf%20rgs- |
-|                                                 | metab/activities/04_me%20t |
-|                                                 | aboanalyst.html "Data ana  |
-|                                                 | lysis with MetaboAnalyst") |
-|                                                 |                            |
-|                                                 | [Data analysis with        |
-|                                                 | R](https://coo%20persto    |
-|                                                 | nelab.github.io/ufrg%20s-m |
-|                                                 | etab/activities/05_R.ht%20 |
-|                                                 | ml "Data analysis with R") |
-+-------------------------------------------------+----------------------------+
-| Compound ID:                                    | [Lecture](                 |
-|                                                 | https://c%20ooperstonelab. |
-| -   Confirmation with authentic standards       | github.io/uf%20rgs-metab/l |
-| -   Using MS1 and MS2 databases                 | ectures/05_comp%20ound-id. |
-| -   Interpreting MS/MS spectra                  | html#/title-slide%20%22Com |
-|                                                 | pound%20identification%22) |
-+-------------------------------------------------+----------------------------+
+## Introduction to metabolomics      
+
+## Study design and sample collection  
+
+## LC-MS data acquisition and pre-processing
+
+-   Basics of LC and MS
+-   Sample preparation
+-   Data collection
+-   Raw data processing to create a feature table using MZmine
+
+## Data analysis using MetaboAnalyst
+
+-   How to use MetaboAnalyst
+-   Looking at your data and assessing quality
+-   Creating principal components analysis (PCA) plots
+-   Univariate group difference testing
+-   Multivariate class discovery and prediction methods 
+
+## Compound identification

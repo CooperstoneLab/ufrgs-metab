@@ -176,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="https://mzmine.github.io/" rel="" target="">
- <span class="dropdown-text">MZmine 3</span></a>
+    <a class="dropdown-item" href="https://mzio.io/" rel="" target="">
+ <span class="dropdown-text">MZmine</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="https://www.metaboanalyst.ca/" rel="" target="">
@@ -187,12 +187,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="https://hmdb.ca/" rel="" target="">
  <span class="dropdown-text">HMDB</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="http://ondemand.osc.edu/" rel="" target="">
+ <span class="dropdown-text">Ohio Supercomputer Center (OSC)</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
     <a href="https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-cloud-arrow-down"></i></a>
-    <a href="https://github.com/CooperstoneLab/ufrgs-metabolomics" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/CooperstoneLab/ufrgs-metab" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
@@ -304,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Different MS vendors have their files in different formats. We are going to be using today some data that was collected on an Agilent LC-MS, and the file extension here is <code>.d</code>. We are going to use the software <code>MSConvert</code> from <code>ProteoWizard</code> to convert our files into an open source file format with the extension <code>.mzML</code>.</p>
 <section id="download-msconvert-from-proteowizard" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="download-msconvert-from-proteowizard"><span class="header-section-number">2.1</span> Download <code>MSConvert</code> from <code>ProteoWizard</code></h2>
-<p>If you don’t have <code>ProteoWizard</code>, you can download it here: <a href="https://proteowizard.sourceforge.io/">https://proteowizard.sourceforge.io/</a>. Once you download the program, open <code>MSConvert</code>.</p>
+<p>If you don’t have <code>ProteoWizard</code>, you can download it here: <a href="https://proteowizard.sourceforge.io/" class="uri">https://proteowizard.sourceforge.io/</a>. Once you download the program, open <code>MSConvert</code>.</p>
 </section>
 <section id="select-files-for-conversion" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="select-files-for-conversion"><span class="header-section-number">2.2</span> Select files for conversion</h2>
@@ -367,7 +371,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption class="figure-caption">Set parameters for launching a Pitzer desktop</figcaption>
 </figure>
 </div>
+<blockquote class="blockquote">
+<p>If Pitzer is not working, you can open up an Owens desktop and it will work the same. Just use the same paramteres.</p>
+</blockquote>
 <p>Once you are in Pitzer desktop, you can open an internet browser and navigate to <a href="https://github.com/mzmine/mzmine3/releases/tag/v3.9.0" class="uri">https://github.com/mzmine/mzmine3/releases/tag/v3.9.0</a>. At the time I put this tutorial together, the most recent version of MZmine is 3.9.0. Download the version for the Linux portable version.</p>
+<p>You can actually skip the download process as I put the portable version fo MZmine 3.9.0 in <code>/fs/ess/PAS2568/MZmine</code></p>
 </section>
 <section id="open-mzmine" class="level3" data-number="3.1.5">
 <h3 data-number="3.1.5" class="anchored" data-anchor-id="open-mzmine"><span class="header-section-number">3.1.5</span> Open MZmine</h3>
@@ -391,6 +399,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="import-your-data" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Import your data</h1>
 <p>Once you’ve opened GUI, go to <code>Raw data methods</code> &gt; <code>Raw data import</code> &gt; <code>mzML</code> and select all of your files to import. You should now see all your data files in the left hand column of MZmine. You can re-order them if you like by dragging them around.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are working on OSC, I have put all of the <code>.mzML</code> files on <code>/fs/ess/PAS2568/mzML-centroid</code>.</p>
+</div>
+</div>
 <p><img src="img/03/load-files.png" class="img-fluid"></p>
 <p>Once samples are loaded, you can begin to look at them. For example, I can highlight all of my QC samples and draw out a base peak chromatogram for each to see how similar they are. I can do this by selecting the samples:</p>
 <ul>
@@ -724,6 +745,19 @@ CV = standard\ deviation / average
 <li>Remove features that are more than 30% variable in your QCs.</li>
 </ul>
 <p>This is the file that you can use for subsequent analysis in MetaboAnalyst.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are working on OSC, you can access any files you create from the Files tab of <a href="www.ondemand.osc.edu">www.ondemand.osc.edu</a></p>
+</div>
+</div>
 
 
 </section>

@@ -42,18 +42,20 @@ website:
             
       - text: Resources
         menu: 
-          - text: MZmine 3
-            href: https://mzmine.github.io/
+          - text: MZmine
+            href: https://mzio.io/
           - text: MetaboAnalyst
             href: https://www.metaboanalyst.ca/
           - text: HMDB
             href: https://hmdb.ca/
+          - text: Ohio Supercomputer Center (OSC)
+            href: http://ondemand.osc.edu/
 
     tools:
       - icon: cloud-arrow-down
         href: https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4
       - icon: github
-        href: https://github.com/CooperstoneLab/ufrgs-metabolomics
+        href: https://github.com/CooperstoneLab/ufrgs-metab
 
 # footer
   page-footer:

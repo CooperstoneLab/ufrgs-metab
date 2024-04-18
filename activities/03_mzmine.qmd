@@ -38,7 +38,7 @@ Samples are named with the following structure:
 
 I have not given you every sample from this run, so the run order numbers won't be continuous. There are 12 of each of the tomato varieties, 6 QCs, and 3 PBs. If your MZmine is getting bogged down, you don't need to use all of these samples, you can practice in using just the QCs. I will give you full feature tables for the data analysis next steps.
 
-Download the raw data files and put them in a known location on your computer. 
+Download the raw data files and put them in a known location on your computer.
 
 # Convert instrument data files to open source format
 
@@ -46,7 +46,7 @@ Different MS vendors have their files in different formats. We are going to be u
 
 ## Download `MSConvert` from `ProteoWizard`
 
-If you don't have `ProteoWizard`, you can download it here: [https://proteowizard.sourceforge.io/](https://proteowizard.sourceforge.io/). Once you download the program, open `MSConvert`.
+If you don't have `ProteoWizard`, you can download it here: <https://proteowizard.sourceforge.io/>. Once you download the program, open `MSConvert`.
 
 ## Select files for conversion
 
@@ -91,7 +91,11 @@ You can use the parameters below for launching the Pitzer desktop. Make sure you
 
 ![Set parameters for launching a Pitzer desktop](img/03/pitzer-params.png)
 
+> If Pitzer is not working, you can open up an Owens desktop and it will work the same. Just use the same paramteres.
+
 Once you are in Pitzer desktop, you can open an internet browser and navigate to <https://github.com/mzmine/mzmine3/releases/tag/v3.9.0>. At the time I put this tutorial together, the most recent version of MZmine is 3.9.0. Download the version for the Linux portable version.
+
+You can actually skip the download process as I put the portable version fo MZmine 3.9.0 in `/fs/ess/PAS2568/MZmine`
 
 ### Open MZmine
 
@@ -116,7 +120,12 @@ If you don't have MZmine, you can download it at this link: <https://mzmine.gith
 MZmine has extremely good documentation, so if you want to read more about any particular parameter, you can do so here: <https://mzmine.github.io/mzmine_documentation/index.html>.
 
 # Import your data
+
 Once you've opened GUI, go to `Raw data methods` \> `Raw data import` \> `mzML` and select all of your files to import. You should now see all your data files in the left hand column of MZmine. You can re-order them if you like by dragging them around.
+
+::: callout-note
+If you are working on OSC, I have put all of the `.mzML` files on `/fs/ess/PAS2568/mzML-centroid`.
+:::
 
 ![](img/03/load-files.png)
 
@@ -341,7 +350,7 @@ In the table view of the feature lists, the gap filled values will now be shown 
 
 # Filter for isotopic pattern
 
-We want to make sure that now there are at least 2 peaks that make up an isotopic pattern. We can do that by going to `Feature list methods` > `Feature list rows filter`.
+We want to make sure that now there are at least 2 peaks that make up an isotopic pattern. We can do that by going to `Feature list methods` \> `Feature list rows filter`.
 
 ![Parameters for filtering for isotopic pattern](img/03/filter-isotopic-pattern.png)
 
@@ -357,7 +366,7 @@ The rest you can leave as it is. I find this step removes a lot of features.
 
 MZmine (aided by our setting of parameters) does its best to try and collapse features that belong to the same metabolite together. But this happens imperfectly. Here we are going to go through our feature list and remove features that are duplicated. Having features duplicated in metabolomics is a problem because we then have to do more multiple testing correction than is really needed. It also makes our data bigger than it needs to be.
 
-We can do this by navigating to `Feature list method` > `Feature list filtering` > [`Duplicate feature filter`](https://mzmine.github.io/mzmine_documentation/module_docs/filter_duplicate_features/duplicate_feature_filter.html#:~:text=Two%20peaks%20are%20considered%20duplicates,row%20ID%20of%20all%20duplicates.).
+We can do this by navigating to `Feature list method` \> `Feature list filtering` \> [`Duplicate feature filter`](https://mzmine.github.io/mzmine_documentation/module_docs/filter_duplicate_features/duplicate_feature_filter.html#:~:text=Two%20peaks%20are%20considered%20duplicates,row%20ID%20of%20all%20duplicates.).
 
 ![Parameters for de-duplication](img/03/duplicates.png)
 
@@ -445,7 +454,7 @@ We can create columns that calculate the standard deviation and average across e
 
 ![Calculating CV in your QCs for filtering](img/03/qc-cv.png)
 
-Then we can remove all rows where CV_QC > 0.3 (or 30%). 
+Then we can remove all rows where CV_QC \> 0.3 (or 30%).
 
 # Save your file
 
@@ -455,4 +464,7 @@ Now you have a feature table that after deconvolution in MZmine has been filtere
 -   Remove features that are more than 30% variable in your QCs.
 
 This is the file that you can use for subsequent analysis in MetaboAnalyst.
-  
+
+::: callout-note
+If you are working on OSC, you can access any files you create from the Files tab of [www.ondemand.osc.edu](www.ondemand.osc.edu)
+:::

@@ -159,8 +159,8 @@ div.csl-indent {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="https://mzmine.github.io/" rel="" target="">
- <span class="dropdown-text">MZmine 3</span></a>
+    <a class="dropdown-item" href="https://mzio.io/" rel="" target="">
+ <span class="dropdown-text">MZmine</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="https://www.metaboanalyst.ca/" rel="" target="">
@@ -170,12 +170,16 @@ div.csl-indent {
     <a class="dropdown-item" href="https://hmdb.ca/" rel="" target="">
  <span class="dropdown-text">HMDB</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="http://ondemand.osc.edu/" rel="" target="">
+ <span class="dropdown-text">Ohio Supercomputer Center (OSC)</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
     <a href="https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-cloud-arrow-down"></i></a>
-    <a href="https://github.com/CooperstoneLab/ufrgs-metabolomics" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/CooperstoneLab/ufrgs-metab" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
@@ -214,6 +218,9 @@ div.csl-indent {
   <li><a href="#correlations" id="toc-correlations" class="nav-link" data-scroll-target="#correlations"><span class="header-section-number">5.7</span> Correlations</a></li>
   <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">5.8</span> Random forest</a></li>
   <li><a href="#pattern-hunter" id="toc-pattern-hunter" class="nav-link" data-scroll-target="#pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</a></li>
+  <li><a href="#fold-change-analysis" id="toc-fold-change-analysis" class="nav-link" data-scroll-target="#fold-change-analysis"><span class="header-section-number">5.10</span> Fold change analysis</a></li>
+  <li><a href="#t-test" id="toc-t-test" class="nav-link" data-scroll-target="#t-test"><span class="header-section-number">5.11</span> T-test</a></li>
+  <li><a href="#volcano-plots" id="toc-volcano-plots" class="nav-link" data-scroll-target="#volcano-plots"><span class="header-section-number">5.12</span> Volcano plots</a></li>
   </ul></li>
   <li><a href="#concluding-thoughts" id="toc-concluding-thoughts" class="nav-link" data-scroll-target="#concluding-thoughts"><span class="header-section-number">6</span> Concluding thoughts</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
@@ -547,6 +554,15 @@ div.csl-indent {
 </section>
 <section id="random-forest" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.8</span> Random forest</h2>
+<p>This isn’t that good of an example for random forest classification since our samples are so different.</p>
+<p>Random forest is a machine learning class predition approach. In MetaboAnalyst, you can pick how many trees to draw and how many predictors to use.</p>
+<p><img src="img/04/random-forest-classification.png" class="img-fluid"></p>
+<p>In this case, we can see that our out of bag error rate is 0, and with using very few trees, we are able to perfectly classify samples as to whether they belong to each of the three tomato groups.</p>
+<p>If you look under the variable importance tab you can see the features that are most important in generating this model. You can look at this as a figure, or you can download a file to see how each one affects the mean decrease in accuracy. You can sort this list from high to low or low to high.</p>
+<p><img src="img/04/random-forest-vip.png" class="img-fluid"></p>
+<p>You can then look for each of those figures how the relative intensity compares between tomato groups.</p>
+<p><img src="img/04/1035.29429_5.111745_random-forest.png" class="img-fluid"></p>
+<p>Another option for random forest is to have a training and a test set. As far as I can tell, MetaboAnalyst does this by calculating the out of bag error but there are also other approaches.</p>
 </section>
 <section id="pattern-hunter" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</h2>
@@ -555,6 +571,31 @@ div.csl-indent {
 <p><img src="img/04/pattern-hunter.png" class="img-fluid"></p>
 <p>You can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like.</p>
 <p><img src="img/04/1081.564533_4.6453156.png" class="img-fluid"></p>
+</section>
+<section id="fold-change-analysis" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="fold-change-analysis"><span class="header-section-number">5.10</span> Fold change analysis</h2>
+<p>There are some analyses that can be only done with two groups (versus the three that we’ve had for the previous analyses). To demonstrate how these work, I am going to only keep the samples that are a part of the HATS and OH8243 groups.</p>
+<p>I can edit that using the Data editor on the leftside panel.</p>
+<p><img src="img/04/data-editor-2.png" class="img-fluid"></p>
+<p>Remember that when you do this, you will need to re-normalized.</p>
+<p>Now, we have access to new analyses. We will start with fold change analysis.</p>
+<p>We can set what our fold change threshold is going to be, and what the direction of the comparison is.</p>
+<p><img src="img/04/fold-change.png" class="img-fluid"></p>
+<p>We can then click on any of the points to see how the relative intensity of that features is different among our groups.</p>
+<p><img src="img/04/474.3577933_6.587835_fc.png" class="img-fluid"></p>
+<p>You can also click on the spreadsheet icon to view and/or download the full set of mean fold changes for each feature between the groups.</p>
+</section>
+<section id="t-test" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="t-test"><span class="header-section-number">5.11</span> T-test</h2>
+<p>Like we did with an ANOVA for &gt; 2 groups, we might want to see if there are any differences in the intensity of each feature between our two tomato groups. We can do that using t-tests (parametric) or Wilcoxon rank-sum tests. We can select whether we have equal variance between or groups, whether we want to use a non-parametric test (if data is non-normal), what our p-value threshold is, and whether we are doing a multiple testing correct (you should be!).</p>
+<p><img src="img/04/t-test-all-features.png" class="img-fluid"></p>
+<p>You again can click on the spreadhseet icon to download the full feature set along with p-values, FDR adjusted p-values, and -log10 p-values.</p>
+</section>
+<section id="volcano-plots" class="level2" data-number="5.12">
+<h2 data-number="5.12" class="anchored" data-anchor-id="volcano-plots"><span class="header-section-number">5.12</span> Volcano plots</h2>
+<p>Volcano plots are nice as they incorporate both those features that are significantly different between groups, and the fold chance of that differences.</p>
+<p><img src="img/04/volcano.png" class="img-fluid"></p>
+<p>If you click on any feature, you can see the relative intensity across our two groups.</p>
 </section>
 </section>
 <section id="concluding-thoughts" class="level1" data-number="6">

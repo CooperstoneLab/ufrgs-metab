@@ -1437,7 +1437,7 @@ ggplot(dend_data$segments) +
 
 ## PLS-DA
 
-Partiap least squares discriminant analysis (or regression) is a method for classification/prediction of high dimensional data. Many people use PLS to find the features most distinguishing groups (or more associated with an outcome Y). Personally I don't really like PLS analysis - I don't find its any more useful that running a series of univariate tests to see which feautures are differentially abundant by group, and it has a [bad tendency to overfit](10.2174/2213235X11301010092) especially with noisy data (and one could argue metabolomics data is always noisy). Still, I'll show you how to do it.
+Partial least squares discriminant analysis (or regression) is a method for classification/prediction of high dimensional data. Many people use PLS to find the features most distinguishing groups (or more associated with an outcome Y). Personally I don't really like PLS analysis - I don't find its any more useful that running a series of univariate tests to see which feautures are differentially abundant by group, and it has a [bad tendency to overfit](10.2174/2213235X11301010092) especially with noisy data (and one could argue metabolomics data is always noisy). Still, I'll show you how to do it.
 
 As we went over in the lecture material, PLS based methods are prediction methods though most use them in metabolomics to discover features of interest. 
 

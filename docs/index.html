@@ -139,8 +139,8 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="https://mzmine.github.io/" rel="" target="">
- <span class="dropdown-text">MZmine 3</span></a>
+    <a class="dropdown-item" href="https://mzio.io/" rel="" target="">
+ <span class="dropdown-text">MZmine</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="https://www.metaboanalyst.ca/" rel="" target="">
@@ -150,12 +150,16 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="https://hmdb.ca/" rel="" target="">
  <span class="dropdown-text">HMDB</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="http://ondemand.osc.edu/" rel="" target="">
+ <span class="dropdown-text">Ohio Supercomputer Center (OSC)</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
     <a href="https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-cloud-arrow-down"></i></a>
-    <a href="https://github.com/CooperstoneLab/ufrgs-metabolomics" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://github.com/CooperstoneLab/ufrgs-metab" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
@@ -167,7 +171,17 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-metabolomics" id="toc-introduction-to-metabolomics" class="nav-link active" data-scroll-target="#introduction-to-metabolomics">Introduction to metabolomics</a></li>
+  <li><a href="#study-design-and-sample-collection" id="toc-study-design-and-sample-collection" class="nav-link" data-scroll-target="#study-design-and-sample-collection">Study design and sample collection</a></li>
+  <li><a href="#lc-ms-data-acquisition-and-pre-processing" id="toc-lc-ms-data-acquisition-and-pre-processing" class="nav-link" data-scroll-target="#lc-ms-data-acquisition-and-pre-processing">LC-MS data acquisition and pre-processing</a></li>
+  <li><a href="#data-analysis-using-metaboanalyst" id="toc-data-analysis-using-metaboanalyst" class="nav-link" data-scroll-target="#data-analysis-using-metaboanalyst">Data analysis using MetaboAnalyst</a></li>
+  <li><a href="#compound-identification" id="toc-compound-identification" class="nav-link" data-scroll-target="#compound-identification">Compound identification</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -191,58 +205,37 @@ ul.task-list li input[type="checkbox"] {
 
 <p><strong>Instructor</strong>: <a href="https://www.cooperstonelab.com/">Jessica Cooperstone, Ph.D.</a><br> Associate Professor, Horticulture and Crop Science, Food Science and Technology<br> The Ohio State University</p>
 <p>The purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.</p>
-<p>Below is an overview of the material to be covered in this workshop.</p>
-<table class="table">
-<tbody>
-<tr class="odd">
-<td><h3 id="topic" class="anchored">Topic</h3></td>
-<td><h3 id="material" class="anchored">Material</h3></td>
-</tr>
-<tr class="even">
-<td>Introduction to metabolomics</td>
-<td><a href="h ttps://co operstonelab.gith ub.io/ ufrgs-metab/lectures /01 _intro.html#/title-slid  e" title="Intro to metabolomics">Lecture</a></td>
-</tr>
-<tr class="odd">
-<td>Study design and sample collection</td>
-<td><p><a href="https://co%20operstonelab.git%20hub.io/%20ufrgs-metab/lecture%20s/02%20_design-collection.htm%20l%20#/title-slide" title="Study desi gn and sample collection">Lecture</a></p>
-<p><a href="htt ps://cooperstonel ab.git hub.io/ufrgs-metab/a cti vities/02_design-experi  ment.html" title="Design your own metabolomics experiment">Design a metabolomics experiment</a></p></td>
-</tr>
-<tr class="even">
-<td><p>LC-MS data acquisition and pre-processing:</p>
+<p>Below is an overview of the material to be covered in this workshop. The top toolbar has lecture material under the <code>Lectures</code> tab and Hands on activities under the <code>Activities</code> tab.</p>
+<section id="introduction-to-metabolomics" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-metabolomics">Introduction to metabolomics</h2>
+</section>
+<section id="study-design-and-sample-collection" class="level2">
+<h2 class="anchored" data-anchor-id="study-design-and-sample-collection">Study design and sample collection</h2>
+</section>
+<section id="lc-ms-data-acquisition-and-pre-processing" class="level2">
+<h2 class="anchored" data-anchor-id="lc-ms-data-acquisition-and-pre-processing">LC-MS data acquisition and pre-processing</h2>
 <ul>
 <li>Basics of LC and MS</li>
 <li>Sample preparation</li>
 <li>Data collection</li>
 <li>Raw data processing to create a feature table using MZmine</li>
-</ul></td>
-<td><p><a href="ht tps:// cooperstonelab.githu b.i o/ufrgs-metab/lectures/  03_lc-ms.html#/title-slide" title="LC-MS data acquisition">Lecture</a></p>
-<p><a href="https ://coop erstonelab.github.i o/uf rgs-metab/activities/0 3 _mzmine.html" title="Spectral pr e-processing with MZmine">Spectral pre-processing with MZmine</a></p></td>
-</tr>
-<tr class="odd">
-<td><p>Data analysis using MetaboAnalyst:</p>
+</ul>
+</section>
+<section id="data-analysis-using-metaboanalyst" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-using-metaboanalyst">Data analysis using MetaboAnalyst</h2>
 <ul>
-<li>Look at your data and assess quality</li>
+<li>How to use MetaboAnalyst</li>
+<li>Looking at your data and assessing quality</li>
 <li>Creating principal components analysis (PCA) plots</li>
 <li>Univariate group difference testing</li>
-<li>Multivariate analysis</li>
-</ul></td>
-<td><p><a href="h ttps://co operstonelab.gith ub.io/ ufrgs-metab/lectures /04 _data-analysis.html#/ti  tle-slide" title="Data analysis">Lecture</a></p>
-<p><a href="https://c%20ooperst%20onelab.github.io/uf%20rgs-%20metab/activities/04_me%20t%20aboanalyst.html" title="Data ana lysis with MetaboAnalyst">Data analysis with MetaboAn alyst</a></p>
-<p><a href="https://coo%20persto%20nelab.github.io/ufrg%20s-m%20etab/activities/05_R.ht%20%20ml" title="Data analysis with R">Data analysis with R</a></p></td>
-</tr>
-<tr class="even">
-<td><p>Compound ID:</p>
-<ul>
-<li>Confirmation with authentic standards</li>
-<li>Using MS1 and MS2 databases</li>
-<li>Interpreting MS/MS spectra</li>
-</ul></td>
-<td><a href="https://c%20ooperstonelab.%20github.io/uf%20rgs-metab/l%20ectures/05_comp%20ound-id.%20html#/title-slide%20%22Com%20pound%20identification%22">Lecture</a></td>
-</tr>
-</tbody>
-</table>
+<li>Multivariate class discovery and prediction methods</li>
+</ul>
+</section>
+<section id="compound-identification" class="level2">
+<h2 class="anchored" data-anchor-id="compound-identification">Compound identification</h2>
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
