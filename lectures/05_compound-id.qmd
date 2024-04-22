@@ -141,6 +141,24 @@ Think about:
 
 ![Predicted spectra for (23*R*)-acetoxytomatine](img/05/1092-msms-predicted.png)
 
+
+
+## Predicted vs. actual
+
+::: columns
+::: {.column width="50%" style="font-size: 30px"}
+
+![MS/MS spectra of 1092.5590 at 65eV in +ESI](img/05/1092-msms.png)
+
+:::
+
+::: {.column width="50%" style="font-size: 25px"}
+
+![Acetoxytomatine predicted spectra from [CFM-ID](https://cfmid.wishartlab.com/)](img/05/acetoxytomatine-cfmid.png)
+
+:::
+:::
+
 ## MS/MS spectral databases
 
 -   [GNPS](https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp)
@@ -156,3 +174,27 @@ Think about:
 
 
 ## Do you need to have an ID to quantify?
+
+```{r}
+#| include: false
+
+library(tidyverse)
+library(readxl)
+library(ggrepel)
+
+acetoxytomatine_cfmid <- read_excel("data/acetoxytomatine-cfmid.xlsx")
+
+to_label <- acetoxytomatine_cfmid %>%
+  filter(intensity > 1.7)
+
+acetoxytomatine_cfmid %>%
+  ggplot(aes(x = m_z, y = intensity)) +
+  geom_segment(aes(x = m_z, xend = m_z, y = 0, yend = intensity)) +
+  geom_label_repel(data = to_label, aes(label = m_z)) +
+  theme_minimal() +
+  labs(x = "m/z",
+       y = "Intensity",
+       title = "Predicted MS/MS spectra of acetoxytomatine",
+       subtitle = "HMDB ID 59530, positive mode, 40 eV, from CFM-ID")
+
+```

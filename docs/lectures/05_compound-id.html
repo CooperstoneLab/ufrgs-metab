@@ -482,6 +482,26 @@ Jessica Cooperstone
 <p><a href="http://www.hmdb.ca/spectra/ms_ms/59530">http://www.hmdb.ca/spectra/ms_ms/59530</a></p>
 
 <img data-src="img/05/1092-msms-predicted.png" class="r-stretch quarto-figure-center"><p class="caption">Predicted spectra for (23<em>R</em>)-acetoxytomatine</p></section>
+<section id="predicted-vs.-actual" class="slide level2">
+<h2>Predicted vs.&nbsp;actual</h2>
+<div class="columns">
+<div class="column" style="font-size: 30px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/05/1092-msms.png"></p>
+<figcaption>MS/MS spectra of 1092.5590 at 65eV in +ESI</figcaption>
+</figure>
+</div>
+</div><div class="column" style="font-size: 25px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/05/acetoxytomatine-cfmid.png"></p>
+<figcaption>Acetoxytomatine predicted spectra from <a href="https://cfmid.wishartlab.com/">CFM-ID</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="msms-spectral-databases" class="slide level2">
 <h2>MS/MS spectral databases</h2>
 <ul>
@@ -715,6 +735,44 @@ Jessica Cooperstone
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
