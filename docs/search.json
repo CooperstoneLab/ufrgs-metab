@@ -868,11 +868,11 @@
     "text": "Supervised: Univariate testing, the categories\n\nTwo group tests\n\nt-test (parametric)\nWilcoxon rank sum test (non-parameric)\n\nMore than two group tests\n\nANOVA (parametric)\nKruskal Wallis test (non-parametric)\nBoth followed by post-hoc means separation"
   },
   {
-    "objectID": "lectures/04_data-analysis.html#big-p-little-n-the-curse-of-dimensionality",
-    "href": "lectures/04_data-analysis.html#big-p-little-n-the-curse-of-dimensionality",
+    "objectID": "lectures/04_data-analysis.html#big-p-little-n-the-curse-of-high-dimensionality",
+    "href": "lectures/04_data-analysis.html#big-p-little-n-the-curse-of-high-dimensionality",
     "title": "Analysis of metabolomics data",
-    "section": "Big p, little n: the curse of dimensionality",
-    "text": "Big p, little n: the curse of dimensionality\n\nWith metabolomics, we almost always have more features (p) than samples (n)\nThis means we are making a lot of comparisons\nIf we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.\nIf we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)\nIf we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p &lt; 0.05 but are not truly different between our groups"
+    "section": "Big p, little n: the curse of high dimensionality",
+    "text": "Big p, little n: the curse of high dimensionality\n\n\nWith metabolomics, we almost always have more features (p) than samples (n)\nThis means we are making a lot of comparisons\nIf we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.\nIf we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)\nIf we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p &lt; 0.05 but are not truly different between our groups"
   },
   {
     "objectID": "lectures/04_data-analysis.html#ways-to-control-for-multiple-testing",
@@ -907,14 +907,14 @@
     "href": "lectures/04_data-analysis.html#random-forest",
     "title": "Analysis of metabolomics data",
     "section": "Random forest",
-    "text": "Random forest"
+    "text": "Random forest\n\n\n\nA machine learning method for classification via construction of decision trees\nTrees are created with a random subset of variables\nIncrease to 100% purity at the base of the tree\nDo this over and over\nA set (~1/3rd) is left out of the sample for each tree - this is the “out of bag (oob)” data, and can be used to see how accurate your classification is\nLearn more by watching this StatQuest video\n\n\n\n\n\nAn example of a simple, single decision tree"
   },
   {
     "objectID": "lectures/04_data-analysis.html#artificial-neural-networks",
     "href": "lectures/04_data-analysis.html#artificial-neural-networks",
     "title": "Analysis of metabolomics data",
     "section": "Artificial neural networks",
-    "text": "Artificial neural networks\n\n\n\n© Jessica Cooperstone, 2024"
+    "text": "Artificial neural networks\n\n\n\nLearn more by watching this StatQuest video\n\n\n\n\n\nAn illustration of a single neural network, from Mendez et al., Metabolomics 2019\n\n\n\n\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
     "objectID": "lectures/05_compound-id.html#how-do-we-go-from-features-to-metabolites",

@@ -627,8 +627,9 @@ Jessica Cooperstone
 </ul></li>
 </ul>
 </section>
-<section id="big-p-little-n-the-curse-of-dimensionality" class="slide level2 incremental" style="font-size: 30px">
-<h2>Big p, little n: the curse of dimensionality</h2>
+<section id="big-p-little-n-the-curse-of-high-dimensionality" class="slide level2">
+<h2>Big p, little n: the curse of high dimensionality</h2>
+<div style="font-size: 30px">
 <ul>
 <li class="fragment">With metabolomics, we almost always have more features (p) than samples (n)</li>
 <li class="fragment">This means we are making a lot of comparisons</li>
@@ -636,6 +637,7 @@ Jessica Cooperstone
 <li class="fragment">If we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)</li>
 <li class="fragment">If we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p &lt; 0.05 but are not truly different between our groups</li>
 </ul>
+</div>
 </section>
 <section id="ways-to-control-for-multiple-testing" class="slide level2">
 <h2>Ways to control for multiple testing</h2>
@@ -686,12 +688,45 @@ Jessica Cooperstone
 </section>
 <section id="random-forest" class="slide level2">
 <h2>Random forest</h2>
+<div class="columns">
+<div class="column" style="font-size: 30px">
+<ul>
+<li class="fragment">A machine learning method for <strong>classification</strong> via construction of decision trees</li>
+<li class="fragment">Trees are created with a random subset of variables</li>
+<li class="fragment">Increase to 100% purity at the base of the tree</li>
+<li class="fragment">Do this over and over</li>
+<li class="fragment">A set (~1/3rd) is left out of the sample for each tree - this is the “out of bag (oob)” data, and can be used to see how accurate your classification is</li>
+<li class="fragment">Learn more by watching this <a href="https://www.youtube.com/watch?v=J4Wdy0Wc_xQ">StatQuest video</a></li>
+</ul>
+</div><div class="column fragment" style="font-size: 25px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/04/decision-tree.svg"></p>
+<figcaption>An example of a simple, single decision tree</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="artificial-neural-networks" class="slide level2">
 <h2>Artificial neural networks</h2>
+<div class="columns">
+<div class="column" style="font-size: 30px">
+<ul>
+<li class="fragment">Learn more by watching this <a href="https://www.youtube.com/watch?v=CqOfi41LfDw">StatQuest video</a></li>
+</ul>
+</div><div class="column fragment" style="font-size: 25px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/04/ann.svg"></p>
+<figcaption>An illustration of a single neural network, from <a href="https://doi.org/10.1007/s11306-019-1608-0">Mendez et al., Metabolomics 2019</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
 
-
-<img src="img/noun-metabolomics.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<p><img src="img/noun-metabolomics.png" class="slide-logo"></p>
+<div class="footer footer-default">
 <p>© Jessica Cooperstone, 2024</p>
 </div>
 </section>

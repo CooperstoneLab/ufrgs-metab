@@ -263,13 +263,17 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
     -   Kruskal Wallis test (non-parametric)
     -   Both followed by post-hoc means separation
 
-## Big p, little n: the curse of dimensionality {.incremental style="font-size: 30px"}
+## Big p, little n: the curse of high dimensionality 
+
+::: {style="font-size: 30px"}
 
 -   With metabolomics, we almost always have more features (p) than samples (n)
 -   This means we are making a lot of comparisons
 -   If we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.
 -   If we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)
 -   If we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p \< 0.05 but are not truly different between our groups
+
+:::
 
 ## Ways to control for multiple testing
 
@@ -309,6 +313,33 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 
 ## Random forest
 
+::: columns
+::: {.column width="40%" style="font-size: 30px"}
+-   A machine learning method for **classification** via construction of decision trees
+-   Trees are created with a random subset of variables
+-   Increase to 100% purity at the base of the tree
+-   Do this over and over
+-   A set (~1/3rd) is left out of the sample for each tree - this is the "out of bag (oob)" data, and can be used to see how accurate your classification is
+-   Learn more by watching this [StatQuest video](https://www.youtube.com/watch?v=J4Wdy0Wc_xQ)
+:::
+
+::: {.column width="60%" style="font-size: 25px" .fragment}
+![An example of a simple, single decision tree](img/04/decision-tree.svg)
+
+:::
+:::
+
 ## Artificial neural networks
 
 
+
+::: columns
+::: {.column width="40%" style="font-size: 30px"}
+-   Learn more by watching this [StatQuest video](https://www.youtube.com/watch?v=CqOfi41LfDw)
+:::
+
+::: {.column width="60%" style="font-size: 25px" .fragment}
+![An illustration of a single neural network, from [Mendez et al., Metabolomics 2019]( https://doi.org/10.1007/s11306-019-1608-0)](img/04/ann.svg)
+
+:::
+:::
