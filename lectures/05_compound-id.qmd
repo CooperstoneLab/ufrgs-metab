@@ -8,7 +8,7 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
-    incrememental: true
+    incremental: true
 ---
 
 ## How do we go from features to metabolites?
@@ -21,32 +21,138 @@ format:
 ## Starting with a *m*/*z*
 
 ::: columns
-::: {.column width="50%" style="font-size: 25px" .fragment}
+::: {.column width="50%" style="font-size: 25px"}
 
 -   A feature of interest differentially present in commercial vs. wild tomatoes.  We want to know what this is.
--   UHPLC-QTOF-MS, ESI+, reversed phase C18,mMethanol extract
+-   UHPLC-QTOF-MS, ESI+, reversed phase C18, Methanol extract
 -   A useful [adduct calculator](https://fiehnlab.ucdavis.edu/staff/kind/Metabolomics/MS-Adduct-Calculator/)
 :::
 
 ::: {.column width="50%" style="font-size: 25px" .fragment}
 
-![Relative intensity of 1092 m/z in tomatoes](img/05/1092_boxplot.png)
+![Relative intensity of 1092.5590 in tomatoes m/z in tomatoes](img/05/1092_boxplot.png)
 
 :::
 :::
 
-## Search in MS databases - HMDB
+## Search in MS databases - [HMDB](https://hmdb.ca/)
 
-![](img/05/hmdb-search.png)
+`Search` > `LC-MS Search`
+
+::: columns
+::: {.column width="65%" style="font-size: 20px" .fragment}
+
+![Screenshot of an HMDB MS1 search](img/05/hmdb-search.png)
+:::
+
+::: {.column width="35%" style="font-size: 35px"}
+
+-   Enter your mass and mode
+-   Indicate adduct type (can put unknown if you don't know)
+-   Select a mass error (5 ppm is good for a QTOF)
+-   Search
+
+:::
+:::
+
+## Evaluate search results
+
+Think about:
+
+-   Which structures are plausible?
+  -   Make sense in your biological system
+  -   Make sense in your extraction
+  -   Make sense based on retention time
+-   Which adducts are more likely?
+-   The top result is not necessarily your ID!
+
+## Access or collection MS/MS fragmentation data
+
+![MS/MS spectra of 1092.5590 at 65eV in +ESI](img/05/1092-msms.png)
 
 ## Download structure
 
-![](img/05/save-sdf.png)
+[http://www.hmdb.ca/spectra/ms_ms/59530](http://www.hmdb.ca/spectra/ms_ms/59530 
+) 
+
+![Download an `.sdf` file of your structure](img/05/save-sdf.png)
 
 ## Import into ChemSketch
 
-![](img/05/chemsketch-open.png)
+![Import your `.sdf` file into ChemSketch](img/05/chemsketch-open.png)
+
+## Set ChemSketch to provide you structural information
+
+::: {style="font-size: 25px"}
+-   Select which parameters you want printed: `Tools` > `Calculate` > `Select properties to calculate` > Select "Molecular Formula", "Monoisotopic Mass", "[M+H]+"
+-   Have ChemSketch calculate those parameters: `Tools` > `Calculate` > `Selected properties` > `Copy to editor`.
+
+:::
+
+::: {style="font-size: 25px" .fragment}
+![Screenshot of acetoxytomatine in ChemSketch with parameters calculated](img/05/chemsketch-calculate-params.png){width=800}
+
+:::
+
+## Breaking bonds to rationalize fragments
+
+::: columns
+::: {.column width="60%" style="font-size: 30px"}
+
+-   Use the eraser (delete) to break bonds (learn more here re: [using ChemSketch](https://www.acdlabs.com/wp-content/uploads/download/quickstart/draw/qsg_chemsketch_trial.pdf))
+-   Select a bond and it will be deleted
+-   The details will stay with the larger fragment. Highlight the smaller piece to recalculate parameters.
+-   Account for any rearrangement or additions/subtractions
+:::
+
+::: {.column width="40%" style="font-size: 25px" .fragment}
+
+![Click on the delete eraser](img/05/chemsketch-delete.png){width=500}
+
+:::
+:::
+
+
+## Breaking bonds to rationalize fragments
+
+![Cleaving at the acetoxy group](img/05/chemsketch-break-bonds1.png){width=800}
+
+## Breaking bonds to rationalize fragments
+
+![Cleaving at the acetoxy group](img/05/chemsketch-break-bonds2.png){width=800}
 
 ## How can we improve the confidence of our ID?
 
+-   Reference against publicly available MS/MS spectra
+-   Purchase authentic standard and compare
+-   Synthesize standard, confirm by NMR, and hope you're right 🥹
+-   Compare to MS/MS spectra of similar compounds
+-   Compare to a sample that you know has your compound of interest
+
 ## MS/MS online databases
+
+-   Experimental spectra
+-   Predicted spectra
+
+## MS/MS predicted spectra of acetoxytomatine
+
+[http://www.hmdb.ca/spectra/ms_ms/59530](http://www.hmdb.ca/spectra/ms_ms/59530 
+) 
+
+![Predicted spectra for (23*R*)-acetoxytomatine](img/05/1092-msms-predicted.png)
+
+## MS/MS spectral databases
+
+-   [GNPS](https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp)
+-   [MassBank of North America (MONA)](https://mona.fiehnlab.ucdavis.edu/)
+-   [HMDB](https://hmdb.ca/spectra/ms_ms/search)
+-   Others that you have to pay for (METLIN, NIST, mzCloud)
+-   A review on spectral libraries by [Bittremieux et al., Metabolomics 2022](https://doi.org/10.1007%2Fs11306-022-01947-y).
+
+
+## LC-MS metabolite ID workflow
+
+![From [Fitzgerald et al., ACS Omega 2017](https://doi.org/10.1021/acsomega.7b00872)](img/05/metabolite-id-workflow.png)
+
+
+## Do you need to have an ID to quantify?

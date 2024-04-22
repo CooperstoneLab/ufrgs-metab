@@ -340,52 +340,164 @@ Jessica Cooperstone
 <section id="how-do-we-go-from-features-to-metabolites" class="slide level2">
 <h2>How do we go from features to metabolites?</h2>
 <ul>
-<li>Individually (one feature at a time)
+<li class="fragment">Individually (one feature at a time)
 <ul>
-<li>Manual, very high confidence in ID</li>
+<li class="fragment">Manual, very high confidence in ID</li>
 </ul></li>
-<li>In bulk (many features at a time)
+<li class="fragment">In bulk (many features at a time)
 <ul>
-<li>Computational, generally lower confidence in ID</li>
+<li class="fragment">Computational, generally lower confidence in ID</li>
 </ul></li>
 </ul>
 </section>
 <section id="starting-with-a-mz" class="slide level2">
 <h2>Starting with a <em>m</em>/<em>z</em></h2>
 <div class="columns">
-<div class="column fragment" style="font-size: 25px">
+<div class="column" style="font-size: 25px">
 <ul>
-<li>A feature of interest differentially present in commercial vs.&nbsp;wild tomatoes. We want to know what this is.</li>
-<li>UHPLC-QTOF-MS, ESI+, reversed phase C18,mMethanol extract</li>
-<li>A useful <a href="https://fiehnlab.ucdavis.edu/staff/kind/Metabolomics/MS-Adduct-Calculator/">adduct calculator</a></li>
+<li class="fragment">A feature of interest differentially present in commercial vs.&nbsp;wild tomatoes. We want to know what this is.</li>
+<li class="fragment">UHPLC-QTOF-MS, ESI+, reversed phase C18, Methanol extract</li>
+<li class="fragment">A useful <a href="https://fiehnlab.ucdavis.edu/staff/kind/Metabolomics/MS-Adduct-Calculator/">adduct calculator</a></li>
 </ul>
 </div><div class="column fragment" style="font-size: 25px">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="img/05/1092_boxplot.png"></p>
-<figcaption>Relative intensity of 1092 m/z in tomatoes</figcaption>
+<figcaption>Relative intensity of 1092.5590 in tomatoes m/z in tomatoes</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
 <section id="search-in-ms-databases---hmdb" class="slide level2">
-<h2>Search in MS databases - HMDB</h2>
+<h2>Search in MS databases - <a href="https://hmdb.ca/">HMDB</a></h2>
+<p><code>Search</code> &gt; <code>LC-MS Search</code></p>
+<div class="columns">
+<div class="column fragment" style="font-size: 20px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/05/hmdb-search.png"></p>
+<figcaption>Screenshot of an HMDB MS1 search</figcaption>
+</figure>
+</div>
+</div><div class="column" style="font-size: 35px">
+<ul>
+<li class="fragment">Enter your mass and mode</li>
+<li class="fragment">Indicate adduct type (can put unknown if you don’t know)</li>
+<li class="fragment">Select a mass error (5 ppm is good for a QTOF)</li>
+<li class="fragment">Search</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="evaluate-search-results" class="slide level2">
+<h2>Evaluate search results</h2>
+<p>Think about:</p>
+<ul>
+<li class="fragment">Which structures are plausible?</li>
+<li class="fragment">Make sense in your biological system</li>
+<li class="fragment">Make sense in your extraction</li>
+<li class="fragment">Make sense based on retention time</li>
+<li class="fragment">Which adducts are more likely?</li>
+<li class="fragment">The top result is not necessarily your ID!</li>
+</ul>
+</section>
+<section id="access-or-collection-msms-fragmentation-data" class="slide level2">
+<h2>Access or collection MS/MS fragmentation data</h2>
 
-<img data-src="img/05/hmdb-search.png" class="r-stretch"></section>
+<img data-src="img/05/1092-msms.png" class="r-stretch quarto-figure-center"><p class="caption">MS/MS spectra of 1092.5590 at 65eV in +ESI</p></section>
 <section id="download-structure" class="slide level2">
 <h2>Download structure</h2>
+<p><a href="http://www.hmdb.ca/spectra/ms_ms/59530">http://www.hmdb.ca/spectra/ms_ms/59530</a></p>
 
-<img data-src="img/05/save-sdf.png" class="r-stretch"></section>
+<img data-src="img/05/save-sdf.png" class="r-stretch quarto-figure-center"><p class="caption">Download an <code>.sdf</code> file of your structure</p></section>
 <section id="import-into-chemsketch" class="slide level2">
 <h2>Import into ChemSketch</h2>
 
-<img data-src="img/05/chemsketch-open.png" class="r-stretch"></section>
+<img data-src="img/05/chemsketch-open.png" class="r-stretch quarto-figure-center"><p class="caption">Import your <code>.sdf</code> file into ChemSketch</p></section>
+<section id="set-chemsketch-to-provide-you-structural-information" class="slide level2">
+<h2>Set ChemSketch to provide you structural information</h2>
+<div style="font-size: 25px">
+<ul>
+<li class="fragment">Select which parameters you want printed: <code>Tools</code> &gt; <code>Calculate</code> &gt; <code>Select properties to calculate</code> &gt; Select “Molecular Formula”, “Monoisotopic Mass”, “[M+H]+”</li>
+<li class="fragment">Have ChemSketch calculate those parameters: <code>Tools</code> &gt; <code>Calculate</code> &gt; <code>Selected properties</code> &gt; <code>Copy to editor</code>.</li>
+</ul>
+</div>
+<div class="fragment" style="font-size: 25px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/05/chemsketch-calculate-params.png" width="800"></p>
+<figcaption>Screenshot of acetoxytomatine in ChemSketch with parameters calculated</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="breaking-bonds-to-rationalize-fragments" class="slide level2">
+<h2>Breaking bonds to rationalize fragments</h2>
+<div class="columns">
+<div class="column" style="font-size: 30px">
+<ul>
+<li class="fragment">Use the eraser (delete) to break bonds (learn more here re: <a href="https://www.acdlabs.com/wp-content/uploads/download/quickstart/draw/qsg_chemsketch_trial.pdf">using ChemSketch</a>)</li>
+<li class="fragment">Select a bond and it will be deleted</li>
+<li class="fragment">The details will stay with the larger fragment. Highlight the smaller piece to recalculate parameters.</li>
+<li class="fragment">Account for any rearrangement or additions/subtractions</li>
+</ul>
+</div><div class="column fragment" style="font-size: 25px">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/05/chemsketch-delete.png" width="500"></p>
+<figcaption>Click on the delete eraser</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="breaking-bonds-to-rationalize-fragments-1" class="slide level2">
+<h2>Breaking bonds to rationalize fragments</h2>
+
+<img data-src="img/05/chemsketch-break-bonds1.png" width="800" class="r-stretch quarto-figure-center"><p class="caption">Cleaving at the acetoxy group</p></section>
+<section id="breaking-bonds-to-rationalize-fragments-2" class="slide level2">
+<h2>Breaking bonds to rationalize fragments</h2>
+
+<img data-src="img/05/chemsketch-break-bonds2.png" width="800" class="r-stretch quarto-figure-center"><p class="caption">Cleaving at the acetoxy group</p></section>
 <section id="how-can-we-improve-the-confidence-of-our-id" class="slide level2">
 <h2>How can we improve the confidence of our ID?</h2>
+<ul>
+<li class="fragment">Reference against publicly available MS/MS spectra</li>
+<li class="fragment">Purchase authentic standard and compare</li>
+<li class="fragment">Synthesize standard, confirm by NMR, and hope you’re right 🥹</li>
+<li class="fragment">Compare to MS/MS spectra of similar compounds</li>
+<li class="fragment">Compare to a sample that you know has your compound of interest</li>
+</ul>
 </section>
 <section id="msms-online-databases" class="slide level2">
 <h2>MS/MS online databases</h2>
+<ul>
+<li class="fragment">Experimental spectra</li>
+<li class="fragment">Predicted spectra</li>
+</ul>
+</section>
+<section id="msms-predicted-spectra-of-acetoxytomatine" class="slide level2">
+<h2>MS/MS predicted spectra of acetoxytomatine</h2>
+<p><a href="http://www.hmdb.ca/spectra/ms_ms/59530">http://www.hmdb.ca/spectra/ms_ms/59530</a></p>
+
+<img data-src="img/05/1092-msms-predicted.png" class="r-stretch quarto-figure-center"><p class="caption">Predicted spectra for (23<em>R</em>)-acetoxytomatine</p></section>
+<section id="msms-spectral-databases" class="slide level2">
+<h2>MS/MS spectral databases</h2>
+<ul>
+<li class="fragment"><a href="https://gnps.ucsd.edu/ProteoSAFe/static/gnps-splash.jsp">GNPS</a></li>
+<li class="fragment"><a href="https://mona.fiehnlab.ucdavis.edu/">MassBank of North America (MONA)</a></li>
+<li class="fragment"><a href="https://hmdb.ca/spectra/ms_ms/search">HMDB</a></li>
+<li class="fragment">Others that you have to pay for (METLIN, NIST, mzCloud)</li>
+<li class="fragment">A review on spectral libraries by <a href="https://doi.org/10.1007%2Fs11306-022-01947-y">Bittremieux et al., Metabolomics 2022</a>.</li>
+</ul>
+</section>
+<section id="lc-ms-metabolite-id-workflow" class="slide level2">
+<h2>LC-MS metabolite ID workflow</h2>
+
+<img data-src="img/05/metabolite-id-workflow.png" class="r-stretch quarto-figure-center"><p class="caption">From <a href="https://doi.org/10.1021/acsomega.7b00872">Fitzgerald et al., ACS Omega 2017</a></p></section>
+<section id="do-you-need-to-have-an-id-to-quantify" class="slide level2">
+<h2>Do you need to have an ID to quantify?</h2>
 
 
 <img src="img/noun-metabolomics.png" class="slide-logo r-stretch"><div class="footer footer-default">

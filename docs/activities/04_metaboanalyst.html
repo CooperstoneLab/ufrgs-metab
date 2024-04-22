@@ -265,9 +265,19 @@ div.csl-indent {
 <figcaption class="figure-caption">Our data, straight from MZmine</figcaption>
 </figure>
 </div>
-<blockquote class="blockquote">
-<p>Our data contains samples in rows, and features in columns.</p>
-</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Our data contains samples in rows, and features in columns.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
 <p>We will start with doing statistics (one factor) and we have a peak intensity table, so the file called <a href="https://www.xialab.ca/api/download/metaboanalyst/lcms_table.csv"><code>lcms_table.csv</code></a> is a good one for us to look at.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -443,11 +453,26 @@ div.csl-indent {
 <li>A biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.</li>
 </ul>
 <p>Let’s look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.</p>
-<p><img src="img/04/pca-qcs-scores-5PC.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pca-qcs-scores-5PC.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A 5 component PCA scores plot</figcaption>
+</figure>
+</div>
 <p>In the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs.&nbsp;PC2.</p>
-<p><img src="img/04/pca-qc-scree.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pca-qc-scree.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A scree plot</figcaption>
+</figure>
+</div>
 <p>When looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn’t explain all that much additional variation.</p>
-<p><img src="img/04/pca-qc-scores.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pca-qc-scores.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A scores plot including our QCs</figcaption>
+</figure>
+</div>
 <p>When we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:</p>
 <ul>
 <li>Our QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.</li>
@@ -457,12 +482,27 @@ div.csl-indent {
 </ul>
 <p>You can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.</p>
 <p>I would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.</p>
-<p><img src="img/04/pca-qc-loadings.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pca-qc-loadings.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A PCA loadings plot, and in this case a big mess</figcaption>
+</figure>
+</div>
 <p>The loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.</p>
 <p>For example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups.</p>
-<p><img src="img/04/578.5296215_5.0895395_qc.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/578.5296215_5.0895395_qc.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Group relative intensities of 578.5296_5.0895</figcaption>
+</figure>
+</div>
 <p>Similarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.</p>
-<p><img src="img/04/474.3577933_6.587835_qc.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/474.3577933_6.587835_qc.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Group relative intensities of 474.3578_6.5878</figcaption>
+</figure>
+</div>
 <p>You can also download the raw data for your loadings. This might be helpful to see which features have the highest and lowest values on loadings 1 and 2. You can also view boxplots of the feature abundances in this same view and sort your loadings.</p>
 </section>
 <section id="pca-without-qcs" class="level2" data-number="5.2">
@@ -498,8 +538,13 @@ div.csl-indent {
 </section>
 <section id="dendrogram-i.e.-hierarchical-clustering" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="dendrogram-i.e.-hierarchical-clustering"><span class="header-section-number">5.4</span> Dendrogram (i.e., hierarchical clustering)</h2>
-<p>Hierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to “natural clusters” in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heurestical natural clusters in your data, hierarchical clustering can help</p>
-<p><img src="img/04/dendrogram_euclidean_ward.png" class="img-fluid"></p>
+<p>Hierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to “natural clusters” in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heuristically natural clusters in your data, hierarchical clustering can help</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/dendrogram_euclidean_ward.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Hierarchical clustering of samples</figcaption>
+</figure>
+</div>
 <p>Here we can see a dendrogram (like a phylogenetic tree) which clusters samples based on a distance metric and clustering algorithm. Samples that are more similar should be close to one another, and the longer the distance is on the x-axis, the less similar samples are.</p>
 <p>In this particular case, we can see 3 clusters derived of our 3 tomato groups. We can also see that HATS and OH8243 are more closely clustered compared to LA2213. This is consistent with what we see in our PCA.</p>
 </section>
@@ -543,58 +588,118 @@ div.csl-indent {
 <li>Standardization: I would autoscale features - this way each feature is normalized so more abundant ones aren’t weighted more heavily</li>
 <li>Distance measure and clustering method: these are for the hierarchical clustering</li>
 </ul>
-<p><img src="img/04/heatmap.svg" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/heatmap.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A heatmap where both smaples and features are clustered</figcaption>
+</figure>
+</div>
 <p>As we saw with the HCA, our samples are clustering by which tomato group they are a part of. But here we can see which features have the same trends and this can be useful to us!</p>
 </section>
 <section id="correlations" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="correlations"><span class="header-section-number">5.7</span> Correlations</h2>
 <p>The correlations analysis calculates a correlation coefficient between every pair of features. This plot is really crowed and hard to look at, but the concept is useful. We might be interested to know which groups of features have the same pattern of response across our samples. Or to know which features are highly negatively correlated.</p>
 <p>I find this format hard to sort through, but this approach to be generally useful.</p>
-<p><img src="img/04/correlation_table.svg" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/correlation_table.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A correlation heatmap clustering both features and samples</figcaption>
+</figure>
+</div>
 </section>
 <section id="random-forest" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.8</span> Random forest</h2>
 <p>This isn’t that good of an example for random forest classification since our samples are so different.</p>
 <p>Random forest is a machine learning class predition approach. In MetaboAnalyst, you can pick how many trees to draw and how many predictors to use.</p>
-<p><img src="img/04/random-forest-classification.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/random-forest-classification.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Output of random forest classification</figcaption>
+</figure>
+</div>
 <p>In this case, we can see that our out of bag error rate is 0, and with using very few trees, we are able to perfectly classify samples as to whether they belong to each of the three tomato groups.</p>
 <p>If you look under the variable importance tab you can see the features that are most important in generating this model. You can look at this as a figure, or you can download a file to see how each one affects the mean decrease in accuracy. You can sort this list from high to low or low to high.</p>
-<p><img src="img/04/random-forest-vip.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/random-forest-vip.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Variable importance predictors to our random forest model</figcaption>
+</figure>
+</div>
 <p>You can then look for each of those figures how the relative intensity compares between tomato groups.</p>
-<p><img src="img/04/1035.29429_5.111745_random-forest.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/1035.29429_5.111745_random-forest.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Intensity of 1035.29429_5.1117 across our three tomato groups</figcaption>
+</figure>
+</div>
 <p>Another option for random forest is to have a training and a test set. As far as I can tell, MetaboAnalyst does this by calculating the out of bag error but there are also other approaches.</p>
 </section>
 <section id="pattern-hunter" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</h2>
 <p>You might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.</p>
 <p>In this case, I am interested in features that follow this trend: OH8243 &lt; HATS &lt; LA2213.</p>
-<p><img src="img/04/pattern-hunter.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pattern-hunter.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Looking for patterns - here features that are highest in LA2213, second highest in HATS, and lowest in OH8243.</figcaption>
+</figure>
+</div>
 <p>You can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like.</p>
-<p><img src="img/04/1081.564533_4.6453156.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/1081.564533_4.6453156.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Relative intensity of 1081.56453_4.64531 across tomato groups</figcaption>
+</figure>
+</div>
 </section>
 <section id="fold-change-analysis" class="level2" data-number="5.10">
 <h2 data-number="5.10" class="anchored" data-anchor-id="fold-change-analysis"><span class="header-section-number">5.10</span> Fold change analysis</h2>
 <p>There are some analyses that can be only done with two groups (versus the three that we’ve had for the previous analyses). To demonstrate how these work, I am going to only keep the samples that are a part of the HATS and OH8243 groups.</p>
 <p>I can edit that using the Data editor on the leftside panel.</p>
-<p><img src="img/04/data-editor-2.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/data-editor-2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Data editor to remove samples or gorups</figcaption>
+</figure>
+</div>
 <p>Remember that when you do this, you will need to re-normalized.</p>
 <p>Now, we have access to new analyses. We will start with fold change analysis.</p>
 <p>We can set what our fold change threshold is going to be, and what the direction of the comparison is.</p>
-<p><img src="img/04/fold-change.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/fold-change.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Fold change analysis between OH8243 and HATS</figcaption>
+</figure>
+</div>
 <p>We can then click on any of the points to see how the relative intensity of that features is different among our groups.</p>
-<p><img src="img/04/474.3577933_6.587835_fc.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/474.3577933_6.587835_fc.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Relative intensity of 474.3577_6.5878 between our two tomato groups</figcaption>
+</figure>
+</div>
 <p>You can also click on the spreadsheet icon to view and/or download the full set of mean fold changes for each feature between the groups.</p>
 </section>
 <section id="t-test" class="level2" data-number="5.11">
 <h2 data-number="5.11" class="anchored" data-anchor-id="t-test"><span class="header-section-number">5.11</span> T-test</h2>
 <p>Like we did with an ANOVA for &gt; 2 groups, we might want to see if there are any differences in the intensity of each feature between our two tomato groups. We can do that using t-tests (parametric) or Wilcoxon rank-sum tests. We can select whether we have equal variance between or groups, whether we want to use a non-parametric test (if data is non-normal), what our p-value threshold is, and whether we are doing a multiple testing correct (you should be!).</p>
-<p><img src="img/04/t-test-all-features.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/t-test-all-features.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A visualization of a FDR corrected t-test between OH8243 and HATS</figcaption>
+</figure>
+</div>
 <p>You again can click on the spreadhseet icon to download the full feature set along with p-values, FDR adjusted p-values, and -log10 p-values.</p>
 </section>
 <section id="volcano-plots" class="level2" data-number="5.12">
 <h2 data-number="5.12" class="anchored" data-anchor-id="volcano-plots"><span class="header-section-number">5.12</span> Volcano plots</h2>
 <p>Volcano plots are nice as they incorporate both those features that are significantly different between groups, and the fold chance of that differences.</p>
-<p><img src="img/04/volcano.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/volcano.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A volcano plot incorporating both significance and fold change</figcaption>
+</figure>
+</div>
 <p>If you click on any feature, you can see the relative intensity across our two groups.</p>
 </section>
 </section>

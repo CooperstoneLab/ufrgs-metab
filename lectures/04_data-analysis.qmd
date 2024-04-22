@@ -8,7 +8,7 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
-    incrememental: true
+    incremental: true
 ---
 
 ```{r include = FALSE}
@@ -25,25 +25,24 @@ library(glue)
 
 ## Data pre-treatment
 
-![](img/04/center-scaling-transformation.png)
+![Different types of data centering, scaling, and transformation, from [van den Berg et al., Genomics 2006](https://doi.org/10.1186/1471-2164-7-142)](img/04/center-scaling-transformation.png)
 
-::: aside
-From [van den Berg et al., Genomics 2006](https://doi.org/10.1186/1471-2164-7-142)
-:::
 
-## Centering {style="font-size: 23px"}
+## Centering 
 
+::: {style="font-size: 23px"}
 -   Centering converts all relative intensities to be centered around zero instead of around mean concentrations
 -   This is particularly useful in metabolomics given that more *intense* features are *not necessarily more abundant*
 -   I like to center when conducting principal components analysis (PCA, more on this later)
 
 ::: columns
 ::: {.column width="50%" style="font-size: 23px" .fragment}
-![](img/04/pca_not_centered.png){width="80%"}
+![PCA not centered](img/04/pca_not_centered.png){width="80%"}
 :::
 
 ::: {.column width="50%" style="font-size: 23px" .fragment}
-![](img/04/pca_centered.png){width="80%"}
+![PCA centered](img/04/pca_centered.png){width="80%"}
+:::
 :::
 :::
 
@@ -163,7 +162,7 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 
 ## Your QCs should cluster in a PCA
 
-![](img/04/pca_centered.png)
+![A PCA where the QCs cluster beautifully](img/04/pca_centered.png)
 
 ## Data analysis can be unsupervised or supervised
 
@@ -208,11 +207,8 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 
 ## Interpreting PCAs
 
-![](img/04/pca-interpretation.png)
+![PCA A) scores and B) loadings (from [Dzakovich et al., 2022](https://doi.org/10.1002/tpg2.20192))](img/04/pca-interpretation.png)
 
-::: aside
-PCA A) scores and B) loadings (from [Dzakovich et al., 2022](https://doi.org/10.1002/tpg2.20192))
-:::
 
 ## What you should be doing with your PCAs
 
@@ -225,25 +221,25 @@ PCA A) scores and B) loadings (from [Dzakovich et al., 2022](https://doi.org/10.
 
 ## Unsupervised: Hierarchical Clustering Analysis (HCA)
 
--   An approach "cluster" samples based on their distance/similarity
+::: {style="font-size: 30px"}
+-   An approach to "cluster" samples based on their distance/similarity
 -   Find two most similar samples and merge into cluster, and repeat
 -   Different methods for determining both distance and linkage
--   Think of these like a phylogenic tree - samples that are closer together are more similar
+-   Like a phylogenic tree - samples that are closer together are more similar
 -   Can cluster samples, features, or both
 -   [StatQuest video on hierarchical clustering](https://www.youtube.com/watch?v=7xHsRkOdVwo)
 
+:::
+
 ## HCA applied to metabolomics
 
-![](img/04/hca-example.jpeg){width="50%"}
+![A hierarchical clustering example from [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)](img/04/hca-example.jpeg)
 
-::: aside
-From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
-:::
 
 ## Unsupervised: K-means clustering
 
 ::: columns
-::: {.column width="50%" style="font-size: 25px" .incremental}
+::: {.column width="50%" style="font-size: 30px" .incremental}
 -   Randomly assigns all samples to be a part of $k$ clusters
 -   Calculates centroids and assigns samples to the nearest one
 -   Iterates until centroids stability or reach some maximum
@@ -252,7 +248,7 @@ From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
 :::
 
 ::: {.column width="50%" style="font-size: 25px" .fragment}
-![](https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif)
+![From [Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering#:~:text=k%2Dmeans%20clustering%20is%20a,a%20prototype%20of%20the%20cluster.)](https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif)
 
 :::
 :::
@@ -280,10 +276,8 @@ From [Dzakovich et al., 2024](https://doi.org/10.1002/mnfr.202300239)
 -   Bonferroni correction: $α/number\,of\,comparisons$ (very conservative, leads to false negatives)
 -   Benjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)
 
-::: {style="font-size: 15px" .fragment}
-![](img/04/fdr.png){fig-align="center" width="800px"}
-
-Fig. from [https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/](https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/)
+::: {style="font-size: 20px" .fragment}
+![Fig. from [https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/](https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/)](img/04/fdr.png){fig-align="center" width="800px"}
 :::
 
 ## Should I use parametric or non-parametric tests?
@@ -296,5 +290,25 @@ Fig. from [https://geneviatechnologies.com/blog/what-is-multiple-testing-correct
 
 ## Supervised: PLS-DA
 
+::: columns
+::: {.column width="50%" style="font-size: 30px"}
 -   Partial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups
 -   Two data matrices, X: contains your features, Y: contains group identity
+-   Be sure to look at R^2 and Q^2 for both training and test sets
+-   Has a tendency to overfit
+-   Learn more about PLS-DA in this manuscript by [Brereton and Lloyd, J Chemometrics 2014](https://doi.org/10.1002/cem.2609)
+:::
+
+::: {.column width="50%" style="font-size: 25px" .fragment}
+![Ruiz-Perez et al., BMC Bioinformatics 2020](img/04/pca-vs-plsda.png)
+
+
+:::
+:::
+
+
+## Random forest
+
+## Artificial neural networks
+
+

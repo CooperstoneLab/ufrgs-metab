@@ -473,7 +473,7 @@
     "href": "activities/05_R.html#k-means-clustering",
     "title": "Data analysis with R",
     "section": "K-means clustering",
-    "text": "K-means clustering\nConduct k-means clustering on our data to see if we do have a natural 3 groups here.\nFirst I am wrangling the data by removing metadata.\n\nfor_kmeans &lt;- metab_wide_meta_imputed_log2 %&gt;%\n  filter(!sample_or_qc == \"QC\") %&gt;%\n  select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order)\n\nThen I can calculate within cluster sum of square errors.\n\n# calculate within cluster sum of squared errors wss\nwss &lt;- vector()\nfor (i in 1:10) {\n  tomato_kmeans &lt;- kmeans(for_kmeans, centers = i, nstart = 20)\n  wss[i] &lt;- tomato_kmeans$tot.withinss\n}\n\nFollowed by a scree plot which helps us see how many clusters we might have in our data.\n\nplot(1:10, wss, type = \"b\", \n     xlab = \"Number of Clusters\", \n     ylab = \"Within groups sum of squares\")\n\n\n\n\nTo me, I might pick the elbow at 3 clusters. You could change this or try different numbers of clusters and see how that affects your results.\n\n# set number of clusters to be 3\nk &lt;- 3\n\n\nkmeans_3 &lt;- kmeans(for_kmeans, \n                   centers = k, \n                   nstart = 20, \n                   iter.max = 200)\n\nsummary(kmeans_3)\n\n             Length Class  Mode   \ncluster        36   -none- numeric\ncenters      3834   -none- numeric\ntotss           1   -none- numeric\nwithinss        3   -none- numeric\ntot.withinss    1   -none- numeric\nbetweenss       1   -none- numeric\nsize            3   -none- numeric\niter            1   -none- numeric\nifault          1   -none- numeric\n\n\nWhich samples are in which cluster?\n\nkmeans_3$cluster\n\n [1] 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 2 1 1 1 1 1 1 1 1\n\n\nNow we can add the cluster identity to our metadata so we can visualizate our data based on the kmeans clustering.\n\n# Add the cluster group to the parent datafile\nscores_noqc_kmeans &lt;- scores_noqc %&gt;%\n  mutate(kmeans_3 = kmeans_3$cluster)\n\n# reorder so kmeans cluster is towards the beginning\nscores_noqc_kmeans &lt;- scores_noqc_kmeans %&gt;%\n  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order, kmeans_3, everything())\n\n# check the reordering\nknitr::kable(scores_noqc_kmeans[, 1:7])\n\n\n\n\n\n\n\n\n\n\n\n\n\nsample_name\nsample_or_qc\ntomato\nrep_or_plot\nrun_order\nkmeans_3\nPC1\n\n\n\n\nHATS_402_041\nSample\nHATS\n402\n41\n3\n-23.24793\n\n\nHATS_403_037\nSample\nHATS\n403\n37\n3\n-17.01461\n\n\nHATS_404_040\nSample\nHATS\n404\n40\n3\n-21.49241\n\n\nHATS_401_022\nSample\nHATS\n401\n22\n3\n-16.35241\n\n\nHATS_408_043\nSample\nHATS\n408\n43\n3\n-15.27909\n\n\nHATS_405_025\nSample\nHATS\n405\n25\n3\n-20.42581\n\n\nHATS_406_055\nSample\nHATS\n406\n55\n3\n-20.87974\n\n\nHATS_407_059\nSample\nHATS\n407\n59\n3\n-21.20251\n\n\nHATS_412_019\nSample\nHATS\n412\n19\n3\n-14.14882\n\n\nHATS_409_056\nSample\nHATS\n409\n56\n3\n-15.66016\n\n\nHATS_410_018\nSample\nHATS\n410\n18\n3\n-15.15110\n\n\nHATS_411_044\nSample\nHATS\n411\n44\n3\n-15.69849\n\n\nLA2213_602_035\nSample\nLA2213\n602\n35\n2\n41.19750\n\n\nLA2213_603_045\nSample\nLA2213\n603\n45\n2\n49.19390\n\n\nLA2213_601_051\nSample\nLA2213\n601\n51\n2\n49.69095\n\n\nLA2213_604_016\nSample\nLA2213\n604\n16\n2\n46.56555\n\n\nLA2213_605_017\nSample\nLA2213\n605\n17\n2\n46.48514\n\n\nLA2213_607_032\nSample\nLA2213\n607\n32\n2\n45.99993\n\n\nLA2213_608_024\nSample\nLA2213\n608\n24\n2\n45.81353\n\n\nLA2213_606_033\nSample\nLA2213\n606\n33\n2\n49.70804\n\n\nLA2213_609_058\nSample\nLA2213\n609\n58\n2\n45.76014\n\n\nLA2213_610_050\nSample\nLA2213\n610\n50\n2\n43.55337\n\n\nLA2213_612_046\nSample\nLA2213\n612\n46\n2\n44.25618\n\n\nOH8243_801_036\nSample\nOH8243\n801\n36\n1\n-22.74986\n\n\nOH8243_802_026\nSample\nOH8243\n802\n26\n1\n-25.64428\n\n\nOH8243_803_030\nSample\nOH8243\n803\n30\n1\n-26.66404\n\n\nOH8243_805_057\nSample\nOH8243\n805\n57\n1\n-31.27910\n\n\nLA2213_611_061\nSample\nLA2213\n611\n61\n2\n50.50206\n\n\nOH8243_804_029\nSample\nOH8243\n804\n29\n1\n-30.49216\n\n\nOH8243_806_027\nSample\nOH8243\n806\n27\n1\n-36.03705\n\n\nOH8243_809_063\nSample\nOH8243\n809\n63\n1\n-29.82613\n\n\nOH8243_807_053\nSample\nOH8243\n807\n53\n1\n-28.82398\n\n\nOH8243_810_049\nSample\nOH8243\n810\n49\n1\n-26.33023\n\n\nOH8243_808_038\nSample\nOH8243\n808\n38\n1\n-26.40468\n\n\nOH8243_812_060\nSample\nOH8243\n812\n60\n1\n-31.83884\n\n\nOH8243_811_028\nSample\nOH8243\n811\n28\n1\n-26.08287\n\n\n\n\n\nNow we can color our PCA based on our kmeans clustering.\n\n(scores_noqc_kmeans_plot &lt;- scores_noqc_kmeans %&gt;%\n  ggplot(aes(x = PC1, y = PC2, fill = as.factor(kmeans_3), shape = tomato,\n               text = glue(\"Sample: {sample_name},\n                            Treatment: {tomato}\"))) +\n  geom_hline(yintercept = 0, linetype = \"dashed\") +\n  geom_vline(xintercept = 0, linetype = \"dashed\") +\n  geom_point(shape = 21, color = \"black\") +\n  theme_minimal() +\n  labs(x = glue(\"PC1: {PC1_percent_noqc}%\"), \n       y = glue(\"PC2: {PC2_percent_noqc}%\"), \n       title = \"PCA Scores Plot Colored by K-means Cluster\",\n       fill = \"K-means cluster\"))\n\n\n\n\nLooks like the K-means clusters are aligned exactly with our tomato type."
+    "text": "K-means clustering\nConduct k-means clustering on our data to see if we do have a natural 3 groups here.\nFirst I am wrangling the data by removing metadata.\n\nfor_kmeans &lt;- metab_wide_meta_imputed_log2 %&gt;%\n  filter(!sample_or_qc == \"QC\") %&gt;%\n  select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order)\n\nThen I can calculate within cluster sum of square errors.\n\n# calculate within cluster sum of squared errors wss\nwss &lt;- vector()\nfor (i in 1:10) {\n  tomato_kmeans &lt;- kmeans(for_kmeans, centers = i, nstart = 20)\n  wss[i] &lt;- tomato_kmeans$tot.withinss\n}\n\nFollowed by a scree plot which helps us see how many clusters we might have in our data.\n\nplot(1:10, wss, type = \"b\", \n     xlab = \"Number of Clusters\", \n     ylab = \"Within groups sum of squares\")\n\n\n\n\nTo me, I might pick the elbow at 3 clusters. You could change this or try different numbers of clusters and see how that affects your results.\n\n# set number of clusters to be 3\nk &lt;- 3\n\n\nkmeans_3 &lt;- kmeans(for_kmeans, \n                   centers = k, \n                   nstart = 20, \n                   iter.max = 200)\n\nsummary(kmeans_3)\n\n             Length Class  Mode   \ncluster        36   -none- numeric\ncenters      3834   -none- numeric\ntotss           1   -none- numeric\nwithinss        3   -none- numeric\ntot.withinss    1   -none- numeric\nbetweenss       1   -none- numeric\nsize            3   -none- numeric\niter            1   -none- numeric\nifault          1   -none- numeric\n\n\nWhich samples are in which cluster?\n\nkmeans_3$cluster\n\n [1] 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 1 2 2 2 2 2 2 2 2\n\n\nNow we can add the cluster identity to our metadata so we can visualizate our data based on the kmeans clustering.\n\n# Add the cluster group to the parent datafile\nscores_noqc_kmeans &lt;- scores_noqc %&gt;%\n  mutate(kmeans_3 = kmeans_3$cluster)\n\n# reorder so kmeans cluster is towards the beginning\nscores_noqc_kmeans &lt;- scores_noqc_kmeans %&gt;%\n  select(sample_name, sample_or_qc, tomato, rep_or_plot, run_order, kmeans_3, everything())\n\n# check the reordering\nknitr::kable(scores_noqc_kmeans[, 1:7])\n\n\n\n\n\n\n\n\n\n\n\n\n\nsample_name\nsample_or_qc\ntomato\nrep_or_plot\nrun_order\nkmeans_3\nPC1\n\n\n\n\nHATS_402_041\nSample\nHATS\n402\n41\n3\n-23.24793\n\n\nHATS_403_037\nSample\nHATS\n403\n37\n3\n-17.01461\n\n\nHATS_404_040\nSample\nHATS\n404\n40\n3\n-21.49241\n\n\nHATS_401_022\nSample\nHATS\n401\n22\n3\n-16.35241\n\n\nHATS_408_043\nSample\nHATS\n408\n43\n3\n-15.27909\n\n\nHATS_405_025\nSample\nHATS\n405\n25\n3\n-20.42581\n\n\nHATS_406_055\nSample\nHATS\n406\n55\n3\n-20.87974\n\n\nHATS_407_059\nSample\nHATS\n407\n59\n3\n-21.20251\n\n\nHATS_412_019\nSample\nHATS\n412\n19\n3\n-14.14882\n\n\nHATS_409_056\nSample\nHATS\n409\n56\n3\n-15.66016\n\n\nHATS_410_018\nSample\nHATS\n410\n18\n3\n-15.15110\n\n\nHATS_411_044\nSample\nHATS\n411\n44\n3\n-15.69849\n\n\nLA2213_602_035\nSample\nLA2213\n602\n35\n1\n41.19750\n\n\nLA2213_603_045\nSample\nLA2213\n603\n45\n1\n49.19390\n\n\nLA2213_601_051\nSample\nLA2213\n601\n51\n1\n49.69095\n\n\nLA2213_604_016\nSample\nLA2213\n604\n16\n1\n46.56555\n\n\nLA2213_605_017\nSample\nLA2213\n605\n17\n1\n46.48514\n\n\nLA2213_607_032\nSample\nLA2213\n607\n32\n1\n45.99993\n\n\nLA2213_608_024\nSample\nLA2213\n608\n24\n1\n45.81353\n\n\nLA2213_606_033\nSample\nLA2213\n606\n33\n1\n49.70804\n\n\nLA2213_609_058\nSample\nLA2213\n609\n58\n1\n45.76014\n\n\nLA2213_610_050\nSample\nLA2213\n610\n50\n1\n43.55337\n\n\nLA2213_612_046\nSample\nLA2213\n612\n46\n1\n44.25618\n\n\nOH8243_801_036\nSample\nOH8243\n801\n36\n2\n-22.74986\n\n\nOH8243_802_026\nSample\nOH8243\n802\n26\n2\n-25.64428\n\n\nOH8243_803_030\nSample\nOH8243\n803\n30\n2\n-26.66404\n\n\nOH8243_805_057\nSample\nOH8243\n805\n57\n2\n-31.27910\n\n\nLA2213_611_061\nSample\nLA2213\n611\n61\n1\n50.50206\n\n\nOH8243_804_029\nSample\nOH8243\n804\n29\n2\n-30.49216\n\n\nOH8243_806_027\nSample\nOH8243\n806\n27\n2\n-36.03705\n\n\nOH8243_809_063\nSample\nOH8243\n809\n63\n2\n-29.82613\n\n\nOH8243_807_053\nSample\nOH8243\n807\n53\n2\n-28.82398\n\n\nOH8243_810_049\nSample\nOH8243\n810\n49\n2\n-26.33023\n\n\nOH8243_808_038\nSample\nOH8243\n808\n38\n2\n-26.40468\n\n\nOH8243_812_060\nSample\nOH8243\n812\n60\n2\n-31.83884\n\n\nOH8243_811_028\nSample\nOH8243\n811\n28\n2\n-26.08287\n\n\n\n\n\nNow we can color our PCA based on our kmeans clustering.\n\n(scores_noqc_kmeans_plot &lt;- scores_noqc_kmeans %&gt;%\n  ggplot(aes(x = PC1, y = PC2, fill = as.factor(kmeans_3), shape = tomato,\n               text = glue(\"Sample: {sample_name},\n                            Treatment: {tomato}\"))) +\n  geom_hline(yintercept = 0, linetype = \"dashed\") +\n  geom_vline(xintercept = 0, linetype = \"dashed\") +\n  geom_point(shape = 21, color = \"black\") +\n  theme_minimal() +\n  labs(x = glue(\"PC1: {PC1_percent_noqc}%\"), \n       y = glue(\"PC2: {PC2_percent_noqc}%\"), \n       title = \"PCA Scores Plot Colored by K-means Cluster\",\n       fill = \"K-means cluster\"))\n\n\n\n\nLooks like the K-means clusters are aligned exactly with our tomato type."
   },
   {
     "objectID": "activities/05_R.html#hierarchical-clustering",
@@ -599,14 +599,14 @@
     "href": "activities/04_metaboanalyst.html",
     "title": "Data analysis with MetaboAnalyst",
     "section": "",
-    "text": "Now that we have a filtered, final feature table, we can get started on our data analysis, including understanding if our data is of good quality before we begin to make biological interpretations as to what our results mean. We are going to conduct this analysis using MetaboAnalyst which is at version 6.0 when I put together this tutorial. You can read more about MetaboAnalyist on their website or in their publications (Ewald et al. 2024).\n\n\nBefore we upload our data, let’s make sure its in a suitable format. If we go to the Data Formats link on the left side of the website, we can see example data sets which will help us format our data. Our data looks like this right out of MZmine:\n\n\n\nOur data, straight from MZmine\n\n\n\nOur data contains samples in rows, and features in columns.\n\nWe will start with doing statistics (one factor) and we have a peak intensity table, so the file called lcms_table.csv is a good one for us to look at.\n\n\n\nLCMS sample data\n\n\nIn this data, we have features in rows and samples in columns. There is also a header row which contains the unique sample names, and a second row called Label which contains the groups. We will need to adjust our data to look like this. This includes\n\nAdding a row called Label which contains the sample groups (here, QC, HATS, LA2213, or OH8243).\n\n\n\n\nAdd a row which contains Label and the tomato identities\n\n\n\nCreating a single column with the mz_rt as a unique identifier. We can do this with the function =CONCATENATE() in Excel. Then we can fill down the row. Then be sure to copy this column and Paste &gt; Paste special &gt; Values since when we later remove some of the other columns that are inputs to this one, the formulas will break.\n\n\n\n\nHow to combine the row m/z and row retention time columns to be one unique mz_rt\n\n\n\nNow we can remove row ID, row m/z and row retention time.\n\nOur data should now look like this:\n\n\n\nOur data ready to import into MetaboAnalyst"
+    "text": "Now that we have a filtered, final feature table, we can get started on our data analysis, including understanding if our data is of good quality before we begin to make biological interpretations as to what our results mean. We are going to conduct this analysis using MetaboAnalyst which is at version 6.0 when I put together this tutorial. You can read more about MetaboAnalyist on their website or in their publications (Ewald et al. 2024).\n\n\nBefore we upload our data, let’s make sure its in a suitable format. If we go to the Data Formats link on the left side of the website, we can see example data sets which will help us format our data. Our data looks like this right out of MZmine:\n\n\n\nOur data, straight from MZmine\n\n\n\n\n\n\n\n\nOur data contains samples in rows, and features in columns.\n\n\n\n\n\n\nWe will start with doing statistics (one factor) and we have a peak intensity table, so the file called lcms_table.csv is a good one for us to look at.\n\n\n\nLCMS sample data\n\n\nIn this data, we have features in rows and samples in columns. There is also a header row which contains the unique sample names, and a second row called Label which contains the groups. We will need to adjust our data to look like this. This includes\n\nAdding a row called Label which contains the sample groups (here, QC, HATS, LA2213, or OH8243).\n\n\n\n\nAdd a row which contains Label and the tomato identities\n\n\n\nCreating a single column with the mz_rt as a unique identifier. We can do this with the function =CONCATENATE() in Excel. Then we can fill down the row. Then be sure to copy this column and Paste &gt; Paste special &gt; Values since when we later remove some of the other columns that are inputs to this one, the formulas will break.\n\n\n\n\nHow to combine the row m/z and row retention time columns to be one unique mz_rt\n\n\n\nNow we can remove row ID, row m/z and row retention time.\n\nOur data should now look like this:\n\n\n\nOur data ready to import into MetaboAnalyst"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#data-formatting",
     "href": "activities/04_metaboanalyst.html#data-formatting",
     "title": "Data analysis with MetaboAnalyst",
     "section": "",
-    "text": "Before we upload our data, let’s make sure its in a suitable format. If we go to the Data Formats link on the left side of the website, we can see example data sets which will help us format our data. Our data looks like this right out of MZmine:\n\n\n\nOur data, straight from MZmine\n\n\n\nOur data contains samples in rows, and features in columns.\n\nWe will start with doing statistics (one factor) and we have a peak intensity table, so the file called lcms_table.csv is a good one for us to look at.\n\n\n\nLCMS sample data\n\n\nIn this data, we have features in rows and samples in columns. There is also a header row which contains the unique sample names, and a second row called Label which contains the groups. We will need to adjust our data to look like this. This includes\n\nAdding a row called Label which contains the sample groups (here, QC, HATS, LA2213, or OH8243).\n\n\n\n\nAdd a row which contains Label and the tomato identities\n\n\n\nCreating a single column with the mz_rt as a unique identifier. We can do this with the function =CONCATENATE() in Excel. Then we can fill down the row. Then be sure to copy this column and Paste &gt; Paste special &gt; Values since when we later remove some of the other columns that are inputs to this one, the formulas will break.\n\n\n\n\nHow to combine the row m/z and row retention time columns to be one unique mz_rt\n\n\n\nNow we can remove row ID, row m/z and row retention time.\n\nOur data should now look like this:\n\n\n\nOur data ready to import into MetaboAnalyst"
+    "text": "Before we upload our data, let’s make sure its in a suitable format. If we go to the Data Formats link on the left side of the website, we can see example data sets which will help us format our data. Our data looks like this right out of MZmine:\n\n\n\nOur data, straight from MZmine\n\n\n\n\n\n\n\n\nOur data contains samples in rows, and features in columns.\n\n\n\n\n\n\nWe will start with doing statistics (one factor) and we have a peak intensity table, so the file called lcms_table.csv is a good one for us to look at.\n\n\n\nLCMS sample data\n\n\nIn this data, we have features in rows and samples in columns. There is also a header row which contains the unique sample names, and a second row called Label which contains the groups. We will need to adjust our data to look like this. This includes\n\nAdding a row called Label which contains the sample groups (here, QC, HATS, LA2213, or OH8243).\n\n\n\n\nAdd a row which contains Label and the tomato identities\n\n\n\nCreating a single column with the mz_rt as a unique identifier. We can do this with the function =CONCATENATE() in Excel. Then we can fill down the row. Then be sure to copy this column and Paste &gt; Paste special &gt; Values since when we later remove some of the other columns that are inputs to this one, the formulas will break.\n\n\n\n\nHow to combine the row m/z and row retention time columns to be one unique mz_rt\n\n\n\nNow we can remove row ID, row m/z and row retention time.\n\nOur data should now look like this:\n\n\n\nOur data ready to import into MetaboAnalyst"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#data-check",
@@ -634,7 +634,7 @@
     "href": "activities/04_metaboanalyst.html#pca-with-our-qcs",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.1 PCA with our QCs",
-    "text": "5.1 PCA with our QCs\nWhen we look at the PCA tab, we can see:\n\nAn overview - which includes PCA scores plot for each combination of PCs 1 through 5. The most conventional one to look at would be PC1 vs PC2.\nA scree plot - this shows us how much variation is explained by each of the PCs\nA 2D scores plot - this shows us each sample’s new coordinates in a reduced dimensionality space. We can indicate what PC should be on which axis (though again it’s hard for me to think of a reason to do something different from PC1 on x and PC2 on y)\nA loadings plot - this shows us how the variables (here, features) are weighted in contributing to each PC\n3D plots - I find these to be terrible and never use them\nA biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.\n\nLet’s look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.\n\nIn the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs. PC2.\n\nWhen looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn’t explain all that much additional variation.\n\nWhen we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:\n\nOur QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.\nPC1 mostly separates LA2213 (the wild tomato) from OH8243 and HATS (the cultivated tomatoes).\nPC2 mostly separates OH8243 (the commercial parent) from HATS (the tomato that has been introgressed for the trait of high steroidal alkaloids).\nOverall, HATS and OH8243 are more similar than either of those two are to LA2213.\n\nYou can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.\nI would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.\n\nThe loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.\nFor example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups.\n\nSimilarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.\n\nYou can also download the raw data for your loadings. This might be helpful to see which features have the highest and lowest values on loadings 1 and 2. You can also view boxplots of the feature abundances in this same view and sort your loadings."
+    "text": "5.1 PCA with our QCs\nWhen we look at the PCA tab, we can see:\n\nAn overview - which includes PCA scores plot for each combination of PCs 1 through 5. The most conventional one to look at would be PC1 vs PC2.\nA scree plot - this shows us how much variation is explained by each of the PCs\nA 2D scores plot - this shows us each sample’s new coordinates in a reduced dimensionality space. We can indicate what PC should be on which axis (though again it’s hard for me to think of a reason to do something different from PC1 on x and PC2 on y)\nA loadings plot - this shows us how the variables (here, features) are weighted in contributing to each PC\n3D plots - I find these to be terrible and never use them\nA biplot - combines the scores and the loadings, and can get very overplotted for MS metabolomics data.\n\nLet’s look at each plot, talk about what it shows us, and try to interpret the data in the context of this particular experiment.\n\n\n\nA 5 component PCA scores plot\n\n\nIn the PCA overview, we can see a big chunk of variation (63%) is explained on PC1. We also see that our groups are really clearly separated when viewing PC1 vs. PC2.\n\n\n\nA scree plot\n\n\nWhen looking at the scree plot, we again see a large percentage of variation explained by PC1, and less variation explained by each subsequent PC. This is going to always be the case - PC2 always explains more variation than PC3, and PC3 more than PC4. But we can interpret this to be that drawing two PCs explains 78.4% of the metabolic variation in our dataset, and that adding additional PCs doesn’t explain all that much additional variation.\n\n\n\nA scores plot including our QCs\n\n\nWhen we think of PCAs, what we are typically thinking of is a scores plot. In this one, we see a few important things:\n\nOur QCs are clustering very closely together - this is a good piece of data to convince both ourselves and our readers that our data is of high quality. We are able to measure the same thing very reproducibly.\nPC1 mostly separates LA2213 (the wild tomato) from OH8243 and HATS (the cultivated tomatoes).\nPC2 mostly separates OH8243 (the commercial parent) from HATS (the tomato that has been introgressed for the trait of high steroidal alkaloids).\nOverall, HATS and OH8243 are more similar than either of those two are to LA2213.\n\nYou can adjust in MetaboAnalyst how this plot looks. I tend to turn sample names and confidence intervals off because I think they crowd the plot. You can click on the little paint palette to be able to specify how your plot looks (change colors and shapes) and download a high quality image.\nI would always put a figure like this in the supplementary materials of my papers so readers can get confidence that our data is worth spending time interpreting.\n\n\n\nA PCA loadings plot, and in this case a big mess\n\n\nThe loadings plot helps us to interpret that is driving separation on PC1 and PC2. Interpreting this alongside our scores plot, in this case, points on the far right of the plot should be higher in LA2213 and points on the far left should be higher oh OH8243 and HATS. Points that are close to the top of the plot should be higher in HATS and those towards the bottom higher in OH8243 or LA2213.\nFor example, if we click on the right most point on the loadings plot, we can see that this represents the feature with the identifier 578.5296_5.0895. We can select a boxplot and see the relative intensity of this feature across our sample groups.\n\n\n\nGroup relative intensities of 578.5296_5.0895\n\n\nSimilarly, the point with the highest value on the y axis 474.3578_6.5878 is highest in HATS and lower in the other tomatoes.\n\n\n\nGroup relative intensities of 474.3578_6.5878\n\n\nYou can also download the raw data for your loadings. This might be helpful to see which features have the highest and lowest values on loadings 1 and 2. You can also view boxplots of the feature abundances in this same view and sort your loadings."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#pca-without-qcs",
@@ -655,7 +655,7 @@
     "href": "activities/04_metaboanalyst.html#dendrogram-i.e.-hierarchical-clustering",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.4 Dendrogram (i.e., hierarchical clustering)",
-    "text": "5.4 Dendrogram (i.e., hierarchical clustering)\nHierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to “natural clusters” in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heurestical natural clusters in your data, hierarchical clustering can help\n\nHere we can see a dendrogram (like a phylogenetic tree) which clusters samples based on a distance metric and clustering algorithm. Samples that are more similar should be close to one another, and the longer the distance is on the x-axis, the less similar samples are.\nIn this particular case, we can see 3 clusters derived of our 3 tomato groups. We can also see that HATS and OH8243 are more closely clustered compared to LA2213. This is consistent with what we see in our PCA."
+    "text": "5.4 Dendrogram (i.e., hierarchical clustering)\nHierarchical clustering is a nice unsupervised way to see how the metabolomic profile of your samples compare. Many people when talking about their PCA scores plot refer to “natural clusters” in their data. The problem with this is that PCA is not a clustering algorithm. If you want to show heuristically natural clusters in your data, hierarchical clustering can help\n\n\n\nHierarchical clustering of samples\n\n\nHere we can see a dendrogram (like a phylogenetic tree) which clusters samples based on a distance metric and clustering algorithm. Samples that are more similar should be close to one another, and the longer the distance is on the x-axis, the less similar samples are.\nIn this particular case, we can see 3 clusters derived of our 3 tomato groups. We can also see that HATS and OH8243 are more closely clustered compared to LA2213. This is consistent with what we see in our PCA."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#k-means-a-different-type-of-clustering",
@@ -669,49 +669,49 @@
     "href": "activities/04_metaboanalyst.html#heatmaps",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.6 Heatmaps",
-    "text": "5.6 Heatmaps\nA heatmap is a nice way to look at lots of data at once. It doesn’t give you lots of resolution but allows you to see trends in your data you can then investigate in other ways.\nWhen you create the heatmap, you can elect to:\n\nData source: use normalized or the original data - I’d use normalized\nStandardization: I would autoscale features - this way each feature is normalized so more abundant ones aren’t weighted more heavily\nDistance measure and clustering method: these are for the hierarchical clustering\n\n\nAs we saw with the HCA, our samples are clustering by which tomato group they are a part of. But here we can see which features have the same trends and this can be useful to us!"
+    "text": "5.6 Heatmaps\nA heatmap is a nice way to look at lots of data at once. It doesn’t give you lots of resolution but allows you to see trends in your data you can then investigate in other ways.\nWhen you create the heatmap, you can elect to:\n\nData source: use normalized or the original data - I’d use normalized\nStandardization: I would autoscale features - this way each feature is normalized so more abundant ones aren’t weighted more heavily\nDistance measure and clustering method: these are for the hierarchical clustering\n\n\n\n\nA heatmap where both smaples and features are clustered\n\n\nAs we saw with the HCA, our samples are clustering by which tomato group they are a part of. But here we can see which features have the same trends and this can be useful to us!"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#correlations",
     "href": "activities/04_metaboanalyst.html#correlations",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.7 Correlations",
-    "text": "5.7 Correlations\nThe correlations analysis calculates a correlation coefficient between every pair of features. This plot is really crowed and hard to look at, but the concept is useful. We might be interested to know which groups of features have the same pattern of response across our samples. Or to know which features are highly negatively correlated.\nI find this format hard to sort through, but this approach to be generally useful."
+    "text": "5.7 Correlations\nThe correlations analysis calculates a correlation coefficient between every pair of features. This plot is really crowed and hard to look at, but the concept is useful. We might be interested to know which groups of features have the same pattern of response across our samples. Or to know which features are highly negatively correlated.\nI find this format hard to sort through, but this approach to be generally useful.\n\n\n\nA correlation heatmap clustering both features and samples"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#random-forest",
     "href": "activities/04_metaboanalyst.html#random-forest",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.8 Random forest",
-    "text": "5.8 Random forest\nThis isn’t that good of an example for random forest classification since our samples are so different.\nRandom forest is a machine learning class predition approach. In MetaboAnalyst, you can pick how many trees to draw and how many predictors to use.\n\nIn this case, we can see that our out of bag error rate is 0, and with using very few trees, we are able to perfectly classify samples as to whether they belong to each of the three tomato groups.\nIf you look under the variable importance tab you can see the features that are most important in generating this model. You can look at this as a figure, or you can download a file to see how each one affects the mean decrease in accuracy. You can sort this list from high to low or low to high.\n\nYou can then look for each of those figures how the relative intensity compares between tomato groups.\n\nAnother option for random forest is to have a training and a test set. As far as I can tell, MetaboAnalyst does this by calculating the out of bag error but there are also other approaches."
+    "text": "5.8 Random forest\nThis isn’t that good of an example for random forest classification since our samples are so different.\nRandom forest is a machine learning class predition approach. In MetaboAnalyst, you can pick how many trees to draw and how many predictors to use.\n\n\n\nOutput of random forest classification\n\n\nIn this case, we can see that our out of bag error rate is 0, and with using very few trees, we are able to perfectly classify samples as to whether they belong to each of the three tomato groups.\nIf you look under the variable importance tab you can see the features that are most important in generating this model. You can look at this as a figure, or you can download a file to see how each one affects the mean decrease in accuracy. You can sort this list from high to low or low to high.\n\n\n\nVariable importance predictors to our random forest model\n\n\nYou can then look for each of those figures how the relative intensity compares between tomato groups.\n\n\n\nIntensity of 1035.29429_5.1117 across our three tomato groups\n\n\nAnother option for random forest is to have a training and a test set. As far as I can tell, MetaboAnalyst does this by calculating the out of bag error but there are also other approaches."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#pattern-hunter",
     "href": "activities/04_metaboanalyst.html#pattern-hunter",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.9 Pattern hunter",
-    "text": "5.9 Pattern hunter\nYou might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.\nIn this case, I am interested in features that follow this trend: OH8243 &lt; HATS &lt; LA2213.\n\nYou can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like."
+    "text": "5.9 Pattern hunter\nYou might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.\nIn this case, I am interested in features that follow this trend: OH8243 &lt; HATS &lt; LA2213.\n\n\n\nLooking for patterns - here features that are highest in LA2213, second highest in HATS, and lowest in OH8243.\n\n\nYou can also click on the spreadsheet to see the correlation among each feature, and then view what the relationship looks like.\n\n\n\nRelative intensity of 1081.56453_4.64531 across tomato groups"
   },
   {
     "objectID": "activities/04_metaboanalyst.html#fold-change-analysis",
     "href": "activities/04_metaboanalyst.html#fold-change-analysis",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.10 Fold change analysis",
-    "text": "5.10 Fold change analysis\nThere are some analyses that can be only done with two groups (versus the three that we’ve had for the previous analyses). To demonstrate how these work, I am going to only keep the samples that are a part of the HATS and OH8243 groups.\nI can edit that using the Data editor on the leftside panel.\n\nRemember that when you do this, you will need to re-normalized.\nNow, we have access to new analyses. We will start with fold change analysis.\nWe can set what our fold change threshold is going to be, and what the direction of the comparison is.\n\nWe can then click on any of the points to see how the relative intensity of that features is different among our groups.\n\nYou can also click on the spreadsheet icon to view and/or download the full set of mean fold changes for each feature between the groups."
+    "text": "5.10 Fold change analysis\nThere are some analyses that can be only done with two groups (versus the three that we’ve had for the previous analyses). To demonstrate how these work, I am going to only keep the samples that are a part of the HATS and OH8243 groups.\nI can edit that using the Data editor on the leftside panel.\n\n\n\nData editor to remove samples or gorups\n\n\nRemember that when you do this, you will need to re-normalized.\nNow, we have access to new analyses. We will start with fold change analysis.\nWe can set what our fold change threshold is going to be, and what the direction of the comparison is.\n\n\n\nFold change analysis between OH8243 and HATS\n\n\nWe can then click on any of the points to see how the relative intensity of that features is different among our groups.\n\n\n\nRelative intensity of 474.3577_6.5878 between our two tomato groups\n\n\nYou can also click on the spreadsheet icon to view and/or download the full set of mean fold changes for each feature between the groups."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#t-test",
     "href": "activities/04_metaboanalyst.html#t-test",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.11 T-test",
-    "text": "5.11 T-test\nLike we did with an ANOVA for &gt; 2 groups, we might want to see if there are any differences in the intensity of each feature between our two tomato groups. We can do that using t-tests (parametric) or Wilcoxon rank-sum tests. We can select whether we have equal variance between or groups, whether we want to use a non-parametric test (if data is non-normal), what our p-value threshold is, and whether we are doing a multiple testing correct (you should be!).\n\nYou again can click on the spreadhseet icon to download the full feature set along with p-values, FDR adjusted p-values, and -log10 p-values."
+    "text": "5.11 T-test\nLike we did with an ANOVA for &gt; 2 groups, we might want to see if there are any differences in the intensity of each feature between our two tomato groups. We can do that using t-tests (parametric) or Wilcoxon rank-sum tests. We can select whether we have equal variance between or groups, whether we want to use a non-parametric test (if data is non-normal), what our p-value threshold is, and whether we are doing a multiple testing correct (you should be!).\n\n\n\nA visualization of a FDR corrected t-test between OH8243 and HATS\n\n\nYou again can click on the spreadhseet icon to download the full feature set along with p-values, FDR adjusted p-values, and -log10 p-values."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#volcano-plots",
     "href": "activities/04_metaboanalyst.html#volcano-plots",
     "title": "Data analysis with MetaboAnalyst",
     "section": "5.12 Volcano plots",
-    "text": "5.12 Volcano plots\nVolcano plots are nice as they incorporate both those features that are significantly different between groups, and the fold chance of that differences.\n\nIf you click on any feature, you can see the relative intensity across our two groups."
+    "text": "5.12 Volcano plots\nVolcano plots are nice as they incorporate both those features that are significantly different between groups, and the fold chance of that differences.\n\n\n\nA volcano plot incorporating both significance and fold change\n\n\nIf you click on any feature, you can see the relative intensity across our two groups."
   },
   {
     "objectID": "activities/02_design-experiment.html",
@@ -732,14 +732,14 @@
     "href": "lectures/04_data-analysis.html#data-pre-treatment",
     "title": "Analysis of metabolomics data",
     "section": "Data pre-treatment",
-    "text": "Data pre-treatment\n\n\n\nFrom van den Berg et al., Genomics 2006"
+    "text": "Data pre-treatment\n\nDifferent types of data centering, scaling, and transformation, from van den Berg et al., Genomics 2006"
   },
   {
     "objectID": "lectures/04_data-analysis.html#centering",
     "href": "lectures/04_data-analysis.html#centering",
     "title": "Analysis of metabolomics data",
     "section": "Centering",
-    "text": "Centering\n\nCentering converts all relative intensities to be centered around zero instead of around mean concentrations\nThis is particularly useful in metabolomics given that more intense features are not necessarily more abundant\nI like to center when conducting principal components analysis (PCA, more on this later)"
+    "text": "Centering\n\n\nCentering converts all relative intensities to be centered around zero instead of around mean concentrations\nThis is particularly useful in metabolomics given that more intense features are not necessarily more abundant\nI like to center when conducting principal components analysis (PCA, more on this later)\n\n\n\n\n\n\nPCA not centered\n\n\n\n\n\n\nPCA centered"
   },
   {
     "objectID": "lectures/04_data-analysis.html#scaling",
@@ -809,7 +809,7 @@
     "href": "lectures/04_data-analysis.html#your-qcs-should-cluster-in-a-pca",
     "title": "Analysis of metabolomics data",
     "section": "Your QCs should cluster in a PCA",
-    "text": "Your QCs should cluster in a PCA"
+    "text": "Your QCs should cluster in a PCA\n\nA PCA where the QCs cluster beautifully"
   },
   {
     "objectID": "lectures/04_data-analysis.html#data-analysis-can-be-unsupervised-or-supervised",
@@ -830,7 +830,7 @@
     "href": "lectures/04_data-analysis.html#interpreting-pcas",
     "title": "Analysis of metabolomics data",
     "section": "Interpreting PCAs",
-    "text": "Interpreting PCAs\n\n\n\nPCA A) scores and B) loadings (from Dzakovich et al., 2022)"
+    "text": "Interpreting PCAs\n\nPCA A) scores and B) loadings (from Dzakovich et al., 2022)"
   },
   {
     "objectID": "lectures/04_data-analysis.html#what-you-should-be-doing-with-your-pcas",
@@ -844,21 +844,21 @@
     "href": "lectures/04_data-analysis.html#unsupervised-hierarchical-clustering-analysis-hca",
     "title": "Analysis of metabolomics data",
     "section": "Unsupervised: Hierarchical Clustering Analysis (HCA)",
-    "text": "Unsupervised: Hierarchical Clustering Analysis (HCA)\n\nAn approach “cluster” samples based on their distance/similarity\nFind two most similar samples and merge into cluster, and repeat\nDifferent methods for determining both distance and linkage\nThink of these like a phylogenic tree - samples that are closer together are more similar\nCan cluster samples, features, or both\nStatQuest video on hierarchical clustering"
+    "text": "Unsupervised: Hierarchical Clustering Analysis (HCA)\n\n\nAn approach to “cluster” samples based on their distance/similarity\nFind two most similar samples and merge into cluster, and repeat\nDifferent methods for determining both distance and linkage\nLike a phylogenic tree - samples that are closer together are more similar\nCan cluster samples, features, or both\nStatQuest video on hierarchical clustering"
   },
   {
     "objectID": "lectures/04_data-analysis.html#hca-applied-to-metabolomics",
     "href": "lectures/04_data-analysis.html#hca-applied-to-metabolomics",
     "title": "Analysis of metabolomics data",
     "section": "HCA applied to metabolomics",
-    "text": "HCA applied to metabolomics\n\n\n\nFrom Dzakovich et al., 2024"
+    "text": "HCA applied to metabolomics\n\nA hierarchical clustering example from Dzakovich et al., 2024"
   },
   {
     "objectID": "lectures/04_data-analysis.html#unsupervised-k-means-clustering",
     "href": "lectures/04_data-analysis.html#unsupervised-k-means-clustering",
     "title": "Analysis of metabolomics data",
     "section": "Unsupervised: K-means clustering",
-    "text": "Unsupervised: K-means clustering\n\n\n\nRandomly assigns all samples to be a part of \\(k\\) clusters\nCalculates centroids and assigns samples to the nearest one\nIterates until centroids stability or reach some maximum\nCan figure out number of clusters using a scree plot to visualize within cluster sums\nStatQuest explains K-means clustering"
+    "text": "Unsupervised: K-means clustering\n\n\n\nRandomly assigns all samples to be a part of \\(k\\) clusters\nCalculates centroids and assigns samples to the nearest one\nIterates until centroids stability or reach some maximum\nCan figure out number of clusters using a scree plot to visualize within cluster sums\nStatQuest explains K-means clustering\n\n\n\n\n\nFrom Wikipedia"
   },
   {
     "objectID": "lectures/04_data-analysis.html#supervised-univariate-testing-the-categories",
@@ -879,7 +879,7 @@
     "href": "lectures/04_data-analysis.html#ways-to-control-for-multiple-testing",
     "title": "Analysis of metabolomics data",
     "section": "Ways to control for multiple testing",
-    "text": "Ways to control for multiple testing\n\nBonferroni correction: \\(α/number\\,of\\,comparisons\\) (very conservative, leads to false negatives)\nBenjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)\n\n\n\n\n\n\n\nFig. from https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/"
+    "text": "Ways to control for multiple testing\n\nBonferroni correction: \\(α/number\\,of\\,comparisons\\) (very conservative, leads to false negatives)\nBenjamini Hochberg false discovery rate correction: adjust overall error rate to be α (tries to balance false negatives and positives)\n\n\n\n\n\nFig. from https://geneviatechnologies.com/blog/what-is-multiple-testing-correction/"
   },
   {
     "objectID": "lectures/04_data-analysis.html#should-i-use-parametric-or-non-parametric-tests",
@@ -900,7 +900,21 @@
     "href": "lectures/04_data-analysis.html#supervised-pls-da",
     "title": "Analysis of metabolomics data",
     "section": "Supervised: PLS-DA",
-    "text": "Supervised: PLS-DA\n\nPartial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups\nTwo data matrices, X: contains your features, Y: contains group identity\n\n\n\n\n© Jessica Cooperstone, 2024"
+    "text": "Supervised: PLS-DA\n\n\n\nPartial least squares discriminate analysis (PLS-DA) approaches optimize separation between groups\nTwo data matrices, X: contains your features, Y: contains group identity\nBe sure to look at R^2 and Q^2 for both training and test sets\nHas a tendency to overfit\nLearn more about PLS-DA in this manuscript by Brereton and Lloyd, J Chemometrics 2014\n\n\n\n\n\nRuiz-Perez et al., BMC Bioinformatics 2020"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#random-forest",
+    "href": "lectures/04_data-analysis.html#random-forest",
+    "title": "Analysis of metabolomics data",
+    "section": "Random forest",
+    "text": "Random forest"
+  },
+  {
+    "objectID": "lectures/04_data-analysis.html#artificial-neural-networks",
+    "href": "lectures/04_data-analysis.html#artificial-neural-networks",
+    "title": "Analysis of metabolomics data",
+    "section": "Artificial neural networks",
+    "text": "Artificial neural networks\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
     "objectID": "lectures/05_compound-id.html#how-do-we-go-from-features-to-metabolites",
@@ -914,41 +928,111 @@
     "href": "lectures/05_compound-id.html#starting-with-a-mz",
     "title": "Compound identification in metabolomics",
     "section": "Starting with a m/z",
-    "text": "Starting with a m/z\n\n\n\nA feature of interest differentially present in commercial vs. wild tomatoes. We want to know what this is.\nUHPLC-QTOF-MS, ESI+, reversed phase C18,mMethanol extract\nA useful adduct calculator\n\n\n\n\n\nRelative intensity of 1092 m/z in tomatoes"
+    "text": "Starting with a m/z\n\n\n\nA feature of interest differentially present in commercial vs. wild tomatoes. We want to know what this is.\nUHPLC-QTOF-MS, ESI+, reversed phase C18, Methanol extract\nA useful adduct calculator\n\n\n\n\n\nRelative intensity of 1092.5590 in tomatoes m/z in tomatoes"
   },
   {
     "objectID": "lectures/05_compound-id.html#search-in-ms-databases---hmdb",
     "href": "lectures/05_compound-id.html#search-in-ms-databases---hmdb",
     "title": "Compound identification in metabolomics",
     "section": "Search in MS databases - HMDB",
-    "text": "Search in MS databases - HMDB"
+    "text": "Search in MS databases - HMDB\nSearch &gt; LC-MS Search\n\n\n\n\n\nScreenshot of an HMDB MS1 search\n\n\n\n\nEnter your mass and mode\nIndicate adduct type (can put unknown if you don’t know)\nSelect a mass error (5 ppm is good for a QTOF)\nSearch"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#evaluate-search-results",
+    "href": "lectures/05_compound-id.html#evaluate-search-results",
+    "title": "Compound identification in metabolomics",
+    "section": "Evaluate search results",
+    "text": "Evaluate search results\nThink about:\n\nWhich structures are plausible?\nMake sense in your biological system\nMake sense in your extraction\nMake sense based on retention time\nWhich adducts are more likely?\nThe top result is not necessarily your ID!"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#access-or-collection-msms-fragmentation-data",
+    "href": "lectures/05_compound-id.html#access-or-collection-msms-fragmentation-data",
+    "title": "Compound identification in metabolomics",
+    "section": "Access or collection MS/MS fragmentation data",
+    "text": "Access or collection MS/MS fragmentation data\n\nMS/MS spectra of 1092.5590 at 65eV in +ESI"
   },
   {
     "objectID": "lectures/05_compound-id.html#download-structure",
     "href": "lectures/05_compound-id.html#download-structure",
     "title": "Compound identification in metabolomics",
     "section": "Download structure",
-    "text": "Download structure"
+    "text": "Download structure\nhttp://www.hmdb.ca/spectra/ms_ms/59530\n\nDownload an .sdf file of your structure"
   },
   {
     "objectID": "lectures/05_compound-id.html#import-into-chemsketch",
     "href": "lectures/05_compound-id.html#import-into-chemsketch",
     "title": "Compound identification in metabolomics",
     "section": "Import into ChemSketch",
-    "text": "Import into ChemSketch"
+    "text": "Import into ChemSketch\n\nImport your .sdf file into ChemSketch"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#set-chemsketch-to-provide-you-structural-information",
+    "href": "lectures/05_compound-id.html#set-chemsketch-to-provide-you-structural-information",
+    "title": "Compound identification in metabolomics",
+    "section": "Set ChemSketch to provide you structural information",
+    "text": "Set ChemSketch to provide you structural information\n\n\nSelect which parameters you want printed: Tools &gt; Calculate &gt; Select properties to calculate &gt; Select “Molecular Formula”, “Monoisotopic Mass”, “[M+H]+”\nHave ChemSketch calculate those parameters: Tools &gt; Calculate &gt; Selected properties &gt; Copy to editor.\n\n\n\n\n\n\nScreenshot of acetoxytomatine in ChemSketch with parameters calculated"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#breaking-bonds-to-rationalize-fragments",
+    "href": "lectures/05_compound-id.html#breaking-bonds-to-rationalize-fragments",
+    "title": "Compound identification in metabolomics",
+    "section": "Breaking bonds to rationalize fragments",
+    "text": "Breaking bonds to rationalize fragments\n\n\n\nUse the eraser (delete) to break bonds (learn more here re: using ChemSketch)\nSelect a bond and it will be deleted\nThe details will stay with the larger fragment. Highlight the smaller piece to recalculate parameters.\nAccount for any rearrangement or additions/subtractions\n\n\n\n\n\nClick on the delete eraser"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#breaking-bonds-to-rationalize-fragments-1",
+    "href": "lectures/05_compound-id.html#breaking-bonds-to-rationalize-fragments-1",
+    "title": "Compound identification in metabolomics",
+    "section": "Breaking bonds to rationalize fragments",
+    "text": "Breaking bonds to rationalize fragments\n\nCleaving at the acetoxy group"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#breaking-bonds-to-rationalize-fragments-2",
+    "href": "lectures/05_compound-id.html#breaking-bonds-to-rationalize-fragments-2",
+    "title": "Compound identification in metabolomics",
+    "section": "Breaking bonds to rationalize fragments",
+    "text": "Breaking bonds to rationalize fragments\n\nCleaving at the acetoxy group"
   },
   {
     "objectID": "lectures/05_compound-id.html#how-can-we-improve-the-confidence-of-our-id",
     "href": "lectures/05_compound-id.html#how-can-we-improve-the-confidence-of-our-id",
     "title": "Compound identification in metabolomics",
     "section": "How can we improve the confidence of our ID?",
-    "text": "How can we improve the confidence of our ID?"
+    "text": "How can we improve the confidence of our ID?\n\nReference against publicly available MS/MS spectra\nPurchase authentic standard and compare\nSynthesize standard, confirm by NMR, and hope you’re right 🥹\nCompare to MS/MS spectra of similar compounds\nCompare to a sample that you know has your compound of interest"
   },
   {
     "objectID": "lectures/05_compound-id.html#msms-online-databases",
     "href": "lectures/05_compound-id.html#msms-online-databases",
     "title": "Compound identification in metabolomics",
     "section": "MS/MS online databases",
-    "text": "MS/MS online databases\n\n\n\n© Jessica Cooperstone, 2024"
+    "text": "MS/MS online databases\n\nExperimental spectra\nPredicted spectra"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#msms-predicted-spectra-of-acetoxytomatine",
+    "href": "lectures/05_compound-id.html#msms-predicted-spectra-of-acetoxytomatine",
+    "title": "Compound identification in metabolomics",
+    "section": "MS/MS predicted spectra of acetoxytomatine",
+    "text": "MS/MS predicted spectra of acetoxytomatine\nhttp://www.hmdb.ca/spectra/ms_ms/59530\n\nPredicted spectra for (23R)-acetoxytomatine"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#msms-spectral-databases",
+    "href": "lectures/05_compound-id.html#msms-spectral-databases",
+    "title": "Compound identification in metabolomics",
+    "section": "MS/MS spectral databases",
+    "text": "MS/MS spectral databases\n\nGNPS\nMassBank of North America (MONA)\nHMDB\nOthers that you have to pay for (METLIN, NIST, mzCloud)\nA review on spectral libraries by Bittremieux et al., Metabolomics 2022."
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#lc-ms-metabolite-id-workflow",
+    "href": "lectures/05_compound-id.html#lc-ms-metabolite-id-workflow",
+    "title": "Compound identification in metabolomics",
+    "section": "LC-MS metabolite ID workflow",
+    "text": "LC-MS metabolite ID workflow\n\nFrom Fitzgerald et al., ACS Omega 2017"
+  },
+  {
+    "objectID": "lectures/05_compound-id.html#do-you-need-to-have-an-id-to-quantify",
+    "href": "lectures/05_compound-id.html#do-you-need-to-have-an-id-to-quantify",
+    "title": "Compound identification in metabolomics",
+    "section": "Do you need to have an ID to quantify?",
+    "text": "Do you need to have an ID to quantify?\n\n\n\n© Jessica Cooperstone, 2024"
   }
 ]
