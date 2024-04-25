@@ -300,7 +300,7 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 -   Two data matrices, X: contains your features, Y: contains group identity
 -   Be sure to look at R^2 and Q^2 for both training and test sets
 -   Has a tendency to overfit
--   Learn more about PLS-DA in this manuscript by [Brereton and Lloyd, J Chemometrics 2014](https://doi.org/10.1002/cem.2609)
+-   Learn more about PLS-DA: [Brereton and Lloyd, J Chemometrics 2014](https://doi.org/10.1002/cem.2609), [Ruiz-Perez et al., BMC Bioinformatics 2020](https://doi.org/10.1186/s12859-019-3310-7), [Worley and Powers, Curr Metabolomics 2013](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4465187/).
 :::
 
 ::: {.column width="50%" style="font-size: 25px" .fragment}
@@ -331,10 +331,11 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 
 ## Artificial neural networks
 
-
-
 ::: columns
 ::: {.column width="40%" style="font-size: 30px"}
+-   Conceptually like a network of connected neurons, where each connection is weighted and a function transforms the sums to form the output
+-   Input data is mapped to latent structures, which are then mapped to output data
+-   Sometimes can be a "black box"
 -   Learn more by watching this [StatQuest video](https://www.youtube.com/watch?v=CqOfi41LfDw)
 :::
 
@@ -343,3 +344,5 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 
 :::
 :::
+
+## Others
