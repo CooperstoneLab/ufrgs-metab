@@ -30,6 +30,8 @@ library(rstatix) # for additional univariate functionality
 library(philentropy) # for hierarchical clustering
 library(ggdendro) # for hierarchical clustering plotting
 library(ropls) # for pls
+library(randomForest) # for random forest
+library(caret) # for random forest confusion matrices
 
 # this is at the end hoping that the default select will be that from dplyr
 library(tidyverse) # for everything
@@ -1451,4 +1453,69 @@ pls <- opls(x = for_PLS, y = metab_wide_meta_imputed_log2$tomato,
 
 
 ## Random forest
+
+```{r}
+# set a seed for consistent results
+set.seed(2024)
+
+# divide our data into a training and a test set
+for_RF <- metab_wide_meta_imputed_log2 %>%
+  filter(sample_or_qc == "Sample") %>% # keep only samples
+  select(-sample_name, -sample_or_qc, -rep_or_plot, -run_order)  %>% # remove meta we don't need
+  clean_names() %>%
+  droplevels() # can't have unused factors 
+
+# sample your data with replacement
+ind <- sample(2, nrow(for_RF), replace = TRUE, prob = c(0.7, 0.3))
+
+# create a training set
+train <- for_RF[ind == 1,]
+# create a test set
+test <- for_RF[ind == 2,]
+```
+
+Run random forest with the training data.
+```{r}
+rf <- randomForest(tomato ~ ., data = train, proximity = TRUE) 
+
+# print output
+print(rf)
+```
+
+Predict on the training data.
+```{r}
+# predict
+predicted_train <- predict(rf, train)
+
+# generate the confusion matrix
+confusionMatrix(predicted_train, train$tomato)
+```
+
+Predict using the test data.
+```{r}
+# predict
+predicted_test <- predict(rf, test)
+
+# generate the confusion matrix
+confusionMatrix(predicted_test, test$tomato)
+```
+
+What doe sthe error rate look over number of trees?
+```{r}
+plot(rf)
+```
+Capture the features most contributing to the rf model.
+```{r}
+# in a plot
+varImpPlot(rf,
+           sort = T,
+           n.var = 10,
+           main = "Top 10 - Variable Importance")
+
+# in a list
+importance(rf) %>%
+  as.data.frame() %>%
+  slice_max(order_by = MeanDecreaseGini, n = 20) # grab top 20 features
+
+```
 
