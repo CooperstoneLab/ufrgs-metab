@@ -4,14 +4,14 @@
     "href": "lectures/02_design-collection.html#the-idea-behind-design-and-sampling",
     "title": "Study design and sample collection",
     "section": "The idea behind design and sampling",
-    "text": "The idea behind design and sampling\n\n\nThe samples you choose should be representative of the broader population you wish to study\nThe variability between your groups should be due to your research question (and not some other thing)"
+    "text": "The idea behind design and sampling\n\nThe samples you choose should be representative of the broader population you wish to study\nThe variability between your groups should be due to your research question (and not some other thing)"
   },
   {
     "objectID": "lectures/02_design-collection.html#types-of-replicates",
     "href": "lectures/02_design-collection.html#types-of-replicates",
     "title": "Study design and sample collection",
     "section": "Types of replicates",
-    "text": "Types of replicates"
+    "text": "Types of replicates\n\nBiological replicates\nTechnical replicates"
   },
   {
     "objectID": "lectures/02_design-collection.html#sources-of-variation-in-samples",
@@ -25,21 +25,21 @@
     "href": "lectures/02_design-collection.html#what-can-we-do-to-minimize-non-experimental-variation",
     "title": "Study design and sample collection",
     "section": "What can we do to minimize non-experimental variation?",
-    "text": "What can we do to minimize non-experimental variation?\n\n\nConsistency!\nChoose appropriate controls\nEnsure sample groups are handled in the same way\nRandomize extraction order\nRandomize run order\nRun in one batch"
+    "text": "What can we do to minimize non-experimental variation?\n\nConsistency!\nChoose appropriate controls\nEnsure sample groups are handled in the same way\nRandomize extraction order\nRandomize run order\nRun in one batch"
   },
   {
     "objectID": "lectures/02_design-collection.html#quality-control-qc-samples",
     "href": "lectures/02_design-collection.html#quality-control-qc-samples",
     "title": "Study design and sample collection",
     "section": "Quality control (QC) samples",
-    "text": "Quality control (QC) samples\n\n\nHow do we know if our data looks ‘okay’ if we don’t know what it’s supposed to look like?\nPooled QCs, commercial QCs, synthetic QCs\n\n\n\n\n\n\n\n\nFig. adapted from Broadhurst et al., Metabolomics 2018"
+    "text": "Quality control (QC) samples\n\nHow do we know if our data looks ‘okay’ if we don’t know what it’s supposed to look like?\nPooled QCs, commercial QCs, synthetic QCs\n\n\n\n\n\n\n\nFig. adapted from Broadhurst et al., Metabolomics 2018"
   },
   {
     "objectID": "lectures/02_design-collection.html#processextraction-blanks",
     "href": "lectures/02_design-collection.html#processextraction-blanks",
     "title": "Study design and sample collection",
     "section": "Process/extraction blanks",
-    "text": "Process/extraction blanks\n\n\nTo remove signal that comes from the non-sample parts of your extract, we run process blanks\nThese consist of all components of your extraction minus the sample\n\nIf you are extracting tomato juice with methanol, you would instead take an equal volume of water and “extract” using the identical process\n\nThis allows the removal of signal coming from: tips, vials, extraction aids, solvents, tubing, your dirty MS source etc"
+    "text": "Process/extraction blanks\n\nTo remove signal that comes from the non-sample parts of your extract, we run process blanks\nThese consist of all components of your extraction minus the sample\n\nIf you are extracting tomato juice with methanol, you would instead take an equal volume of water and “extract” using the identical process\n\nThis allows the removal of signal coming from: tips, vials, extraction aids, solvents, tubing, your dirty MS source etc"
   },
   {
     "objectID": "lectures/02_design-collection.html#run-order",
@@ -88,21 +88,21 @@
     "href": "lectures/02_design-collection.html#collection-variables-to-consider",
     "title": "Study design and sample collection",
     "section": "Collection variables to consider",
-    "text": "Collection variables to consider\n\n\nTubes\nStorage\nFreeze-thaw\nQuenching"
+    "text": "Collection variables to consider\n\nTubes\nStorage\nFreeze-thaw\nQuenching"
   },
   {
     "objectID": "lectures/02_design-collection.html#standarizing-extraction-amoung",
     "href": "lectures/02_design-collection.html#standarizing-extraction-amoung",
     "title": "Study design and sample collection",
     "section": "Standarizing extraction amoung",
-    "text": "Standarizing extraction amoung\nCompare samples by:\n\n\nMass\nVolume\nNumber of cells\nNormalized to protein\nSome other thing?"
+    "text": "Standarizing extraction amoung\nCompare samples by:\n\nMass\nVolume\nNumber of cells\nProtein content\nSome other thing?"
   },
   {
     "objectID": "lectures/02_design-collection.html#when-starting-a-metabolomics-study",
     "href": "lectures/02_design-collection.html#when-starting-a-metabolomics-study",
     "title": "Study design and sample collection",
     "section": "When starting a metabolomics study…",
-    "text": "When starting a metabolomics study…\n\n\nPurchase one lot of materials (solvents, reagents, vials etc.)\nStore many, small volume aliquots to avoid freeze-thaw\nDecide what your QCs will be and act accordingly\nBe consistent – generate a plan!\nBe especially careful when conducting a secondary analysis of already collected data\n\n\n\n\n\n© Jessica Cooperstone, 2024"
+    "text": "When starting a metabolomics study…\n\nPurchase one lot of materials (solvents, reagents, vials etc.)\nStore many, small volume aliquots to avoid freeze-thaw\nDecide what your QCs will be and act accordingly\nBe consistent – generate a plan!\nBe especially careful when conducting a secondary analysis of already collected data\n\n\n\n\n© Jessica Cooperstone, 2024"
   },
   {
     "objectID": "lectures/01_intro.html#introductions",
@@ -116,7 +116,7 @@
     "href": "lectures/01_intro.html#what-is-metabolomics",
     "title": "Introduction to metabolomics",
     "section": "What is metabolomics?",
-    "text": "What is metabolomics?\n\n\nThe study of the totality of small molecules (&lt; 1500 Da) within a given system\nMetabolomics is a tool that allows us to study global metabolism"
+    "text": "What is metabolomics?\n\nThe study of the totality of small molecules (&lt; 1500 Da) within a given system\nMetabolomics is a tool that allows us to study global metabolism"
   },
   {
     "objectID": "lectures/01_intro.html#metabolites-are-the-downstream-products-of-the-system-biology-cascade",
@@ -130,7 +130,7 @@
     "href": "lectures/01_intro.html#the-food-metabolome-can-be-influenced-by",
     "title": "Introduction to metabolomics",
     "section": "The food metabolome can be influenced by:",
-    "text": "The food metabolome can be influenced by:\n\n\nVariety/genetics\nEnvironment\nPost-harvest/processing\nStorage"
+    "text": "The food metabolome can be influenced by:\n\nVariety/genetics\nEnvironment\nPost-harvest/processing\nStorage"
   },
   {
     "objectID": "lectures/01_intro.html#the-metabolome-is-really-big",
@@ -207,28 +207,28 @@
     "href": "lectures/01_intro.html#use-statistics-and-chemometrics-to-understand-group-differences",
     "title": "Introduction to metabolomics",
     "section": "Use statistics and chemometrics to understand group differences",
-    "text": "Use statistics and chemometrics to understand group differences\n\n\n\nSignificance testing (e.g., t-test, Wilcoxon rank sum test, ANOVA)\nUnsupervised analyses (e.g., PCA, hierarchical clustering)\nSupervised analyses (e.g., PLS-DA or PLS-R, random forest)"
+    "text": "Use statistics and chemometrics to understand group differences\n\n\nSignificance testing (e.g., t-test, Wilcoxon rank sum test, ANOVA)\nUnsupervised analyses (e.g., PCA, hierarchical clustering)\nSupervised analyses (e.g., PLS-DA or PLS-R, random forest)"
   },
   {
     "objectID": "lectures/01_intro.html#what-metabolites-do-we-have",
     "href": "lectures/01_intro.html#what-metabolites-do-we-have",
     "title": "Introduction to metabolomics",
     "section": "What metabolites do we have?",
-    "text": "What metabolites do we have?\n\n\n\nSearching publicly available databases (e.g., HMDB, METLIN, GNPS) at the MS1 and MS2 level\nConduct MS/MS experiments\nComparison with authentic standards"
+    "text": "What metabolites do we have?\n\n\nSearching publicly available databases (e.g., HMDB, Mass Bank of North America (MoNA), GNPS) at the MS1 and MS2 level\nConduct MS/MS experiments\nComparison with authentic standards"
   },
   {
     "objectID": "lectures/01_intro.html#putting-findings-into-a-broader-context",
     "href": "lectures/01_intro.html#putting-findings-into-a-broader-context",
     "title": "Introduction to metabolomics",
     "section": "Putting findings into a broader context",
-    "text": "Putting findings into a broader context\n\n\n\nUnderstanding which metabolic pathways are most deregulated\nTypically for enzymatic pathways\nRequires compound IDs (a big limitation)"
+    "text": "Putting findings into a broader context\n\n\nUnderstanding which metabolic pathways are most deregulated\nTypically for enzymatic pathways\nRequires compound IDs (a big limitation)"
   },
   {
     "objectID": "lectures/01_intro.html#ensure-findings-are-real-and-reproducible",
     "href": "lectures/01_intro.html#ensure-findings-are-real-and-reproducible",
     "title": "Introduction to metabolomics",
     "section": "Ensure findings are real and reproducible",
-    "text": "Ensure findings are real and reproducible\n\n\n\nMass spectrometry is not inherently quantitative (i.e., if the intensity of analyte A is higher than analyte B, it doesn’t necessarily mean there is more of A than B)\nKnowing the absolute concentration allows comparison with literature/other data\nValidation in a separate sample set ensures robustness"
+    "text": "Ensure findings are real and reproducible\n\n\nMass spectrometry is not inherently quantitative (i.e., if the intensity of analyte A is higher than analyte B, it doesn’t necessarily mean there is more of A than B)\nKnowing the absolute concentration allows comparison with literature/other data\nValidation in a separate sample set ensures robustness"
   },
   {
     "objectID": "lectures/01_intro.html#metabolomics-workflow-1",
@@ -242,14 +242,14 @@
     "href": "lectures/03_lc-ms.html#chromatography",
     "title": "LC-MS data acquisition and pre-processing",
     "section": "Chromatography",
-    "text": "Chromatography\n\n\nThe process of separating components of a mixture\nBased on an analytes’ difference in partitioning between a stationary and mobile phases\n\n\n\nhttps://en.wikipedia.org/wiki/Chromatography"
+    "text": "Chromatography\n\nThe process of separating components of a mixture\nBased on an analytes’ difference in partitioning between a stationary and mobile phases\n\n\n\n\nhttps://en.wikipedia.org/wiki/Chromatography"
   },
   {
     "objectID": "lectures/03_lc-ms.html#types-of-liquid-chromatography",
     "href": "lectures/03_lc-ms.html#types-of-liquid-chromatography",
     "title": "LC-MS data acquisition and pre-processing",
     "section": "Types of liquid chromatography",
-    "text": "Types of liquid chromatography\n\n\n\n\nReversed phase\nNormal phase\nHILIC (hydrophilic interaction liquid chromatography)"
+    "text": "Types of liquid chromatography\n\n\n\nReversed phase\nNormal phase\nHILIC (hydrophilic interaction liquid chromatography)\n\n\n\n\n\n\n:::"
   },
   {
     "objectID": "lectures/03_lc-ms.html#mass-spectrometry",
@@ -298,7 +298,7 @@
     "href": "lectures/03_lc-ms.html#different-ways-to-express-a-mass",
     "title": "LC-MS data acquisition and pre-processing",
     "section": "Different ways to express a mass",
-    "text": "Different ways to express a mass\n\n\nNominal mass: sum of the integer masses of the constituent elements of a molecule (C=12, H=1)\nMonoisotopic mass: mass of a molecular given empirical formulate calculated using the exact mass of the most abundance isotope of each element (C=12.0000, H=1.0078)\nAverage mass: mass of a molecule given empirical formulate calculated using the weighted average mass for each element by isotopic abundance (C=12.0112, H=1.00797)\nC20H42\n\nNominal mass: (20 × 12) + (42 × 1) = 282\nMonoisotopic mass: (20 × 12.0000) + (42 × 1.0078) = 282.3276\nAverage mass: (20 × 12.0112) + (42 × 1.00797) = 282.5587"
+    "text": "Different ways to express a mass\n\nNominal mass: sum of the integer masses of the constituent elements of a molecule (C=12, H=1)\nMonoisotopic mass: mass of a molecular given empirical formulate calculated using the exact mass of the most abundance isotope of each element (C=12.0000, H=1.0078)\nAverage mass: mass of a molecule given empirical formulate calculated using the weighted average mass for each element by isotopic abundance (C=12.0112, H=1.00797)\nC20H42\n\nNominal mass: (20 × 12) + (42 × 1) = 282\nMonoisotopic mass: (20 × 12.0000) + (42 × 1.0078) = 282.3276\nAverage mass: (20 × 12.0112) + (42 × 1.00797) = 282.5587"
   },
   {
     "objectID": "lectures/03_lc-ms.html#try-calculating-the-monoisotopic-mass",

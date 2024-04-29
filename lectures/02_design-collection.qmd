@@ -8,29 +8,29 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
+    incremental: true
 ---
 
 ## The idea behind design and sampling
 
-::: incremental
 -   The samples you choose should be representative of the broader population you wish to study
 -   The variability between your groups should be due to your research question (and not some other thing)
-:::
 
-. . .
-
-![](img/02/broccoli-hamster.png){fig-align="center"}
+![](img/02/broccoli-hamster.png){fig-align="center" width="1000" .fragment}
 
 ## Types of replicates
+
+-   Biological replicates
+-   Technical replicates
 
 ## Sources of variation in samples
 
 ::: columns
-::: {.column width="50%"}
+::: {.column width="50%" style="font-size: 30px"}
 Experimental (due to our question):
 :::
 
-::: {.column width="50%"}
+::: {.column width="50%" style="font-size: 30px"}
 Non-experimental (due to things other than our question)
 
 -   Personnel
@@ -47,36 +47,30 @@ Ideally, measurement variability \<\<\< sample variability
 
 ## What can we do to minimize non-experimental variation?
 
-::: incremental
 -   Consistency!
 -   Choose appropriate controls
 -   Ensure sample groups are handled in the same way
 -   Randomize extraction order
 -   Randomize run order
 -   Run in one batch
-:::
 
 ## Quality control (QC) samples
 
-::: incremental
 -   How do we know if our data looks ‘okay’ if we don’t know what it’s supposed to look like?
 -   Pooled QCs, commercial QCs, synthetic QCs
-:::
 
 . . .
 
-![](img/02/qcs.png){fig-align="center" width="780"}
+![](img/02/qcs.png){fig-align="center" width="780" .fragment}
 
 [Fig. adapted from [Broadhurst et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5960010/), Metabolomics 2018]{.aside style="font-size:0.5em;"}
 
 ## Process/extraction blanks
 
-::: incremental
 -   To remove signal that comes from the non-sample parts of your extract, we run process blanks
 -   These consist of all components of your extraction minus the sample
     -   If you are extracting tomato juice with methanol, you would instead take an equal volume of water and “extract” using the identical process
 -   This allows the removal of signal coming from: tips, vials, extraction aids, solvents, tubing, your dirty MS source etc
-:::
 
 ## Run order
 
@@ -116,37 +110,26 @@ Ideally, measurement variability \<\<\< sample variability
 
 ## Collection variables to consider
 
-::: incremental
-
 -   Tubes
 -   Storage
 -   Freeze-thaw
 -   Quenching
 
-:::
-
 ## Standarizing extraction amoung
 
 Compare samples by:
 
-::: incremental
-
 -   Mass
 -   Volume
 -   Number of cells
--   Normalized to protein
+-   Protein content
 -   Some other thing?
 
-:::
 
 ## When starting a metabolomics study...
-
-::: incremental
 
 -   Purchase one lot of materials (solvents, reagents, vials etc.)
 -   Store many, small volume aliquots to avoid freeze-thaw
 -   Decide what your QCs will be and act accordingly
 -   Be consistent – generate a plan! 
 -   Be especially careful when conducting a secondary analysis of already collected data
-
-:::

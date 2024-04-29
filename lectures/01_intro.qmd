@@ -8,6 +8,7 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
+    incremental: true
 ---
 
 ## Introductions 👋
@@ -21,22 +22,18 @@ format:
 
 ## What is metabolomics?
 
-::: incremental
 -   The study of the **totality** of **small molecules** (< 1500 Da) within a given system
 -   Metabolomics is a tool that allows us to study global metabolism
-:::
 
 ## Metabolites are the downstream products of the system biology cascade
 ![](img/01/systems-biology.png)
 
 ## The food metabolome can be influenced by:
 
-::: incremental
 -   Variety/genetics
 -   Environment 
 -   Post-harvest/processing
 -   Storage
-:::
 
 ## The metabolome is really BIG!
 ![](img/01/metabolome-big.png)
@@ -144,49 +141,36 @@ All methods have benefits and drawbacks
 
 ![](img/01/06_data-analysis.png){.absolute bottom="0" left="0" width="150"}
 
-::: incremental
 
 -   Significance testing (e.g., t-test, Wilcoxon rank sum test, ANOVA)
 -   Unsupervised analyses (e.g., PCA, hierarchical clustering)
 -   Supervised analyses (e.g., PLS-DA or PLS-R, random forest)
 
-:::
-
 ## What metabolites do we have?
 
 ![](img/01/07_metabolite-id.png){.absolute bottom="0" left="0" width="150"}
 
-::: incremental
-
--   Searching publicly available databases (e.g., [HMDB](https://hmdb.ca/), [METLIN](https://metlin.scripps.edu/landing_page.php?pgcontent=mainPage), [GNPS](https://gnps.ucsd.edu/)) at the MS1 and MS2 level
+-   Searching publicly available databases (e.g., [HMDB](https://hmdb.ca/), [Mass Bank of North America (MoNA)](https://mona.fiehnlab.ucdavis.edu/), [GNPS](https://gnps.ucsd.edu/)) at the MS1 and MS2 level
 -   Conduct MS/MS experiments
 -   Comparison with authentic standards
 
-:::
 
 ## Putting findings into a broader context
 
 ![](img/01/08_contextualization.png){.absolute bottom="0" left="0" width="150"}
 
-::: incremental
-
 -   Understanding which metabolic pathways are most deregulated
 -   Typically for enzymatic pathways
 -   Requires compound IDs (a big limitation)
-
-:::
 
 ## Ensure findings are real and reproducible
 
 ![](img/01/09_validation.png){.absolute bottom="0" left="0" width="150"}
 
-::: incremental
-
 -   Mass spectrometry is not inherently quantitative (i.e., if the intensity of analyte A is higher than analyte B, it doesn't necessarily mean there is more of A than B)
 -   Knowing the absolute concentration allows comparison with literature/other data 
 -   Validation in a separate sample set ensures robustness
 
-:::
 
 ## Metabolomics workflow
 ![](img/01/metabolomics-workflow.png)

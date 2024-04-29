@@ -8,24 +8,21 @@ format:
     footer: "© Jessica Cooperstone, 2024"
     theme: simple
     echo: true
+    incremental: true
 ---
 
 ## Chromatography
 
-::: incremental
 -   The process of separating components of a <br>mixture
 -   Based on an analytes' difference in <br>partitioning between a stationary <br>and mobile phases
-:::
 
-![](img/03/chromatography.png){.absolute bottom="20" right="50"}
+![https://en.wikipedia.org/wiki/Chromatography](img/03/chromatography.png){.absolute bottom="20" right="50"}
 
-[https://en.wikipedia.org/wiki/Chromatography]{.aside style="font-size:0.5em;"}
 
 ## Types of liquid chromatography
 
 ::: columns
 ::: {.column width="35%"}
-::: incremental
 -   Reversed phase
 -   Normal phase
 -   HILIC (hydrophilic interaction liquid chromatography)
@@ -75,7 +72,6 @@ format:
 
 ## Different ways to express a mass {.smaller}
 
-::: incremental
 -   **Nominal mass**: sum of the integer masses of the constituent elements of a molecule (C=12, H=1)
 
 -   **Monoisotopic mass**: mass of a molecular given empirical formulate calculated using the exact mass of the most abundance isotope of each element (C=12.0000, H=1.0078)
@@ -89,7 +85,6 @@ format:
     -   **Monoisotopic mass**: (20 × 12.0000) + (42 × 1.0078) = 282.3276
 
     -   **Average mass**: (20 × 12.0112) + (42 × 1.00797) = 282.5587
-:::
 
 ## Try calculating the monoisotopic mass
 
