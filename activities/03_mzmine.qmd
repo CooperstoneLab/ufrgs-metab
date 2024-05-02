@@ -14,21 +14,21 @@ knitr:
 
 # Introduction
 
-Now that we've gone through the collection of LC-MS metabolomics data, we will take our raw datafiles and convert them into a feature table.
+Now that we've gone through the collection of LC-MS metabolomics data, we will take our raw datafiles and convert them into a feature table using [MZmine](https://mzio.io/#mzmine). MZmine has extremely good documentation [https://mzmine.github.io/mzmine_documentation/index.html](https://mzmine.github.io/mzmine_documentation/index.html) which is worth to read.
 
 ## Our data
 
 We are going to be using some sample data coming from the my lab. These samples are methanolic extracts (more details about their creation are described in [Dzakovich et al., Plant Genome 2022](https://doi.org/10.1002/tpg2.20192)) of tomatoes with 3 different genotypes:
 
--   OH8243: a typical processing tomato
--   LA2213: a wild currant tomato that is high in steroidal alkaloids
--   HATS: a high alpha tomatine selection (HATS) that came from a breeding scheme crossing the previous two tomatoes and selecting fruits high in steroidal alkaloids.
+-   **OH8243**: a typical processing tomato
+-   **LA2213**: a wild currant tomato that is high in steroidal alkaloids
+-   **HATS**: a high alpha tomatine selection (HATS) that came from a breeding scheme crossing the previous two tomatoes and selecting fruits high in steroidal alkaloids.
 
-Additionally, we have quality control (QC) samples that are made from pools of each of the tomato extracts, and process blanks (PB) which underwent the same extraction process but instead of adding tomato, added an equivalent mass of water.
+Additionally, we have **quality control (QC)** samples that are made from pools of each of the tomato extracts, and **process blanks (PB)** which underwent the same extraction process but instead of adding tomato, added an equivalent mass of water.
 
 The extracts were analyzed using a C18 column in positive ion mode on an Agilent 6546 QTOF-MS. The gradient portion of our method is from 0.5 - 7.5 min.
 
-You can find a link [here](https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4) to a OneDrive folder that contains all the raw data files to download.
+You can find a link [here](https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4) to a OneDrive folder that contains all the raw data files to download (in a folder called `raw-data`). You can also find the same link in the top right corner of the website using the cloud and arrow icon <img src="https://github.com/FortAwesome/Font-Awesome/raw/6.x/svgs/solid/cloud-arrow-down.svg" width="20" height="20">.
 
 Samples are named with the following structure:
 
@@ -36,17 +36,23 @@ Samples are named with the following structure:
 -   The second 3 digit number starting with 4XX, 6XX, or 8XX is a plot code. The QCs and PBs have a two digit number which represents tells you which replicate it is.
 -   The last number is the run order
 
-I have not given you every sample from this run, so the run order numbers won't be continuous. There are 12 of each of the tomato varieties, 6 QCs, and 3 PBs. If your MZmine is getting bogged down, you don't need to use all of these samples, you can practice in using just the QCs. I will give you full feature tables for the data analysis next steps.
+I have not given you every sample from this run, so the run order numbers won't be continuous. There are 12 of each of the tomato varieties, 6 QCs, and 3 PBs. If your MZmine is getting bogged down, you don't need to use all of these samples, you can practice in using just the QCs or even just a few of the QCs. I will give you full feature tables for the data analysis next steps in case you prefer to just listen or if you are having trouble using MZmine. I do recommend that you try the deconvolution process on your own if this is something you plan to do in the future.
 
-Download the raw data files and put them in a known location on your computer.
+Download the raw data files and put them in a known location on your computer. I suggest you make a folder where you keep all your materials from this short course.
 
 # Convert instrument data files to open source format
 
-Different MS vendors have their files in different formats. We are going to be using today some data that was collected on an Agilent LC-MS, and the file extension here is `.d`. We are going to use the software `MSConvert` from `ProteoWizard` to convert our files into an open source file format with the extension `.mzML`.
+Different MS vendors have their files in different formats. We are going to be using today some data that was collected on an Agilent 1290 LC interfaced with a 6546 QTOF-MS, and the file extension here is `.d`. We are going to use the software `MSConvert` from `ProteoWizard` to convert our files into an open source file format that has the extension `.mzML`.
 
 ## Download `MSConvert` from `ProteoWizard`
 
-If you don't have `ProteoWizard`, you can download it here: <https://proteowizard.sourceforge.io/>. Once you download the program, open `MSConvert`.
+If you don't have `ProteoWizard`, you can download it here: [https://proteowizard.sourceforge.io/](https://proteowizard.sourceforge.io/). Once you download the program, open `MSConvert`.
+
+::: {.callout-note}
+## Note that you can only download ProteoWizard on a Windows or Linux machine. If you have a Mac you'll have to do this on another computer.
+
+I also have stored converted files [here](https://buckeyemailosu-my.sharepoint.com/:f:/g/personal/cooperstone_1_osu_edu/Em__DQbIlCBBuadrLMNDr8gB7-_tQayjX1JSzSdubjwhQA?e=QZdzx4).
+:::
 
 ## Select files for conversion
 
@@ -61,13 +67,13 @@ If you don't have `ProteoWizard`, you can download it here: <https://proteowizar
 
 -   Uncheck zlib compression
 -   We are going to convert our profile into centroided data which I think makes the deconvolution in MZmine easier. We will do that by under Filter, selecting Peak Picking, and picking the Vendor option under Algorithm. Here, we only have MS1 data so we only want MS level 1. We will add this to the table below.
--   The more files you have, the longer this will take, you can indicate that convert more than 1 file in parallel. Doing 4 at a time, about 40 samples took my lab data processing computer (which has a 128 MB RAM and 16 cores) a couple of minutes.
+-   The more files you have, the longer this will take, and you can indicate that convert more than 1 file in parallel. Doing 4 at a time, about 40 samples took my lab data processing computer (which has a 128 MB RAM and 16 cores) a couple of minutes.
 
 # Import into MZmine
 
 ## Using MZmine at OSC (Ohio Supercomputer Center)
 
-Some parts of the MZmine pre-processing can be quite ram intensive and may struggle to run on your laptop. To solve this problem, you can run your deconvolution on a supercomputer. I'm providing here some instructions on how to do this at OSC.
+Some parts of the MZmine pre-processing can be quite RAM intensive and may struggle to run on your laptop. To solve this problem, you can run your deconvolution on a supercomputer. I'm providing here some instructions on how to do this at OSC.
 
 ### Create an OSC account
 
@@ -75,7 +81,7 @@ You can create an account at OSC at this [link](https://my.osc.edu/acprod/odb_os
 
 ### Share your OSC username with Jess
 
-This will allow Jess to add you to our OSC project which will direct the billing appropriately (to Jess, not to you).
+Either tell Jess in person your OSC username, or email it to her at cooperstone.1@osu.edu. This will allow Jess to add you to our OSC project which will direct the billing appropriately (to Jess, not to you).
 
 ### Log onto OSC
 
@@ -93,15 +99,19 @@ You can use the parameters below for launching the Pitzer desktop. Make sure you
 
 > If Pitzer is not working, you can open up an Owens desktop and it will work the same. Just use the same paramteres.
 
-Once you are in Pitzer desktop, you can open an internet browser and navigate to <https://github.com/mzmine/mzmine3/releases/tag/v3.9.0>. At the time I put this tutorial together, the most recent version of MZmine is 3.9.0. Download the version for the Linux portable version.
+Once your computing space is ready, you will see a "Launch Pitzer Desktop" button. Go ahead and click that.
 
-You can actually skip the download process as I put the portable version fo MZmine 3.9.0 in `/fs/ess/PAS2568/MZmine`
+![Launch your OSC session](img/03/pitzer-launch.png)
+
+You can actually skip the download process as I put the portable version fo MZmine 3.9.0 in `/fs/ess/PAS2568/MZmine`. But, if you wanted to run MZmine on any supercomputer the process should be the same. Once you are in a virtual desktop, you can open an internet browser and navigate to <https://github.com/mzmine/mzmine3/releases/tag/v3.9.0>. At the time I put this tutorial together, the most recent version of MZmine was 3.9.0. Soon after, version 4.0 was released. We are going to use the older version here. Download the version for the Linux portable version and store it in a known place.
 
 ### Open MZmine
 
-Once you download MZmine, unzip the file, right click on the `bin` directory and select `Open a terminal here`.
+Once you have downloaded MZmine, unzip the file. If you are using the already downloaded verison, click on the right most folder at the bottom of your screen, and insert `/fs/ess/PAS2568/MZmine` into the path.  and then right click on the `bin` directory and select `Open a terminal here`.
 
-Then in your terminal, execute the following code one line at a time:
+![Open a terminal in the `bin` folder of the portable MZmine](img/03/launch-mzmine.png)
+
+Then in your terminal, type the following commands, followed by enter, one line at a time:
 
 ```{r eval = FALSE}
 chmod a+x MZmine
@@ -111,11 +121,11 @@ chmod a+x MZmine
 ./MZmine
 ```
 
-The MZmine GUI should now be open.
+The MZmine graphical user interface (GUI) should now be open.
 
 ### Create a place to save your files on OSC
 
-Create a directory (i.e., folder) with your name (no spaces) within `/fs/ess/PAS2568`. This is where you will save all your files. 
+Create a directory (i.e., folder) with your name (no spaces) within `/fs/ess/PAS2568`. This will allow each of you to store your files separately from your classmates. For example, I would make a folder called `jess` within `/fs/ess/PAS2568`. This would mean then I am saving my files in `/fs/ess/PAS2568/jess`.
 
 Then, when you want to retrieve them, you can:
 
@@ -123,11 +133,9 @@ Then, when you want to retrieve them, you can:
 2. click on `Files`
 3. select `/fs/ess/PAS2568/your-folder-name` and download any files so you can have the locally on your computer.
 
-
-
 ## Using MZmine on your own computer
 
-If you don't have MZmine, you can download it at this link: <https://mzmine.github.io/>.
+If you don't have MZmine, you can download it at this link: <https://mzmine.github.io/> and follow the instructions for installation.
 
 MZmine has extremely good documentation, so if you want to read more about any particular parameter, you can do so here: <https://mzmine.github.io/mzmine_documentation/index.html>.
 
