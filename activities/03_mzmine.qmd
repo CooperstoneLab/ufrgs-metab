@@ -113,6 +113,18 @@ chmod a+x MZmine
 
 The MZmine GUI should now be open.
 
+### Create a place to save your files on OSC
+
+Create a directory (i.e., folder) with your name (no spaces) within `/fs/ess/PAS2568`. This is where you will save all your files. 
+
+Then, when you want to retrieve them, you can:
+
+1. log into [OSC OnDemand](https://ondemand.osc.edu/pun/sys/dashboard/) (this link is also on the course website at `Resources` > `Ohio Supercomputer Center (OSC)`)
+2. click on `Files`
+3. select `/fs/ess/PAS2568/your-folder-name` and download any files so you can have the locally on your computer.
+
+
+
 ## Using MZmine on your own computer
 
 If you don't have MZmine, you can download it at this link: <https://mzmine.github.io/>.

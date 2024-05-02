@@ -50,6 +50,9 @@ website:
             href: https://hmdb.ca/
           - text: Ohio Supercomputer Center (OSC)
             href: http://ondemand.osc.edu/
+          - text: Getting started with OSC
+            href: https://cooperstonelab.github.io/ufrgs-metab/activities/03_mzmine.html#using-mzmine-at-osc-ohio-supercomputer-center
+
 
     tools:
       - icon: cloud-arrow-down
