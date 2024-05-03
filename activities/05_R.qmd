@@ -1445,14 +1445,32 @@ As we went over in the lecture material, PLS based methods are prediction method
 
 ```{r}
 for_PLS <- metab_wide_meta_imputed_log2 %>%
+  filter(sample_or_qc == "Sample") %>% # keep only samples
   select(-sample_name, -sample_or_qc, -tomato, -rep_or_plot, -run_order) # remove meta
+  
+for_PLS_meta <- metab_wide_meta_imputed_log2 %>%
+  filter(sample_or_qc == "Sample") %>% # keep only samples
+  mutate(tomato = as.character(tomato)) # has to be a character vector or at least it works this way
 
-pls <- opls(x = for_PLS, y = metab_wide_meta_imputed_log2$tomato,
+pls <- opls(x = for_PLS, y = for_PLS_meta$tomato,
             orthoI = 0) # for PLS
 ```
 
 
+Grab variable importance in projection scores. The higher the VIP score, the more that feature contributes to the separation between groups. A rule of thumb is that a VIP > 1 is "significant".
+```{r}
+getVipVn(pls) %>% # extract VIP
+  as.data.frame() %>% # convert to df
+  rownames_to_column(var = "feature") %>%
+  rename(vip = 2) %>% # rename second column
+  arrange(desc(vip)) %>% # sort from biggest to smallest
+  slice_max(order_by = vip, n = 25) %>% # show the top 25
+  knitr::kable() # format as a nice table for this website
+```
+
+
 ## Random forest
+Use random forest to see how well we can categorize samples into our three groups.
 
 ```{r}
 # set a seed for consistent results

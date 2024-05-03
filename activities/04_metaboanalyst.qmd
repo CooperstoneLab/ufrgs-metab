@@ -260,6 +260,37 @@ I find this format hard to sort through, but this approach to be generally usefu
 
 ![A correlation heatmap clustering both features and samples](img/04/correlation_table.svg)
 
+## PLS-DA
+
+We can also take a supervised approach using PLS-DA. PLS-DA is most often used as a classification algorithm (i.e., can we develop a model based on a testing set that tells us whether a sample is a member of one group or another, and works for samples not a part of that test set), though it can also be used as a feature selection tool.
+
+Using MetaboAnalyst, we can see:
+
+-   A overview of scores plots using the first 5 PCs
+-   A 2D scores plot
+-   Loadings plots
+-   Important features
+-   3D plots
+-   Cross validation 
+
+Remember that PLS-DA is trying to **maximize difference between groups** while PCA is trying to **maximize variation across the dataset**. 
+
+![PLS-DA scores plot](img/04/pls-scores.png)
+
+We can look at which features are most contributing to separation between our groups, and MetaboAnalyst will plot these for you, or you can download a spreadsheet that contains every feature along with its score.
+
+![Variable importance in project scores for the top 15 features](img/04/pls-vip.png)
+
+If you are doing PLS-DA, it is important to make sure your model can be validated and you are not overfitting (i.e., fitting noise). This is a particular problem especially in the metabolomics situation where you have orders of magnitude fewer samples than you do features.
+
+In this case, by using only 2 PCs, we have very good cross validation accuracy (Q^2). You can adjust how many PCs you use and see how this affects your validation parameters.
+
+![PLS-DA cross validation](img/04/pls-cv.png)
+
+> The message at the bottom of the screen is an important one: "Q2 is an estimate of the predictive ability of the model, and is calculated via cross-validation (CV). In each CV, the predicted data are compared with the original data, and the sum of squared errors is calculated. The prediction error is then summed over all samples (Predicted Residual Sum of Squares or PRESS). For convenience, the PRESS is divided by the initial sum of squares and subtracted from 1 to resemble the scale of the R2. Good predictions will have low PRESS or high Q2. It is possible to have negative Q2, which means that your model is not at all predictive or is overfitted. For more details, refer to an excellent paper by (Szymańska, et al)."
+
+Keep in mind too that if you have an overfit model, your features that have high VIP scores may not be meaningful.
+
 ## Random forest
 
 This isn't that good of an example for random forest classification since our samples are so different.

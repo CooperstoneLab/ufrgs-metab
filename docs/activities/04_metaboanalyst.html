@@ -220,11 +220,12 @@ div.csl-indent {
   <li><a href="#k-means-a-different-type-of-clustering" id="toc-k-means-a-different-type-of-clustering" class="nav-link" data-scroll-target="#k-means-a-different-type-of-clustering"><span class="header-section-number">5.5</span> K-means (a different type of clustering)</a></li>
   <li><a href="#heatmaps" id="toc-heatmaps" class="nav-link" data-scroll-target="#heatmaps"><span class="header-section-number">5.6</span> Heatmaps</a></li>
   <li><a href="#correlations" id="toc-correlations" class="nav-link" data-scroll-target="#correlations"><span class="header-section-number">5.7</span> Correlations</a></li>
-  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">5.8</span> Random forest</a></li>
-  <li><a href="#pattern-hunter" id="toc-pattern-hunter" class="nav-link" data-scroll-target="#pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</a></li>
-  <li><a href="#fold-change-analysis" id="toc-fold-change-analysis" class="nav-link" data-scroll-target="#fold-change-analysis"><span class="header-section-number">5.10</span> Fold change analysis</a></li>
-  <li><a href="#t-test" id="toc-t-test" class="nav-link" data-scroll-target="#t-test"><span class="header-section-number">5.11</span> T-test</a></li>
-  <li><a href="#volcano-plots" id="toc-volcano-plots" class="nav-link" data-scroll-target="#volcano-plots"><span class="header-section-number">5.12</span> Volcano plots</a></li>
+  <li><a href="#pls-da" id="toc-pls-da" class="nav-link" data-scroll-target="#pls-da"><span class="header-section-number">5.8</span> PLS-DA</a></li>
+  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest"><span class="header-section-number">5.9</span> Random forest</a></li>
+  <li><a href="#pattern-hunter" id="toc-pattern-hunter" class="nav-link" data-scroll-target="#pattern-hunter"><span class="header-section-number">5.10</span> Pattern hunter</a></li>
+  <li><a href="#fold-change-analysis" id="toc-fold-change-analysis" class="nav-link" data-scroll-target="#fold-change-analysis"><span class="header-section-number">5.11</span> Fold change analysis</a></li>
+  <li><a href="#t-test" id="toc-t-test" class="nav-link" data-scroll-target="#t-test"><span class="header-section-number">5.12</span> T-test</a></li>
+  <li><a href="#volcano-plots" id="toc-volcano-plots" class="nav-link" data-scroll-target="#volcano-plots"><span class="header-section-number">5.13</span> Volcano plots</a></li>
   </ul></li>
   <li><a href="#concluding-thoughts" id="toc-concluding-thoughts" class="nav-link" data-scroll-target="#concluding-thoughts"><span class="header-section-number">6</span> Concluding thoughts</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
@@ -611,8 +612,47 @@ Our data contains samples in rows, and features in columns.
 </figure>
 </div>
 </section>
-<section id="random-forest" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.8</span> Random forest</h2>
+<section id="pls-da" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="pls-da"><span class="header-section-number">5.8</span> PLS-DA</h2>
+<p>We can also take a supervised approach using PLS-DA. PLS-DA is most often used as a classification algorithm (i.e., can we develop a model based on a testing set that tells us whether a sample is a member of one group or another, and works for samples not a part of that test set), though it can also be used as a feature selection tool.</p>
+<p>Using MetaboAnalyst, we can see:</p>
+<ul>
+<li>A overview of scores plots using the first 5 PCs</li>
+<li>A 2D scores plot</li>
+<li>Loadings plots</li>
+<li>Important features</li>
+<li>3D plots</li>
+<li>Cross validation</li>
+</ul>
+<p>Remember that PLS-DA is trying to <strong>maximize difference between groups</strong> while PCA is trying to <strong>maximize variation across the dataset</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pls-scores.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">PLS-DA scores plot</figcaption>
+</figure>
+</div>
+<p>We can look at which features are most contributing to separation between our groups, and MetaboAnalyst will plot these for you, or you can download a spreadsheet that contains every feature along with its score.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pls-vip.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Variable importance in project scores for the top 15 features</figcaption>
+</figure>
+</div>
+<p>If you are doing PLS-DA, it is important to make sure your model can be validated and you are not overfitting (i.e., fitting noise). This is a particular problem especially in the metabolomics situation where you have orders of magnitude fewer samples than you do features.</p>
+<p>In this case, by using only 2 PCs, we have very good cross validation accuracy (Q^2). You can adjust how many PCs you use and see how this affects your validation parameters.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/04/pls-cv.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">PLS-DA cross validation</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>The message at the bottom of the screen is an important one: “Q2 is an estimate of the predictive ability of the model, and is calculated via cross-validation (CV). In each CV, the predicted data are compared with the original data, and the sum of squared errors is calculated. The prediction error is then summed over all samples (Predicted Residual Sum of Squares or PRESS). For convenience, the PRESS is divided by the initial sum of squares and subtracted from 1 to resemble the scale of the R2. Good predictions will have low PRESS or high Q2. It is possible to have negative Q2, which means that your model is not at all predictive or is overfitted. For more details, refer to an excellent paper by (Szymańska, et al).”</p>
+</blockquote>
+<p>Keep in mind too that if you have an overfit model, your features that have high VIP scores may not be meaningful.</p>
+</section>
+<section id="random-forest" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">5.9</span> Random forest</h2>
 <p>This isn’t that good of an example for random forest classification since our samples are so different.</p>
 <p>Random forest is a machine learning class predition approach. In MetaboAnalyst, you can pick how many trees to draw and how many predictors to use.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -638,8 +678,8 @@ Our data contains samples in rows, and features in columns.
 </div>
 <p>Another option for random forest is to have a training and a test set. As far as I can tell, MetaboAnalyst does this by calculating the out of bag error but there are also other approaches.</p>
 </section>
-<section id="pattern-hunter" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.9</span> Pattern hunter</h2>
+<section id="pattern-hunter" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="pattern-hunter"><span class="header-section-number">5.10</span> Pattern hunter</h2>
 <p>You might be interested in features that follow a certain pattern across your samples. Say you have samples that are processed for different amounts of time, you may be interested in knowing which features follow that trend (i.e., are lower or higher across processing). The pattern hunter helps us find features like this.</p>
 <p>In this case, I am interested in features that follow this trend: OH8243 &lt; HATS &lt; LA2213.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -656,8 +696,8 @@ Our data contains samples in rows, and features in columns.
 </figure>
 </div>
 </section>
-<section id="fold-change-analysis" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="fold-change-analysis"><span class="header-section-number">5.10</span> Fold change analysis</h2>
+<section id="fold-change-analysis" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="fold-change-analysis"><span class="header-section-number">5.11</span> Fold change analysis</h2>
 <p>There are some analyses that can be only done with two groups (versus the three that we’ve had for the previous analyses). To demonstrate how these work, I am going to only keep the samples that are a part of the HATS and OH8243 groups.</p>
 <p>I can edit that using the Data editor on the leftside panel.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -684,8 +724,8 @@ Our data contains samples in rows, and features in columns.
 </div>
 <p>You can also click on the spreadsheet icon to view and/or download the full set of mean fold changes for each feature between the groups.</p>
 </section>
-<section id="t-test" class="level2" data-number="5.11">
-<h2 data-number="5.11" class="anchored" data-anchor-id="t-test"><span class="header-section-number">5.11</span> T-test</h2>
+<section id="t-test" class="level2" data-number="5.12">
+<h2 data-number="5.12" class="anchored" data-anchor-id="t-test"><span class="header-section-number">5.12</span> T-test</h2>
 <p>Like we did with an ANOVA for &gt; 2 groups, we might want to see if there are any differences in the intensity of each feature between our two tomato groups. We can do that using t-tests (parametric) or Wilcoxon rank-sum tests. We can select whether we have equal variance between or groups, whether we want to use a non-parametric test (if data is non-normal), what our p-value threshold is, and whether we are doing a multiple testing correct (you should be!).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -695,8 +735,8 @@ Our data contains samples in rows, and features in columns.
 </div>
 <p>You again can click on the spreadhseet icon to download the full feature set along with p-values, FDR adjusted p-values, and -log10 p-values.</p>
 </section>
-<section id="volcano-plots" class="level2" data-number="5.12">
-<h2 data-number="5.12" class="anchored" data-anchor-id="volcano-plots"><span class="header-section-number">5.12</span> Volcano plots</h2>
+<section id="volcano-plots" class="level2" data-number="5.13">
+<h2 data-number="5.13" class="anchored" data-anchor-id="volcano-plots"><span class="header-section-number">5.13</span> Volcano plots</h2>
 <p>Volcano plots are nice as they incorporate both those features that are significantly different between groups, and the fold chance of that differences.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
