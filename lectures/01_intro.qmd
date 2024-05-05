@@ -20,6 +20,36 @@ format:
 -   What you hope to learn
 :::
 
+## What will we cover in this course?
+
+
+
+::: columns
+::: {.column width="50%" .fragment}
+Lectures
+
+-   Introduction (this lecture)
+-   Study design and sample collection
+-   LC-MS data acquisition and pre-processing
+-   Data analysis
+-   Compound ID
+
+:::
+
+::: {.column width="50%" .fragment}
+Hands-on activities
+
+-   Design your own experiment
+-   LC-MS data processing with MZmine
+-   Data analysis with MetaboAnalyst
+:::
+:::
+
+## Course logistics
+
+-   Let me know [if you want to use](https://cooperstonelab.github.io/ufrgs-metab/activities/03_mzmine.html#using-mzmine-at-osc-ohio-supercomputer-center) the Ohio Supercomputer Center for deconvolution with MZmine
+-   Other logistics
+
 ## What is metabolomics?
 
 -   The study of the **totality** of **small molecules** (< 1500 Da) within a given system
