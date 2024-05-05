@@ -2,9 +2,10 @@
 title: "Design your own experiment"
 ---
 
-Get together in small groups and spend ~10-15 min designing a metabolomics experiment around a research question of one (or more than one) of the group members. After this discussion period, we will reconvene in our larger group and each team will share the following information about your experiments:
+Get together in small groups and spend ~10-15 min designing a metabolomics experiment around a research question of one of the group members. After this discussion period, we will reconvene in our larger group and each team will share the following information about your experiments:
 
 -   What was your research question?
 -   What is your hypothesis?
 -   What samples are you selecting to analyze?
 -   How will they be collected?
+-   Are there any other special considerations for your experiment?

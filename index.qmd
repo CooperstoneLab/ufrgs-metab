@@ -9,6 +9,8 @@ editor:
 Ph.D.](https://www.cooperstonelab.com/)<br> Associate Professor, Horticulture
 and Crop Science, Food Science and Technology<br> The Ohio State University
 
+**Zoom link**: [https://go.osu.edu/ufrgs](https://go.osu.edu/ufrgs)
+
 The purpose of this short course is to give students a conceptual and hands-on
 introduction to the metabolomics workflow, experimental design process,
 collection of data via LC combined with high resolution MS, data analysis
