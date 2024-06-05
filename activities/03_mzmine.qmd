@@ -85,7 +85,7 @@ Either tell Jess in person your OSC username, or email it to her at cooperstone.
 
 ### Log onto OSC
 
-Navigate to <https://ondemand.osc.edu/> and log in. Make sure you are using **PAS2568**.
+Navigate to <https://ondemand.osc.edu/> and log in. Make sure you are using **PAS2774**.
 
 ### Download the portable Linux version of MZmine
 
@@ -93,7 +93,7 @@ MZmine has a portal Linux version which you can download while on OSC, and then 
 
 ![Accessing Pitzer on OSC](img/03/pitzer.png)
 
-You can use the parameters below for launching the Pitzer desktop. Make sure you select project **PAS2568**. You can adjust how many hours you need based on what time you have. Then click "Launch" in blue at the bottom.
+You can use the parameters below for launching the Pitzer desktop. Make sure you select project **PAS2774**. You can adjust how many hours you need based on what time you have. Then click "Launch" in blue at the bottom.
 
 ![Set parameters for launching a Pitzer desktop](img/03/pitzer-params.png)
 
@@ -103,11 +103,11 @@ Once your computing space is ready, you will see a "Launch Pitzer Desktop" butto
 
 ![Launch your OSC session](img/03/pitzer-launch.png)
 
-You can actually skip the download process as I put the portable version fo MZmine 3.9.0 in `/fs/ess/PAS2568/MZmine`. But, if you wanted to run MZmine on any supercomputer the process should be the same. Once you are in a virtual desktop, you can open an internet browser and navigate to <https://github.com/mzmine/mzmine3/releases/tag/v3.9.0>. At the time I put this tutorial together, the most recent version of MZmine was 3.9.0. Soon after, version 4.0 was released. We are going to use the older version here. Download the version for the Linux portable version and store it in a known place.
+You can actually skip the download process as I put the portable version fo MZmine 3.9.0 in `/fs/ess/PAS2774/MZmine`. But, if you wanted to run MZmine on any supercomputer the process should be the same. Once you are in a virtual desktop, you can open an internet browser and navigate to <https://github.com/mzmine/mzmine3/releases/tag/v3.9.0>. At the time I put this tutorial together, the most recent version of MZmine was 3.9.0. Soon after, version 4.0 was released. We are going to use the older version here. Download the version for the Linux portable version and store it in a known place.
 
 ### Open MZmine
 
-Once you have downloaded MZmine, unzip the file. If you are using the already downloaded verison, click on the right most folder at the bottom of your screen, and insert `/fs/ess/PAS2568/MZmine` into the path.  and then right click on the `bin` directory and select `Open a terminal here`.
+Once you have downloaded MZmine, unzip the file. If you are using the already downloaded verison, click on the right most folder at the bottom of your screen, and insert `/fs/ess/PAS2774/MZmine` into the path.  and then right click on the `bin` directory and select `Open a terminal here`.
 
 ![Open a terminal in the `bin` folder of the portable MZmine](img/03/launch-mzmine.png)
 
@@ -125,13 +125,13 @@ The MZmine graphical user interface (GUI) should now be open.
 
 ### Create a place to save your files on OSC
 
-Create a directory (i.e., folder) with your name (no spaces) within `/fs/ess/PAS2568`. This will allow each of you to store your files separately from your classmates. For example, I would make a folder called `jess` within `/fs/ess/PAS2568`. This would mean then I am saving my files in `/fs/ess/PAS2568/jess`.
+Create a directory (i.e., folder) with your name (no spaces) within `/fs/ess/PAS2774`. This will allow each of you to store your files separately from your classmates. For example, I would make a folder called `jess` within `/fs/ess/PAS2774`. This would mean then I am saving my files in `/fs/ess/PAS2774/jess`.
 
 Then, when you want to retrieve them, you can:
 
 1. log into [OSC OnDemand](https://ondemand.osc.edu/pun/sys/dashboard/) (this link is also on the course website at `Resources` > `Ohio Supercomputer Center (OSC)`)
 2. click on `Files`
-3. select `/fs/ess/PAS2568/your-folder-name` and download any files so you can have the locally on your computer.
+3. select `/fs/ess/PAS2774/your-folder-name` and download any files so you can have the locally on your computer.
 
 ## Using MZmine on your own computer
 
@@ -144,7 +144,7 @@ MZmine has extremely good documentation, so if you want to read more about any p
 Once you've opened GUI, go to `Raw data methods` \> `Raw data import` \> `mzML` and select all of your files to import. You should now see all your data files in the left hand column of MZmine. You can re-order them if you like by dragging them around.
 
 ::: callout-note
-If you are working on OSC, I have put all of the `.mzML` files on `/fs/ess/PAS2568/mzML-centroid`.
+If you are working on OSC, I have put all of the `.mzML` files on `/fs/ess/PAS2774/mzML-centroid`.
 :::
 
 ![](img/03/load-files.png)
