@@ -97,7 +97,7 @@ You can use the parameters below for launching the Pitzer desktop. Make sure you
 
 ![Set parameters for launching a Pitzer desktop](img/03/pitzer-params.png)
 
-> If Pitzer is not working, you can open up an Owens desktop and it will work the same. Just use the same paramteres.
+> If Pitzer is not working, you can open up an Owens desktop and it will work the same. Just use the same parameters.
 
 Once your computing space is ready, you will see a "Launch Pitzer Desktop" button. Go ahead and click that.
 

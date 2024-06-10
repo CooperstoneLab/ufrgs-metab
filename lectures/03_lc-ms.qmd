@@ -13,10 +13,17 @@ format:
 
 ## Chromatography
 
--   The process of separating components of a <br>mixture
--   Based on an analytes' difference in <br>partitioning between a stationary <br>and mobile phases
+::: columns
+::: {.column width="60%"}
+-   The process of separating components of a mixture
+-   Based on an analytes' difference in partitioning between a stationary and mobile phases
+:::
 
-![https://en.wikipedia.org/wiki/Chromatography](img/03/chromatography.png){.absolute bottom="20" right="50"}
+
+::: {.column width="40%" .fragment}
+![https://en.wikipedia.org/wiki/Chromatography](img/03/chromatography.png){style="font-size: 20px"}
+:::
+:::
 
 
 ## Types of liquid chromatography
@@ -27,12 +34,12 @@ format:
 -   Normal phase
 -   HILIC (hydrophilic interaction liquid chromatography)
 :::
-:::
 
 ::: {.column width="65%"}
 ![](img/03/hplc.png)
 :::
 :::
+
 
 ## Mass spectrometry
 
@@ -109,13 +116,14 @@ format:
 ![](img/03/exact-mass.png)
 :::
 
-::: {.column width="60%" style="font-size: 23px"}
--   Exact mass is calculated (theoretical)
--   Theoretical mass is experimental determined (observed)
+::: {.column width="60%" style="font-size: 23px" .fragment}
 
 ![](images/clipboard-3249365801.png){fig-align="center" width="354"}
 
 ![](images/clipboard-3469937520.png){fig-align="center" width="368"}
+
+-   Exact mass is calculated (theoretical)
+-   Theoretical mass is experimental determined (observed)
 
 Example:
 
