@@ -316,7 +316,7 @@ MZ_RT_filt_PBremoved <- MZ_RT_filt_PBremoved %>%
 Now you have a list of features present in your samples after filtering for CV in QCs, and removing all the extraneous columns we added to help us do this, along with removing any process blanks.
 ```{r, eval = FALSE}
 write_csv(MZ_RT_filt_PBremoved,
-          "data/post_filtering_6892.csv")
+          "data/post_filtering_2409.csv")
 ```
 
 
@@ -916,7 +916,13 @@ pareto_scaled_long %>%
        y = "Relative abundance")
 ```
 
-I think pareto scaling is making everything look super the same. I am going to use log2 transformed data for the rest of this analysis.
+I think pareto scaling is making everything look super the same. I am going to use log2 transformed data for the rest of this analysis. I am going to save a `.csv` file that has the final filtered, clustered, imputed, and log2 transformed data.
+
+```{r eval = FALSE}
+write_csv(x = metab_wide_meta_imputed_log2,
+          file = "data/filtered_imputed_clustered_log2_1278feat.csv")
+```
+
 
 ## PCAs
 ### With QCs
