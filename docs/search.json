@@ -564,47 +564,47 @@
     "href": "activities/03_mzmine.html#save-your-project",
     "title": "Spectral pre-processing with MZmine",
     "section": "4.1 Save your project",
-    "text": "4.1 Save your project\nYou can save your project after different steps, this process can take a little while, but it allows you to go back to any part of your workflow and look at results or make changes.\nIn the top toolbar, navigate to Project &gt; Save project as and put your project files in an appropriate directory on your computer. A good place would be in the parent directory where your data files are.\nYou can save your file as Referencing (small) given that you don’t move where the input files are. This takes up less space but can lead to later incompatibility projects if files get moved. The status bar at the bottom of MZmine will tell you your current status.\n\n\n\nSaving your project in MZmine"
+    "text": "4.1 Save your project\nYou can save your project after different steps, this process can take a little while, but it allows you to go back to any part of your workflow and look at results or make changes.\nIn the top toolbar, navigate to Project &gt; Save project as and put your project files in an appropriate directory on your computer. A good place would be in the parent directory where your data files are.\nYou can save your file as Referencing (small) given that you don’t move where the input files are. This takes up less space but can lead to later incompatibility projects if files get moved. The status bar at the bottom of MZmine will tell you your current status.\n\n\n\nSaving your project in MZmine\n\n\n\n\n\nSaving your project in MZmine on SC"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "title": "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024",
     "section": "",
     "text": "Instructor: Jessica Cooperstone, Ph.D. Associate Professor, Horticulture and Crop Science, Food Science and Technology The Ohio State University\nZoom link: https://go.osu.edu/ufrgs\nThe purpose of this short course is to give students a conceptual and hands-on introduction to the metabolomics workflow, experimental design process, collection of data via LC combined with high resolution MS, data analysis process, and compound identification.\nBelow is an overview of the material to be covered in this workshop. The top toolbar has lecture material under the Lectures tab and Hands on activities under the Activities tab."
   },
   {
     "objectID": "index.html#introduction-to-metabolomics",
     "href": "index.html#introduction-to-metabolomics",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "title": "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024",
     "section": "Introduction to metabolomics",
     "text": "Introduction to metabolomics"
   },
   {
     "objectID": "index.html#study-design-and-sample-collection",
     "href": "index.html#study-design-and-sample-collection",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "title": "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024",
     "section": "Study design and sample collection",
     "text": "Study design and sample collection"
   },
   {
     "objectID": "index.html#lc-ms-data-acquisition-and-pre-processing",
     "href": "index.html#lc-ms-data-acquisition-and-pre-processing",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "title": "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024",
     "section": "LC-MS data acquisition and pre-processing",
     "text": "LC-MS data acquisition and pre-processing\n\nBasics of LC and MS\nSample preparation\nData collection\nRaw data processing to create a feature table using MZmine"
   },
   {
     "objectID": "index.html#data-analysis-using-metaboanalyst",
     "href": "index.html#data-analysis-using-metaboanalyst",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "title": "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024",
     "section": "Data analysis using MetaboAnalyst",
     "text": "Data analysis using MetaboAnalyst\n\nHow to use MetaboAnalyst\nLooking at your data and assessing quality\nCreating principal components analysis (PCA) plots\nUnivariate group difference testing\nMultivariate class discovery and prediction methods"
   },
   {
     "objectID": "index.html#compound-identification",
     "href": "index.html#compound-identification",
-    "title": "Metabolomics short course, UFRGS 🇧🇷 May 2024",
+    "title": "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024",
     "section": "Compound identification",
     "text": "Compound identification"
   },

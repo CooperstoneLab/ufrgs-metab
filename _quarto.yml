@@ -64,6 +64,7 @@ website:
   page-footer:
     border: true
     left: "Created with RStudio and [Quarto](https://quarto.org/) <br> © Jessica Cooperstone, 2024, License: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) <br> [Want to make a website like this one?](https://osu-codeclub.github.io/#category=website)"
+    right: "Thanks to [CAPES PrInt](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-e-auxilios-internacionais/informacoes-internacionais/programa-institucional-de-internacionalizacao-capes-print) for supporting this workshop 🙏"
 
 format:
   html:

@@ -188,6 +188,8 @@ You can save your file as Referencing (small) given that you don't move where th
 
 ![Saving your project in MZmine](img/03/save-project-as.png)
 
+![Saving your project in MZmine on SC](img/03/save-project-as-osc.png)
+
 # Mass detection
 
 We are going to do our parameter optimization on just our QC samples as this process will go more quickly. Once you are happy with how the data looks, you can apply those parameters to your whole dataset.

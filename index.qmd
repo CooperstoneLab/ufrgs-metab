@@ -1,5 +1,5 @@
 ---
-title: "Metabolomics short course, UFRGS 🇧🇷 May 2024"
+title: "Metabolomics short course at Universidade Federal do Rio Grande do Sul (UFRGS) 🇧🇷 Summer 2024"
 editor: 
   markdown: 
     wrap: 80
@@ -40,3 +40,4 @@ under the `Activities` tab.
 -   Multivariate class discovery and prediction methods 
 
 ## Compound identification
+
