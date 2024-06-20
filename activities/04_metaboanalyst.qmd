@@ -85,7 +85,7 @@ If we agree with this, we can click Proceed. MetaboAnalyst will bring you direct
 
 ## Missing values
 
-Here you can tell MetaboAnalyst what you want done with missing values. Here we don't have any, but if you did you could indicate:
+Here you can tell MetaboAnalyst what you want done with missing values. Here we don't have any (our missing values are coded as zero), but if you did you could indicate:
 
 -   Whether you want to remove features that have a lot of missing values
 -   What you want to do to estimate the remaining missing values.
@@ -94,7 +94,7 @@ Here you can tell MetaboAnalyst what you want done with missing values. Here we 
 
 In this step, we can filter variables based on different rules. These include:
 
--   Features that are very variable i nthe QCs. We don't need to do this because we already did it manually.
+-   Features that are very variable in the QCs. We don't need to do this because we already did it manually.
 -   Features that are near constant across the conditions (i.e., those that have very low standard deviations)
 -   Features that are very low
 
@@ -108,7 +108,7 @@ We can normalize our samples in different ways. MetaboAnalyst gives is 3 categor
 -   Data transformation including by log (base 10), square root, or cubed room
 -   Data scaling
 
-You can pick a nornalization and view the result. This is nice because you can see what your normalization will do before picking the most appropriate one.
+You can pick a normalization and view the result. This is nice because you can see what your normalization will do before picking the most appropriate one.
 
 For example, I am going to try just log10 transforming my samples. When I do this, I can look at the result from both a feature and sample view.
 

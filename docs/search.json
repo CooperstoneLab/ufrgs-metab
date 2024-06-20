@@ -634,14 +634,14 @@
     "href": "activities/04_metaboanalyst.html#missing-values",
     "title": "Data analysis with MetaboAnalyst",
     "section": "3.2 Missing values",
-    "text": "3.2 Missing values\nHere you can tell MetaboAnalyst what you want done with missing values. Here we don’t have any, but if you did you could indicate:\n\nWhether you want to remove features that have a lot of missing values\nWhat you want to do to estimate the remaining missing values."
+    "text": "3.2 Missing values\nHere you can tell MetaboAnalyst what you want done with missing values. Here we don’t have any (our missing values are coded as zero), but if you did you could indicate:\n\nWhether you want to remove features that have a lot of missing values\nWhat you want to do to estimate the remaining missing values."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#data-filters",
     "href": "activities/04_metaboanalyst.html#data-filters",
     "title": "Data analysis with MetaboAnalyst",
     "section": "3.3 Data filters",
-    "text": "3.3 Data filters\nIn this step, we can filter variables based on different rules. These include:\n\nFeatures that are very variable i nthe QCs. We don’t need to do this because we already did it manually.\nFeatures that are near constant across the conditions (i.e., those that have very low standard deviations)\nFeatures that are very low\n\nI prefer to do this kind of filtering outside of MetaboAnalyst - you could do this in Excel if you wanted to. Here, we are not going to do any more filtering. We can just click Proceed (and skip this filtering)."
+    "text": "3.3 Data filters\nIn this step, we can filter variables based on different rules. These include:\n\nFeatures that are very variable in the QCs. We don’t need to do this because we already did it manually.\nFeatures that are near constant across the conditions (i.e., those that have very low standard deviations)\nFeatures that are very low\n\nI prefer to do this kind of filtering outside of MetaboAnalyst - you could do this in Excel if you wanted to. Here, we are not going to do any more filtering. We can just click Proceed (and skip this filtering)."
   },
   {
     "objectID": "activities/04_metaboanalyst.html#pca-with-our-qcs",

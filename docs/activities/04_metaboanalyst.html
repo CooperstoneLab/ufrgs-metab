@@ -370,7 +370,7 @@ Our data contains samples in rows, and features in columns.
 </section>
 <section id="missing-values" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="missing-values"><span class="header-section-number">3.2</span> Missing values</h2>
-<p>Here you can tell MetaboAnalyst what you want done with missing values. Here we don’t have any, but if you did you could indicate:</p>
+<p>Here you can tell MetaboAnalyst what you want done with missing values. Here we don’t have any (our missing values are coded as zero), but if you did you could indicate:</p>
 <ul>
 <li>Whether you want to remove features that have a lot of missing values</li>
 <li>What you want to do to estimate the remaining missing values.</li>
@@ -380,7 +380,7 @@ Our data contains samples in rows, and features in columns.
 <h2 data-number="3.3" class="anchored" data-anchor-id="data-filters"><span class="header-section-number">3.3</span> Data filters</h2>
 <p>In this step, we can filter variables based on different rules. These include:</p>
 <ul>
-<li>Features that are very variable i nthe QCs. We don’t need to do this because we already did it manually.</li>
+<li>Features that are very variable in the QCs. We don’t need to do this because we already did it manually.</li>
 <li>Features that are near constant across the conditions (i.e., those that have very low standard deviations)</li>
 <li>Features that are very low</li>
 </ul>
@@ -395,7 +395,7 @@ Our data contains samples in rows, and features in columns.
 <li>Data transformation including by log (base 10), square root, or cubed room</li>
 <li>Data scaling</li>
 </ul>
-<p>You can pick a nornalization and view the result. This is nice because you can see what your normalization will do before picking the most appropriate one.</p>
+<p>You can pick a normalization and view the result. This is nice because you can see what your normalization will do before picking the most appropriate one.</p>
 <p>For example, I am going to try just log10 transforming my samples. When I do this, I can look at the result from both a feature and sample view.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Feature view</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Sample view</a></li></ul>
