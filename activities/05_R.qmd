@@ -1074,6 +1074,33 @@ fviz_pca_var(pca_noqc)
 
 See what I mean? Not that useful. There are some functions in PCAtools that label only the points that most contribute to each PC. Could also do this manually if its of interest.
 
+```{r}
+# grab raw loadings, without any metadata
+loadings_raw <- as.data.frame(pca_noqc$rotation)
+
+loadings <- loadings_raw %>%
+  rownames_to_column(var = "feature")
+```
+
+I am going to make an interactive version of the loadings plot so it can be interrogated more.
+```{r}
+loadings_plot <- loadings %>%
+  ggplot(aes(x = PC1, y = PC2, text = feature)) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point() +
+  scale_fill_brewer() +
+  theme_minimal() +
+  labs(x = glue("PC1: {PC1_percent_noqc}%"), 
+       y = glue("PC2: {PC2_percent_noqc}%"), 
+       title = "PCA Loadings Plot") 
+```
+
+Make plot interactive
+```{r}
+plotly::ggplotly(loadings_plot, tooltip = "text")
+```
+
 
 ## Univariate Testing
 I am going to include some sample univariate testing for comparisons between two and more than two groups.

@@ -109,7 +109,7 @@ format:
 
 ![](img/03/rutin.png)
 
-## Compare accurate mass to exact mass towards compound ID
+## Compare experimental to exact mass in working towards a compound ID
 
 ::: columns
 ::: {.column width="40%"}
@@ -123,7 +123,7 @@ format:
 ![](images/clipboard-3469937520.png){fig-align="center" width="368"}
 
 -   Exact mass is calculated (theoretical)
--   Theoretical mass is experimental determined (observed)
+-   Accurate mass is experimental determined (observed)
 
 Example:
 

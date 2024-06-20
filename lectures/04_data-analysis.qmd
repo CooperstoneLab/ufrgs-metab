@@ -269,7 +269,7 @@ Ordering by run order ![](img/04/quality-boxplot-log2-run-order.png)
 
 -   With metabolomics, we almost always have more features (p) than samples (n)
 -   This means we are making a lot of comparisons
--   If we want to know if each figure is differentially abundant across two groups, we can do a series of t-tests.
+-   If we want to know if each feature is differentially abundant across two groups, we can do a series of t-tests.
 -   If we set α = 0.05, then we have a 5% chance for rejecting the null when it is true (false positive, type I error)
 -   If we do 1000 tests, and each one has a 5% of a false positive, then we would predict to have 50 false positives due to chance alone - features that have p \< 0.05 but are not truly different between our groups
 

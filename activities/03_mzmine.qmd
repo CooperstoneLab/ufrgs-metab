@@ -85,11 +85,7 @@ Either tell Jess in person your OSC username, or email it to her at cooperstone.
 
 ### Log onto OSC
 
-Navigate to <https://ondemand.osc.edu/> and log in. Make sure you are using **PAS2774**.
-
-### Download the portable Linux version of MZmine
-
-MZmine has a portal Linux version which you can download while on OSC, and then use. Navigate to <https://ondemand.osc.edu/>. You can open a Pitzer desktop session.
+Navigate to <https://ondemand.osc.edu/> and log in. Make sure you are using **PAS2774**. Open a Pitzer desktop session.
 
 ![Accessing Pitzer on OSC](img/03/pitzer.png)
 
